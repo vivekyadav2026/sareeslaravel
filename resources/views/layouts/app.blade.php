@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@yield('title', 'RANISAHAB — Luxury Fashion for Every Woman | Sarees, Lehengas & Bridal Wear')</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="stylesheet" href="{{ asset('css/style.css') }}">
+    @stack('styles')
+</head>
+<body>
+
+<!-- Top Announcement Bar -->
+<div class="top-strip">
+  <div class="container">
+    <i class="fa-solid fa-crown me-2"></i> FREE EXPRESS SHIPPING ALL OVER INDIA &nbsp;✦&nbsp; 100% ROYAL HANDLOOM GUARANTEE
+  </div>
+</div>
+
+<!-- Header / Main Brand Area -->
+<header class="navbar-ranisahab">
+  <div class="container header-three-col flex-nowrap align-items-center">
+    
+    <!-- Left: Mobile Toggle & Desktop Search Bar -->
+    <div class="header-col-left">
+      <!-- Desktop Search Bar -->
+      <div class="header-search-bar d-none d-lg-block">
+        <input type="text" placeholder="Search sarees, suits, lehengas...">
+        <i class="fa-solid fa-magnifying-glass"></i>
+      </div>
+      <!-- Mobile Menu Toggle Button -->
+      <button class="mobile-nav-toggler d-lg-none" type="button" data-bs-toggle="collapse" data-bs-target="#navMain" aria-controls="navMain" aria-expanded="false" aria-label="Toggle navigation">
+        <i class="fa-solid fa-bars-staggered"></i>
+        <span>MENU</span>
+      </button>
+    </div>
+
+    <!-- Center: Brand Logo -->
+    <div class="header-col-center">
+      <a href="{{ route('home') }}">
+        <img src="{{ asset('images/logo.png') }}" alt="RANISAHAB — Luxury Fashion for Every Woman" class="brand-logo-img">
+      </a>
+    </div>
+
+    <!-- Right: Nav Actions & Mobile Search/Cart -->
+    <div class="header-col-right">
+      <div class="nav-actions d-flex align-items-center">
+        <!-- Search Trigger for Mobile/Tablet -->
+        <button class="mobile-search-btn d-lg-none me-2" type="button" data-bs-toggle="collapse" data-bs-target="#mobileSearchBar" aria-expanded="false">
+          <i class="fa-solid fa-magnifying-glass"></i>
+        </button>
+
+        <a href="#" class="action-icon d-none d-lg-inline-flex"><i class="fa-regular fa-user"></i><span>ACCOUNT</span></a>
+        <a href="#" class="action-icon d-none d-lg-inline-flex"><i class="fa-regular fa-heart"></i><span>WISHLIST</span></a>
+        <a href="{{ route('checkout') }}" class="action-icon ms-1 ms-lg-3">
+          <i class="fa-solid fa-bag-shopping"></i>
+          <span class="d-none d-lg-inline">BAG</span>
+          <span class="badge-cart">1</span>
+        </a>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Expandable Mobile Search Bar -->
+  <div class="collapse d-lg-none" id="mobileSearchBar">
+    <div class="container py-2 px-3">
+      <div class="mobile-search-box">
+        <input type="text" class="form-control" placeholder="Search sarees, suits, lehengas, bridal packages...">
+        <button class="btn btn-gold-sm" type="button"><i class="fa-solid fa-magnifying-glass"></i></button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Primary Navigation Menu & Collapsible Mobile Drawer -->
+  <nav class="navbar navbar-expand-lg navbar-dark nav-menu-bar-container py-0">
+    <div class="container px-md-0">
+      <div class="collapse navbar-collapse justify-content-center" id="navMain">
+        <ul class="navbar-nav nav-ranisahab-menu text-center py-2 py-lg-0">
+          <li class="nav-item"><a class="nav-link {{ request()->routeIs('home') ? 'active' : '' }}" href="{{ route('home') }}"><i class="fa-solid fa-house me-2 d-lg-none"></i>HOME</a></li>
+          <li class="nav-item"><a class="nav-link {{ request()->routeIs('sarees') ? 'active' : '' }}" href="{{ route('sarees') }}"><i class="fa-solid fa-gem me-2 d-lg-none"></i>SAREES</a></li>
+          <li class="nav-item"><a class="nav-link {{ request()->routeIs('suits') ? 'active' : '' }}" href="{{ route('suits') }}"><i class="fa-solid fa-shirt me-2 d-lg-none"></i>SUITS</a></li>
+          <li class="nav-item"><a class="nav-link {{ request()->routeIs('lehengas') ? 'active' : '' }}" href="{{ route('lehengas') }}"><i class="fa-solid fa-wand-magic-sparkles me-2 d-lg-none"></i>LEHENGAS</a></li>
+          <li class="nav-item"><a class="nav-link {{ request()->routeIs('bridal-collection') ? 'active' : '' }}" href="{{ route('bridal-collection') }}"><i class="fa-solid fa-crown me-2 d-lg-none"></i>BRIDAL COLLECTION</a></li>
+          <li class="nav-item"><a class="nav-link {{ request()->routeIs('bridal-packages') ? 'active' : '' }}" href="{{ route('bridal-packages') }}"><i class="fa-solid fa-box-open me-2 d-lg-none"></i>BRIDAL PACKAGES</a></li>
+          <li class="nav-item"><a class="nav-link {{ request()->routeIs('makeup-services') ? 'active' : '' }}" href="{{ route('makeup-services') }}"><i class="fa-solid fa-spa me-2 d-lg-none"></i>MAKEUP SERVICES</a></li>
+          <li class="nav-item"><a class="nav-link {{ request()->routeIs('custom-lehenga') ? 'active' : '' }}" href="{{ route('custom-lehenga') }}"><i class="fa-solid fa-scissors me-2 d-lg-none"></i>CUSTOM LEHENGA</a></li>
+          <li class="nav-item"><a class="nav-link {{ request()->routeIs('gallery') ? 'active' : '' }}" href="{{ route('gallery') }}"><i class="fa-solid fa-images me-2 d-lg-none"></i>GALLERY</a></li>
+          <li class="nav-item"><a class="nav-link {{ request()->routeIs('about') ? 'active' : '' }}" href="{{ route('about') }}"><i class="fa-solid fa-circle-info me-2 d-lg-none"></i>ABOUT US</a></li>
+          <li class="nav-item"><a class="nav-link {{ request()->routeIs('contact') ? 'active' : '' }}" href="{{ route('contact') }}"><i class="fa-solid fa-envelope me-2 d-lg-none"></i>CONTACT</a></li>
+        </ul>
+        
+        <!-- Mobile Quick Contact Strip inside collapsed menu -->
+        <div class="mobile-menu-footer d-lg-none mt-3 pt-3 border-top border-warning border-opacity-25 text-center">
+          <div class="d-flex justify-content-center gap-3 mb-2">
+            <a href="tel:+911234567890" class="btn btn-outline-gold btn-sm"><i class="fa-solid fa-phone me-1"></i>CALL US</a>
+            <a href="#" class="btn btn-whatsapp btn-sm"><i class="fa-brands fa-whatsapp me-1"></i>WHATSAPP</a>
+          </div>
+          <p class="small text-muted mb-0" style="font-size:0.68rem;">PAN-INDIA EXPRESS DELIVERY &amp; 100% HANDLOOM GUARANTEE</p>
+        </div>
+      </div>
+    </div>
+  </nav>
+</header>
+
+<main>
+    @yield('content')
+</main>
+
+<!-- Black Features Bar -->
+<div class="black-features-bar">
+  <div class="container">
+    <div class="row g-4 text-center text-md-start">
+      <div class="col-6 col-md-3">
+        <div class="feature-pill-item justify-content-center justify-content-md-start">
+          <i class="fa-solid fa-gem"></i>
+          <div>
+            <h6>PREMIUM QUALITY</h6>
+            <p>You Deserve The Best</p>
+          </div>
+        </div>
+      </div>
+      <div class="col-6 col-md-3">
+        <div class="feature-pill-item justify-content-center justify-content-md-start">
+          <i class="fa-solid fa-tag"></i>
+          <div>
+            <h6>AFFORDABLE PRICES</h6>
+            <p>Luxury at Low Prices</p>
+          </div>
+        </div>
+      </div>
+      <div class="col-6 col-md-3">
+        <div class="feature-pill-item justify-content-center justify-content-md-start">
+          <i class="fa-solid fa-headset"></i>
+          <div>
+            <h6>CUSTOMER SUPPORT</h6>
+            <p>We Are Here For You</p>
+          </div>
+        </div>
+      </div>
+      <div class="col-6 col-md-3">
+        <div class="feature-pill-item justify-content-center justify-content-md-start">
+          <i class="fa-solid fa-truck"></i>
+          <div>
+            <h6>06-7 TIME DELIVERY</h6>
+            <p>Your Happiness, Our Priority</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Footer -->
+<footer class="footer-ranisahab">
+  <div class="container">
+    <div class="row g-4">
+      <div class="col-lg-4">
+        <div class="mb-3">
+          <a href="{{ route('home') }}">
+            <img src="{{ asset('images/logo.png') }}" alt="RANISAHAB Logo" class="brand-logo-img logo-lg mb-2">
+          </a>
+        </div>
+        <p class="small text-muted mb-3" style="line-height:1.6;">RANISAHAB is more than a brand, it's an emotion. We bring you the finest Sarees, Suits, Lehengas and Bridal collections with unmatched quality at the most affordable prices.</p>
+        <div class="d-flex gap-2 mb-3">
+          <a href="#" class="social-icon-btn"><i class="fa-brands fa-instagram"></i></a>
+          <a href="#" class="social-icon-btn"><i class="fa-brands fa-facebook-f"></i></a>
+          <a href="#" class="social-icon-btn"><i class="fa-brands fa-youtube"></i></a>
+          <a href="#" class="social-icon-btn"><i class="fa-brands fa-pinterest-p"></i></a>
+        </div>
+      </div>
+
+      <div class="col-6 col-lg-2">
+        <h6>QUICK LINKS</h6>
+        <ul class="list-unstyled d-grid gap-2 mb-0">
+          <li><a href="{{ route('home') }}">Home</a></li>
+          <li><a href="{{ route('about') }}">About Us</a></li>
+          <li><a href="{{ route('sarees') }}">Sarees</a></li>
+          <li><a href="{{ route('suits') }}">Suits</a></li>
+          <li><a href="{{ route('lehengas') }}">Lehengas</a></li>
+          <li><a href="{{ route('bridal-collection') }}">Bridal Collection</a></li>
+          <li><a href="{{ route('bridal-packages') }}">Bridal Packages</a></li>
+          <li><a href="{{ route('makeup-services') }}">Makeup Services</a></li>
+          <li><a href="{{ route('contact') }}">Contact Us</a></li>
+        </ul>
+      </div>
+
+      <div class="col-6 col-lg-3">
+        <h6>CUSTOMER SERVICE</h6>
+        <ul class="list-unstyled d-grid gap-2 mb-0">
+          <li><a href="{{ route('tracking') }}">Track Your Order</a></li>
+          <li><a href="#">Shipping &amp; Delivery</a></li>
+          <li><a href="#">Returns &amp; Refunds</a></li>
+          <li><a href="#">Terms &amp; Conditions</a></li>
+          <li><a href="#">Privacy Policy</a></li>
+          <li><a href="#">FAQ's</a></li>
+        </ul>
+      </div>
+
+      <div class="col-lg-3">
+        <h6>CONTACT US</h6>
+        <ul class="list-unstyled d-grid gap-2 small text-muted mb-3">
+          <li><i class="fa-solid fa-phone text-gold me-2"></i>+91 12345 67890</li>
+          <li><i class="fa-solid fa-envelope text-gold me-2"></i>support@ranisahab.com</li>
+          <li><i class="fa-solid fa-location-dot text-gold me-2"></i>All Over India Delivery</li>
+        </ul>
+        <a href="#" class="btn btn-whatsapp"><i class="fa-brands fa-whatsapp me-1 fs-6"></i>Chat on WhatsApp</a>
+      </div>
+    </div>
+
+    <div class="footer-bottom-line d-flex flex-wrap justify-content-between align-items-center">
+      <span>© {{ date('Y') }} RANISAHAB. All Rights Reserved.</span>
+      <span>Designed with ❤️ for our lovely customers</span>
+    </div>
+  </div>
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+@stack('scripts')
+</body>
+</html>

@@ -1,0 +1,310 @@
+@extends('layouts.app')
+
+@section('title', 'Secure Checkout — RANISAHAB Luxury')
+
+@section('content')
+<!-- Checkout Steps Header -->
+<div class="checkout-steps-nav py-3 bg-white border-bottom">
+  <div class="container d-flex justify-content-center align-items-center gap-2 flex-wrap">
+    <div class="checkout-step-item done">
+      <div class="checkout-step-circle"><i class="fa-solid fa-check"></i></div>
+      <span>CART</span>
+    </div>
+    <div class="checkout-step-line"></div>
+    <div class="checkout-step-item active">
+      <div class="checkout-step-circle">2</div>
+      <span>ADDRESS</span>
+    </div>
+    <div class="checkout-step-line"></div>
+    <div class="checkout-step-item">
+      <div class="checkout-step-circle">3</div>
+      <span>PAYMENT</span>
+    </div>
+    <div class="checkout-step-line"></div>
+    <div class="checkout-step-item">
+      <div class="checkout-step-circle">4</div>
+      <span>CONFIRMATION</span>
+    </div>
+  </div>
+</div>
+
+<!-- Section Header -->
+<div class="container pt-4 pb-2 text-center">
+  <span class="motif text-gold">❖</span>
+  <h2 class="font-display text-maroon" style="font-size:1.8rem;letter-spacing:0.1em;">SECURE CHECKOUT</h2>
+</div>
+
+<!-- Checkout Main Section -->
+<div class="container pb-5">
+  <div class="row g-4">
+    
+    <!-- Left Column: Order, Address, Preference, Place Order -->
+    <div class="col-lg-7">
+      
+      <!-- 1. Your Order -->
+      <div class="checkout-card-box mb-4">
+        <h5>1. YOUR ORDER (1 ITEM)</h5>
+        <div class="d-flex gap-3 align-items-center">
+          <img src="{{ asset('images/product_main.png') }}" alt="Saree" style="width:84px;height:104px;object-fit:cover;border-radius:2px;border:1px solid #e0d5be;">
+          <div class="flex-fill">
+            <h6 class="mb-1 font-display fs-5">RANISAHAB Royal Banarasi Silk Saree</h6>
+            <p class="small text-muted mb-1">Color: <strong class="text-dark">Maroon</strong> &nbsp;|&nbsp; Size: <strong class="text-dark">Free Size</strong></p>
+            <div class="d-flex align-items-center gap-2">
+              <span class="small text-muted">Qty:</span>
+              <select class="form-select form-select-sm w-auto">
+                <option>1</option><option>2</option><option>3</option>
+              </select>
+            </div>
+          </div>
+          <div class="text-end">
+            <span class="fw-bold text-maroon fs-5">₹3,999</span>
+          </div>
+        </div>
+        <div class="form-check mt-3 pt-2 border-top">
+          <input class="form-check-input" type="checkbox" checked id="giftWrap">
+          <label class="form-check-label small" for="giftWrap">
+            <i class="fa-solid fa-gift text-gold me-1"></i>Add Gift Packaging &nbsp;<span class="text-muted">Luxury Gift Wrap ₹199</span>
+          </label>
+        </div>
+      </div>
+
+      <!-- 2. Delivery Address -->
+      <div class="checkout-card-box mb-4">
+        <div class="d-flex justify-content-between align-items-center mb-3">
+          <h5 class="mb-0">2. DELIVERY ADDRESS</h5>
+          <a href="#" class="small text-maroon fw-bold"><i class="fa-solid fa-pen-to-square me-1"></i>Edit</a>
+        </div>
+        <form class="row g-3">
+          <div class="col-md-6">
+            <label class="small text-muted mb-1">Full Name</label>
+            <input type="text" class="form-control form-control-luxury" value="Neha Sharma">
+          </div>
+          <div class="col-md-6">
+            <label class="small text-muted mb-1">Phone Number</label>
+            <input type="text" class="form-control form-control-luxury" value="+91 98765 43210">
+          </div>
+          <div class="col-12">
+            <label class="small text-muted mb-1">Address</label>
+            <input type="text" class="form-control form-control-luxury" value="123, Green Avenue, Sector 15">
+          </div>
+          <div class="col-md-4">
+            <label class="small text-muted mb-1">City</label>
+            <input type="text" class="form-control form-control-luxury" value="Jaipur">
+          </div>
+          <div class="col-md-4">
+            <label class="small text-muted mb-1">State</label>
+            <input type="text" class="form-control form-control-luxury" value="Rajasthan">
+          </div>
+          <div class="col-md-4">
+            <label class="small text-muted mb-1">Pincode</label>
+            <input type="text" class="form-control form-control-luxury" value="302001">
+          </div>
+        </form>
+      </div>
+
+      <!-- 3. Delivery Preference -->
+      <div class="checkout-card-box mb-4">
+        <div class="d-flex justify-content-between align-items-center mb-2">
+          <h5 class="mb-0">3. DELIVERY PREFERENCE</h5>
+          <a href="#" class="small text-maroon fw-bold"><i class="fa-solid fa-pen-to-square me-1"></i>Edit</a>
+        </div>
+        <div class="d-flex justify-content-between align-items-center p-3 rounded" style="background:#faf6ee;border:1px solid #e8dec8;">
+          <div>
+            <p class="small text-muted mb-1">Estimated Delivery Date</p>
+            <p class="fw-bold mb-0 text-maroon" style="font-size:1.1rem;"><i class="fa-regular fa-calendar-check me-2 text-gold"></i>10 – 13 May, 2024</p>
+          </div>
+          <i class="fa-solid fa-truck-fast text-gold display-6"></i>
+        </div>
+      </div>
+
+      <!-- Main Action Button -->
+      <div class="mb-4">
+        <a href="{{ route('confirmation') }}" class="btn btn-gold w-100 py-3 shadow-lg fs-6 d-flex align-items-center justify-content-center gap-2" style="font-size:0.9rem;">
+          <i class="fa-solid fa-lock fs-5"></i> PLACE SECURE ORDER
+        </a>
+        <p class="small text-muted text-center mt-2 mb-0">By placing this order, you agree to our <a href="#" class="text-maroon">Terms &amp; Conditions</a> and <a href="#" class="text-maroon">Privacy Policy</a>.</p>
+      </div>
+
+    </div>
+
+    <!-- Right Column: Payment Details & Order Summary -->
+    <div class="col-lg-5">
+      
+      <!-- 4. Payment Details -->
+      <div class="checkout-card-box mb-4">
+        <div class="d-flex justify-content-between align-items-center mb-3">
+          <h5 class="mb-0">4. PAYMENT DETAILS</h5>
+          <span class="badge bg-success bg-opacity-10 text-success border border-success small"><i class="fa-solid fa-lock me-1"></i>100% Secure Payment</span>
+        </div>
+        
+        <!-- UPI -->
+        <div class="payment-method-row selected">
+          <div class="d-flex align-items-center gap-2">
+            <input class="form-check-input mt-0" type="radio" name="payType" checked id="p1">
+            <label class="form-check-label fw-bold mb-0" for="p1"><i class="fa-solid fa-qrcode me-2 text-maroon"></i>UPI / QR Code</label>
+          </div>
+          <span class="small text-muted">GPay · PhonePe · Paytm</span>
+        </div>
+
+        <!-- Card -->
+        <div class="payment-method-row">
+          <div class="d-flex align-items-center gap-2">
+            <input class="form-check-input mt-0" type="radio" name="payType" id="p2">
+            <label class="form-check-label fw-bold mb-0" for="p2"><i class="fa-regular fa-credit-card me-2 text-maroon"></i>Credit / Debit Card</label>
+          </div>
+          <span class="small text-muted">Visa · Mastercard · RuPay</span>
+        </div>
+
+        <!-- Net Banking -->
+        <div class="payment-method-row">
+          <div class="d-flex align-items-center gap-2">
+            <input class="form-check-input mt-0" type="radio" name="payType" id="p3">
+            <label class="form-check-label fw-bold mb-0" for="p3"><i class="fa-solid fa-building-columns me-2 text-maroon"></i>Net Banking</label>
+          </div>
+          <span class="small text-muted">All Banks</span>
+        </div>
+
+        <!-- Pay Later -->
+        <div class="payment-method-row">
+          <div class="d-flex align-items-center gap-2">
+            <input class="form-check-input mt-0" type="radio" name="payType" id="p4">
+            <label class="form-check-label fw-bold mb-0" for="p4"><i class="fa-regular fa-clock me-2 text-maroon"></i>Pay Later</label>
+          </div>
+          <span class="small text-muted">ICICI, HDFC, etc.</span>
+        </div>
+
+        <!-- Coupon Code -->
+        <div class="mt-4 pt-3 border-top">
+          <p class="small fw-bold text-uppercase mb-2" style="font-family:var(--font-label);">APPLY COUPON</p>
+          <div class="input-group">
+            <input type="text" class="form-control form-control-luxury" value="Welcome10" placeholder="Enter Coupon Code">
+            <button class="btn btn-gold" type="button">APPLY</button>
+          </div>
+          <span class="small text-success mt-1 d-block"><i class="fa-solid fa-circle-check me-1"></i>Coupon 'Welcome10' applied (-₹399)</span>
+        </div>
+      </div>
+
+      <!-- Order Summary -->
+      <div class="checkout-card-box">
+        <h5>ORDER SUMMARY</h5>
+        <div class="d-flex justify-content-between py-2 border-bottom border-light-subtle small">
+          <span class="text-muted">Subtotal</span>
+          <span>₹3,999</span>
+        </div>
+        <div class="d-flex justify-content-between py-2 border-bottom border-light-subtle small">
+          <span class="text-muted">Gift Packaging</span>
+          <span>₹199</span>
+        </div>
+        <div class="d-flex justify-content-between py-2 border-bottom border-light-subtle small">
+          <span class="text-muted">Shipping Charges</span>
+          <span class="text-success fw-bold">FREE</span>
+        </div>
+        <div class="d-flex justify-content-between py-2 border-bottom border-light-subtle small">
+          <span class="text-muted">Discount (Welcome10)</span>
+          <span class="text-success fw-bold">−₹399</span>
+        </div>
+        
+        <div class="d-flex justify-content-between align-items-baseline pt-3 mt-1">
+          <strong class="font-display fs-4 text-maroon">Total Amount</strong>
+          <strong class="font-display fs-3 text-maroon">₹3,799</strong>
+        </div>
+        <p class="small text-muted mb-3">Inclusive of all taxes</p>
+
+        <!-- Trust Badges -->
+        <div class="d-flex justify-content-between text-center pt-3 border-top small text-muted">
+          <div><i class="fa-solid fa-shield-halved text-gold d-block mb-1 fs-5"></i>SSL SECURE</div>
+          <div><i class="fa-solid fa-rotate-left text-gold d-block mb-1 fs-5"></i>EASY RETURNS</div>
+          <div><i class="fa-solid fa-award text-gold d-block mb-1 fs-5"></i>100% AUTHENTIC</div>
+        </div>
+      </div>
+
+    </div>
+
+  </div>
+
+  <!-- Bottom Showcase Section: YOUR ORDER WILL ARRIVE LIKE THIS -->
+  <div class="arrival-showcase-section mt-5">
+    <div class="section-title-wrapper text-center mb-4">
+      <span class="motif text-gold">❖</span>
+      <h3 class="text-ivory font-display display-6 mb-1" style="letter-spacing:0.08em;">YOUR ORDER WILL ARRIVE LIKE THIS</h3>
+    </div>
+    
+    <div class="row g-3">
+      <div class="col-6 col-md-2">
+        <div class="arrival-item-thumb">
+          <img src="{{ asset('images/hero_bride.png') }}" alt="Luxury Packaging">
+          <p>LUXURY PACKAGING</p>
+        </div>
+      </div>
+      <div class="col-6 col-md-2">
+        <div class="arrival-item-thumb">
+          <img src="{{ asset('images/fabric_detail.png') }}" alt="Fabric Protection">
+          <p>PREMIUM FABRIC PROTECTION</p>
+        </div>
+      </div>
+      <div class="col-6 col-md-2">
+        <div class="arrival-item-thumb">
+          <img src="{{ asset('images/promise_bride.png') }}" alt="Thank You Card">
+          <p>THANK YOU CARD</p>
+        </div>
+      </div>
+      <div class="col-6 col-md-2">
+        <div class="arrival-item-thumb">
+          <img src="{{ asset('images/pkg_royal.png') }}" alt="Exclusive Gift">
+          <p>EXCLUSIVE GIFT</p>
+        </div>
+      </div>
+      <div class="col-6 col-md-2">
+        <div class="arrival-item-thumb">
+          <img src="{{ asset('images/cat_bridal.png') }}" alt="Design Certificate">
+          <p>DESIGN CERTIFICATE<br><small>(FOR CUSTOM ORDERS)</small></p>
+        </div>
+      </div>
+      
+      <!-- Royal Customer Box -->
+      <div class="col-12 col-md-2">
+        <div class="royal-customer-box rounded">
+          <span class="brand-crown-icon text-gold fs-3 mb-1"><i class="fa-solid fa-crown"></i></span>
+          <h6 class="text-gold font-display mb-2" style="letter-spacing:0.1em;">YOU ARE A ROYAL CUSTOMER</h6>
+          <ul class="list-unstyled text-start small mb-0" style="font-size:0.65rem;line-height:1.6;color:var(--ivory-dark);">
+            <li><i class="fa-solid fa-bolt text-gold me-1"></i>Priority Processing</li>
+            <li><i class="fa-solid fa-headset text-gold me-1"></i>Dedicated Support</li>
+            <li><i class="fa-solid fa-box-open text-gold me-1"></i>Premium Packaging</li>
+            <li><i class="fa-solid fa-gift text-gold me-1"></i>Exclusive Gifts</li>
+            <li><i class="fa-solid fa-truck-fast text-gold me-1"></i>Faster Delivery</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Support Section -->
+  <div class="row g-4 mt-3">
+    <div class="col-md-12">
+      <div class="need-help-box rounded text-center">
+        <p class="motif text-gold mb-1">❖ NEED HELP? ❖</p>
+        <h5 class="font-display text-gold-light mb-3">Our Luxury Support Team Is Here For You</h5>
+        <div class="d-flex justify-content-center gap-4 flex-wrap small">
+          <a href="#" class="btn btn-whatsapp"><i class="fa-brands fa-whatsapp fs-5"></i> WHATSAPP CHAT (+91 12345 67890)</a>
+          <span class="d-flex align-items-center gap-2"><i class="fa-solid fa-phone text-gold fs-5"></i> CALL US: 10 AM – 8 PM</span>
+          <span class="d-flex align-items-center gap-2"><i class="fa-solid fa-envelope text-gold fs-5"></i> EMAIL: support@ranisahab.com</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+@endsection
+
+@push('scripts')
+<script>
+document.querySelectorAll('.payment-method-row').forEach(row => {
+  row.addEventListener('click', () => {
+    document.querySelectorAll('.payment-method-row').forEach(r => r.classList.remove('selected'));
+    row.classList.add('selected');
+    const radio = row.querySelector('input[type="radio"]');
+    if(radio) radio.checked = true;
+  });
+});
+</script>
+@endpush
