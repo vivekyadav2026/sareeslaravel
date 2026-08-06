@@ -23,8 +23,8 @@
                 <i class="fa-solid fa-crown text-gold px-2"></i>
                 <span class="motif-line"></span>
               </div>
-              <p class="hero-eyebrow mb-1">Where Tradition Meets</p>
-              <h1 class="hero-main-title mb-2">ROYAL ELEGANCE</h1>
+              <p class="hero-eyebrow mb-1" style="margin-bottom:0.5rem !important;">Where Tradition Meets</p>
+              <h1 class="hero-main-title mb-2">ROYAL <br class="d-lg-none">ELEGANCE</h1>
               <div class="mb-3">
                 <span class="hero-sub-pill">SAREES &nbsp;•&nbsp; SUITS &nbsp;•&nbsp; LEHENGAS &nbsp;•&nbsp; BRIDAL</span>
               </div>
@@ -60,8 +60,8 @@
                 <i class="fa-solid fa-gem text-gold px-2"></i>
                 <span class="motif-line"></span>
               </div>
-              <p class="hero-eyebrow mb-1">Handcrafted Pure Silk</p>
-              <h1 class="hero-main-title mb-2">BANARASI HERITAGE</h1>
+              <p class="hero-eyebrow mb-1" style="margin-bottom:0.5rem !important;">Handcrafted Pure Silk</p>
+              <h1 class="hero-main-title mb-2">BANARASI <br class="d-lg-none">HERITAGE</h1>
               <div class="mb-3">
                 <span class="hero-sub-pill">ROYAL SAREES &nbsp;•&nbsp; KANJEEVARAM &nbsp;•&nbsp; CHANDERI</span>
               </div>
@@ -97,8 +97,8 @@
                 <i class="fa-solid fa-wand-magic-sparkles text-gold px-2"></i>
                 <span class="motif-line"></span>
               </div>
-              <p class="hero-eyebrow mb-1">Designed Only For You</p>
-              <h1 class="hero-main-title mb-2">EXCLUSIVE LEHENGAS</h1>
+              <p class="hero-eyebrow mb-1" style="margin-bottom:0.5rem !important;">Designed Only For You</p>
+              <h1 class="hero-main-title mb-2">EXCLUSIVE <br class="d-lg-none">LEHENGAS</h1>
               <div class="mb-3">
                 <span class="hero-sub-pill">CUSTOM BRIDAL COUTURE &nbsp;•&nbsp; ONE DESIGN ONE BRIDE</span>
               </div>
