@@ -393,6 +393,23 @@ a { text-decoration: none; color: inherit; transition: all 0.2s ease; }
   z-index: 2;
   color: var(--ivory);
 }
+.hero-content-box {
+  background: linear-gradient(145deg, rgba(22, 18, 14, 0.72) 0%, rgba(10, 8, 6, 0.88) 100%);
+  border: 1px solid rgba(201, 162, 75, 0.35);
+  border-radius: 12px;
+  padding: 1.8rem 1.6rem;
+  backdrop-filter: blur(10px);
+  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.6);
+  position: relative;
+}
+.hero-content-box::before {
+  content: '';
+  position: absolute;
+  inset: 4px;
+  border: 1px solid rgba(201, 162, 75, 0.2);
+  border-radius: 9px;
+  pointer-events: none;
+}
 .hero-eyebrow {
   font-family: var(--font-display);
   font-style: italic;
@@ -417,6 +434,18 @@ a { text-decoration: none; color: inherit; transition: all 0.2s ease; }
   color: var(--ivory-dark);
   text-transform: uppercase;
   margin-bottom: 1.8rem;
+}
+.hero-sub-pill {
+  display: inline-block;
+  background: rgba(201, 162, 75, 0.12);
+  border: 1px solid rgba(201, 162, 75, 0.35);
+  color: var(--gold-light);
+  font-family: var(--font-label);
+  font-size: 0.72rem;
+  letter-spacing: 0.16em;
+  padding: 0.35rem 1rem;
+  border-radius: 20px;
+  text-transform: uppercase;
 }
 .hero-feature-row {
   display: flex;
@@ -464,6 +493,90 @@ a { text-decoration: none; color: inherit; transition: all 0.2s ease; }
 }
 .slider-arrow.prev { left: 20px; }
 .slider-arrow.next { right: 20px; }
+
+/* Hero Carousel Controls & Motifs */
+.hero-royal-motif {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+@media (min-width: 992px) {
+  .hero-royal-motif {
+    justify-content: flex-start;
+  }
+}
+.motif-line {
+  display: inline-block;
+  height: 1px;
+  width: 35px;
+  background: linear-gradient(90deg, transparent, var(--gold), transparent);
+}
+
+.royal-stamp-badge {
+  position: absolute;
+  top: 15px;
+  right: 15px;
+  width: 54px;
+  height: 54px;
+  border-radius: 50%;
+  background: rgba(8, 7, 6, 0.92);
+  border: 1px solid var(--gold);
+  color: var(--gold-light);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  font-family: var(--font-label);
+  font-size: 0.52rem;
+  line-height: 1.1;
+  letter-spacing: 0.08em;
+  z-index: 3;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.6);
+}
+.royal-stamp-badge i {
+  font-size: 0.75rem;
+  color: var(--gold);
+  margin-bottom: 2px;
+}
+
+.hero-slider-pagination {
+  display: flex;
+  justify-content: center;
+  gap: 0.6rem;
+  z-index: 3;
+  position: relative;
+}
+.slider-dot {
+  width: 24px;
+  height: 4px;
+  border-radius: 2px;
+  background: rgba(255, 255, 255, 0.2);
+  border: none;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  padding: 0;
+}
+.slider-dot.active,
+.slider-dot:hover {
+  background: var(--gold);
+  width: 36px;
+  box-shadow: 0 0 10px rgba(201, 162, 75, 0.6);
+}
+
+.animate-fade-in {
+  animation: heroFadeIn 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+@keyframes heroFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
 
 /* =========================================================
    CATEGORY CARDS GRID (4 COLUMNS)
@@ -810,6 +923,19 @@ a { text-decoration: none; color: inherit; transition: all 0.2s ease; }
   }
   .hero-content {
     text-align: center;
+  }
+  .hero-content-box {
+    padding: 1.2rem 0.85rem;
+    border-radius: 10px;
+    background: linear-gradient(145deg, rgba(20, 16, 13, 0.82) 0%, rgba(8, 7, 5, 0.92) 100%);
+  }
+  .hero-sub-pill {
+    font-size: 0.6rem !important;
+    letter-spacing: 0.1em !important;
+    padding: 0.25rem 0.65rem !important;
+    max-width: 100%;
+    white-space: normal;
+    display: inline-block;
   }
   .hero-eyebrow {
     font-family: var(--font-display);
