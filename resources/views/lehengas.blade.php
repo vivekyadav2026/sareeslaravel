@@ -1,122 +1,229 @@
 @extends('layouts.app')
 
-@section('title', 'Exclusive Lehengas Collection — RANISAHAB Luxury')
+@section('title', 'Designer Lehengas Collection — RANISAHAB Luxury')
 
 @section('content')
-<!-- Breadcrumb & Page Banner -->
-<div class="bg-black-soft text-ivory py-4 border-bottom border-secondary border-opacity-25 mb-4">
-  <div class="container text-center">
-    <p class="small text-gold label-title mb-1">ROYAL BRIDAL &amp; FESTIVE</p>
-    <h1 class="font-display text-gold-light display-5 mb-2">EXCLUSIVE LEHENGAS COLLECTION</h1>
-    <p class="small text-muted mb-0">Handcrafted bridal velvet lehengas, silk sangeet lehengas, and designer couture pieces starting at ₹1,000.</p>
+
+<!-- ===== DARK PRODUCT LISTING PAGE ===== -->
+<div class="plp-page">
+
+  <!-- Breadcrumb -->
+  <div class="plp-breadcrumb">
+    <a href="{{ route('home') }}"><i class="fa-solid fa-house"></i></a>
+    <span class="plp-bc-sep">/</span>
+    <span>Lehenga Collection</span>
   </div>
-</div>
 
-<div class="container pb-5">
-  <div class="row g-4">
-    <!-- Filter Sidebar Left -->
-    <div class="col-lg-3">
-      <div class="p-3 border rounded bg-white shadow-sm mb-4">
-        <h6 class="font-display text-maroon mb-3 border-bottom pb-2" style="font-size:1.1rem;"><i class="fa-solid fa-filter me-2"></i>FILTER LEHENGAS</h6>
-        
-        <div class="mb-4">
-          <p class="small fw-bold text-uppercase mb-2" style="font-family:var(--font-label);">Occasion</p>
-          <div class="form-check small text-muted"><input class="form-check-input" type="checkbox" checked id="o1"><label class="form-check-label" for="o1">Bridal Lehenga (42)</label></div>
-          <div class="form-check small text-muted"><input class="form-check-input" type="checkbox" id="o2"><label class="form-check-label" for="o2">Sangeet &amp; Reception (28)</label></div>
-          <div class="form-check small text-muted"><input class="form-check-input" type="checkbox" id="o3"><label class="form-check-label" for="o3">Mehendi &amp; Haldi (19)</label></div>
-        </div>
+  <!-- Page Header -->
+  <div class="plp-header">
+    <div class="plp-header-deco">
+      <span class="plp-deco-line"></span>
+      <i class="fa-solid fa-crown plp-deco-icon"></i>
+      <span class="plp-deco-line"></span>
+    </div>
+    <h1 class="plp-page-title">DESIGNER LEHENGAS</h1>
+    <p class="plp-page-subtitle">Timeless Elegance, Crafted for You.</p>
+  </div>
 
-        <div class="mb-4">
-          <p class="small fw-bold text-uppercase mb-2" style="font-family:var(--font-label);">Work Type</p>
-          <div class="form-check small text-muted"><input class="form-check-input" type="checkbox" checked id="w1"><label class="form-check-label" for="w1">Heavy Zardozi &amp; Zari</label></div>
-          <div class="form-check small text-muted"><input class="form-check-input" type="checkbox" id="w2"><label class="form-check-label" for="w2">Kundan &amp; Sequins</label></div>
-          <div class="form-check small text-muted"><input class="form-check-input" type="checkbox" id="w3"><label class="form-check-label" for="w3">Gotapatti Embroidery</label></div>
+  <!-- Filter & Sort Bar -->
+  <div class="plp-filter-bar">
+    <button class="plp-filter-btn" id="filterToggleBtn">
+      <i class="fa-solid fa-sliders"></i> FILTER
+    </button>
+    <button class="plp-filter-btn">
+      <i class="fa-solid fa-arrow-up-wide-short"></i> SORT BY
+    </button>
+  </div>
+
+  <!-- Filter Drawer (hidden by default on mobile) -->
+  <div class="plp-filter-drawer" id="filterDrawer">
+    <div class="plp-filter-section">
+      <p class="plp-filter-label">OCCASION</p>
+      <label class="plp-filter-check"><input type="checkbox" checked> Bridal Lehenga <span>(42)</span></label>
+      <label class="plp-filter-check"><input type="checkbox"> Sangeet &amp; Reception <span>(28)</span></label>
+      <label class="plp-filter-check"><input type="checkbox"> Mehendi &amp; Haldi <span>(19)</span></label>
+    </div>
+    <div class="plp-filter-section">
+      <p class="plp-filter-label">WORK TYPE</p>
+      <label class="plp-filter-check"><input type="checkbox" checked> Heavy Zardozi &amp; Zari</label>
+      <label class="plp-filter-check"><input type="checkbox"> Kundan &amp; Sequins</label>
+      <label class="plp-filter-check"><input type="checkbox"> Gotapatti Embroidery</label>
+    </div>
+    <div class="plp-filter-section">
+      <p class="plp-filter-label">PRICE RANGE</p>
+      <label class="plp-filter-check"><input type="checkbox" checked> Under ₹15,000</label>
+      <label class="plp-filter-check"><input type="checkbox"> ₹15,000 – ₹30,000</label>
+      <label class="plp-filter-check"><input type="checkbox"> ₹30,000+</label>
+    </div>
+  </div>
+
+  <!-- Product Grid -->
+  <div class="plp-grid">
+
+    <!-- Card 1 -->
+    <div class="plp-card">
+      <div class="plp-card-img-wrap">
+        <img src="{{ asset('images/cat_lehenga.png') }}" alt="Royal Velvet Bridal Lehenga" class="plp-card-img">
+        <span class="plp-badge badge-new">NEW ARRIVAL</span>
+        <button class="plp-wishlist-btn" aria-label="Add to Wishlist"><i class="fa-regular fa-heart"></i></button>
+      </div>
+      <div class="plp-card-body">
+        <p class="plp-card-name">Royal Velvet Bridal Lehenga</p>
+        <p class="plp-card-price">₹24,999</p>
+        <div class="plp-card-footer">
+          <span class="plp-rating"><i class="fa-solid fa-star"></i> 4.9 <span class="plp-rating-count">(120)</span></span>
+          <button class="plp-cart-btn" aria-label="Add to Cart"><i class="fa-solid fa-bag-shopping"></i></button>
         </div>
       </div>
     </div>
 
-    <!-- Product Grid Right -->
-    <div class="col-lg-9">
-      <div class="row g-4">
-        <!-- Item 1 -->
-        <div class="col-md-4">
-          <div class="card h-100 border-0 shadow-sm">
-            <img src="{{ asset('images/cat_lehenga.png') }}" class="card-img-top" alt="Lehenga 1" style="height:280px;object-fit:cover;">
-            <div class="card-body p-3 text-center">
-              <span class="badge bg-maroon text-ivory mb-2" style="font-size:0.6rem;">Royal Bridal</span>
-              <h6 class="font-display mb-1">RANISAHAB Crimson Velvet Bridal Lehenga</h6>
-              <p class="text-maroon fw-bold mb-2">₹18,999 <span class="text-muted text-decoration-line-through small">₹35,000</span></p>
-              <a href="{{ route('sarees') }}" class="btn btn-gold btn-sm w-100">VIEW DETAILS</a>
-            </div>
-          </div>
-        </div>
-
-        <!-- Item 2 -->
-        <div class="col-md-4">
-          <div class="card h-100 border-0 shadow-sm">
-            <img src="{{ asset('images/hero_bride.png') }}" class="card-img-top" alt="Lehenga 2" style="height:280px;object-fit:cover;">
-            <div class="card-body p-3 text-center">
-              <span class="badge bg-maroon text-ivory mb-2" style="font-size:0.6rem;">One Design One Bride</span>
-              <h6 class="font-display mb-1">RANISAHAB Custom Royal Heritage Lehenga</h6>
-              <p class="text-maroon fw-bold mb-2">₹24,999 <span class="text-muted text-decoration-line-through small">₹45,000</span></p>
-              <a href="{{ route('sarees') }}" class="btn btn-gold btn-sm w-100">VIEW DETAILS</a>
-            </div>
-          </div>
-        </div>
-
-        <!-- Item 3 -->
-        <div class="col-md-4">
-          <div class="card h-100 border-0 shadow-sm">
-            <img src="{{ asset('images/pkg_gold.png') }}" class="card-img-top" alt="Lehenga 3" style="height:280px;object-fit:cover;">
-            <div class="card-body p-3 text-center">
-              <span class="badge bg-warning text-dark mb-2" style="font-size:0.6rem;">Haldi Special</span>
-              <h6 class="font-display mb-1">RANISAHAB Mustard Yellow Haldi Lehenga</h6>
-              <p class="text-maroon fw-bold mb-2">₹7,999 <span class="text-muted text-decoration-line-through small">₹14,999</span></p>
-              <a href="{{ route('sarees') }}" class="btn btn-gold btn-sm w-100">VIEW DETAILS</a>
-            </div>
-          </div>
-        </div>
-
-        <!-- Item 4 -->
-        <div class="col-md-4">
-          <div class="card h-100 border-0 shadow-sm">
-            <img src="{{ asset('images/pkg_silver.png') }}" class="card-img-top" alt="Lehenga 4" style="height:280px;object-fit:cover;">
-            <div class="card-body p-3 text-center">
-              <span class="badge bg-secondary text-white mb-2" style="font-size:0.6rem;">Reception Special</span>
-              <h6 class="font-display mb-1">RANISAHAB Silver Sequined Reception Lehenga</h6>
-              <p class="text-maroon fw-bold mb-2">₹12,499 <span class="text-muted text-decoration-line-through small">₹22,000</span></p>
-              <a href="{{ route('sarees') }}" class="btn btn-gold btn-sm w-100">VIEW DETAILS</a>
-            </div>
-          </div>
-        </div>
-
-        <!-- Item 5 -->
-        <div class="col-md-4">
-          <div class="card h-100 border-0 shadow-sm">
-            <img src="{{ asset('images/promise_bride.png') }}" class="card-img-top" alt="Lehenga 5" style="height:280px;object-fit:cover;">
-            <div class="card-body p-3 text-center">
-              <span class="badge bg-maroon text-ivory mb-2" style="font-size:0.6rem;">Exclusive Design</span>
-              <h6 class="font-display mb-1">RANISAHAB Velvet Zari Ball Lehenga</h6>
-              <p class="text-maroon fw-bold mb-2">₹21,999 <span class="text-muted text-decoration-line-through small">₹39,000</span></p>
-              <a href="{{ route('sarees') }}" class="btn btn-gold btn-sm w-100">VIEW DETAILS</a>
-            </div>
-          </div>
-        </div>
-
-        <!-- Item 6 -->
-        <div class="col-md-4">
-          <div class="card h-100 border-0 shadow-sm">
-            <img src="{{ asset('images/cat_bridal.png') }}" class="card-img-top" alt="Lehenga 6" style="height:280px;object-fit:cover;">
-            <div class="card-body p-3 text-center">
-              <span class="badge bg-danger text-white mb-2" style="font-size:0.6rem;">Traditional Red</span>
-              <h6 class="font-display mb-1">RANISAHAB Royal Red Kundan Bridal Lehenga</h6>
-              <p class="text-maroon fw-bold mb-2">₹16,999 <span class="text-muted text-decoration-line-through small">₹30,000</span></p>
-              <a href="{{ route('sarees') }}" class="btn btn-gold btn-sm w-100">VIEW DETAILS</a>
-            </div>
-          </div>
+    <!-- Card 2 -->
+    <div class="plp-card">
+      <div class="plp-card-img-wrap">
+        <img src="{{ asset('images/hero_bride.png') }}" alt="Rose Gold Zari Lehenga" class="plp-card-img">
+        <span class="plp-badge badge-best">BEST SELLER</span>
+        <button class="plp-wishlist-btn" aria-label="Add to Wishlist"><i class="fa-regular fa-heart"></i></button>
+      </div>
+      <div class="plp-card-body">
+        <p class="plp-card-name">Rose Gold Zari Lehenga</p>
+        <p class="plp-card-price">₹22,999</p>
+        <div class="plp-card-footer">
+          <span class="plp-rating"><i class="fa-solid fa-star"></i> 4.8 <span class="plp-rating-count">(98)</span></span>
+          <button class="plp-cart-btn" aria-label="Add to Cart"><i class="fa-solid fa-bag-shopping"></i></button>
         </div>
       </div>
     </div>
+
+    <!-- Card 3 -->
+    <div class="plp-card">
+      <div class="plp-card-img-wrap">
+        <img src="{{ asset('images/promise_bride.png') }}" alt="Emerald Heritage Lehenga" class="plp-card-img">
+        <span class="plp-badge badge-excl">EXCLUSIVE</span>
+        <button class="plp-wishlist-btn" aria-label="Add to Wishlist"><i class="fa-regular fa-heart"></i></button>
+      </div>
+      <div class="plp-card-body">
+        <p class="plp-card-name">Emerald Heritage Lehenga</p>
+        <p class="plp-card-price">₹26,999</p>
+        <div class="plp-card-footer">
+          <span class="plp-rating"><i class="fa-solid fa-star"></i> 4.9 <span class="plp-rating-count">(76)</span></span>
+          <button class="plp-cart-btn" aria-label="Add to Cart"><i class="fa-solid fa-bag-shopping"></i></button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Card 4 -->
+    <div class="plp-card">
+      <div class="plp-card-img-wrap">
+        <img src="{{ asset('images/cat_bridal.png') }}" alt="Red Royal Bridal Lehenga" class="plp-card-img">
+        <button class="plp-wishlist-btn" aria-label="Add to Wishlist"><i class="fa-regular fa-heart"></i></button>
+      </div>
+      <div class="plp-card-body">
+        <p class="plp-card-name">Red Royal Bridal Lehenga</p>
+        <p class="plp-card-price">₹28,999</p>
+        <div class="plp-card-footer">
+          <span class="plp-rating"><i class="fa-solid fa-star"></i> 4.9 <span class="plp-rating-count">(134)</span></span>
+          <button class="plp-cart-btn" aria-label="Add to Cart"><i class="fa-solid fa-bag-shopping"></i></button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Card 5 -->
+    <div class="plp-card">
+      <div class="plp-card-img-wrap">
+        <img src="{{ asset('images/pkg_royal.png') }}" alt="Crimson Kundan Lehenga" class="plp-card-img">
+        <span class="plp-badge badge-new">NEW ARRIVAL</span>
+        <button class="plp-wishlist-btn" aria-label="Add to Wishlist"><i class="fa-regular fa-heart"></i></button>
+      </div>
+      <div class="plp-card-body">
+        <p class="plp-card-name">Crimson Kundan Lehenga</p>
+        <p class="plp-card-price">₹19,999</p>
+        <div class="plp-card-footer">
+          <span class="plp-rating"><i class="fa-solid fa-star"></i> 4.7 <span class="plp-rating-count">(54)</span></span>
+          <button class="plp-cart-btn" aria-label="Add to Cart"><i class="fa-solid fa-bag-shopping"></i></button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Card 6 -->
+    <div class="plp-card">
+      <div class="plp-card-img-wrap">
+        <img src="{{ asset('images/pkg_gold.png') }}" alt="Golden Zardozi Lehenga" class="plp-card-img">
+        <span class="plp-badge badge-best">BEST SELLER</span>
+        <button class="plp-wishlist-btn" aria-label="Add to Wishlist"><i class="fa-regular fa-heart"></i></button>
+      </div>
+      <div class="plp-card-body">
+        <p class="plp-card-name">Golden Zardozi Lehenga</p>
+        <p class="plp-card-price">₹31,999</p>
+        <div class="plp-card-footer">
+          <span class="plp-rating"><i class="fa-solid fa-star"></i> 5.0 <span class="plp-rating-count">(212)</span></span>
+          <button class="plp-cart-btn" aria-label="Add to Cart"><i class="fa-solid fa-bag-shopping"></i></button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Card 7 -->
+    <div class="plp-card">
+      <div class="plp-card-img-wrap">
+        <img src="{{ asset('images/pkg_silver.png') }}" alt="Ivory Pearl Sangeet Lehenga" class="plp-card-img">
+        <span class="plp-badge badge-excl">EXCLUSIVE</span>
+        <button class="plp-wishlist-btn" aria-label="Add to Wishlist"><i class="fa-regular fa-heart"></i></button>
+      </div>
+      <div class="plp-card-body">
+        <p class="plp-card-name">Ivory Pearl Sangeet Lehenga</p>
+        <p class="plp-card-price">₹17,499</p>
+        <div class="plp-card-footer">
+          <span class="plp-rating"><i class="fa-solid fa-star"></i> 4.6 <span class="plp-rating-count">(43)</span></span>
+          <button class="plp-cart-btn" aria-label="Add to Cart"><i class="fa-solid fa-bag-shopping"></i></button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Card 8 -->
+    <div class="plp-card">
+      <div class="plp-card-img-wrap">
+        <img src="{{ asset('images/fabric_detail.png') }}" alt="Maroon Velvet Haldi Lehenga" class="plp-card-img">
+        <button class="plp-wishlist-btn" aria-label="Add to Wishlist"><i class="fa-regular fa-heart"></i></button>
+      </div>
+      <div class="plp-card-body">
+        <p class="plp-card-name">Maroon Velvet Haldi Lehenga</p>
+        <p class="plp-card-price">₹13,999</p>
+        <div class="plp-card-footer">
+          <span class="plp-rating"><i class="fa-solid fa-star"></i> 4.8 <span class="plp-rating-count">(88)</span></span>
+          <button class="plp-cart-btn" aria-label="Add to Cart"><i class="fa-solid fa-bag-shopping"></i></button>
+        </div>
+      </div>
+    </div>
+
+  </div><!-- /.plp-grid -->
+
+  <!-- Load More -->
+  <div class="plp-load-more">
+    <button class="plp-load-more-btn">LOAD MORE LEHENGAS <i class="fa-solid fa-chevron-down ms-2"></i></button>
   </div>
-</div>
+
+</div><!-- /.plp-page -->
+
 @endsection
+
+@push('scripts')
+<script>
+// Filter toggle for mobile
+const filterBtn = document.getElementById('filterToggleBtn');
+const filterDrawer = document.getElementById('filterDrawer');
+if (filterBtn && filterDrawer) {
+  filterBtn.addEventListener('click', function() {
+    filterDrawer.classList.toggle('open');
+  });
+}
+
+// Wishlist heart toggle
+document.querySelectorAll('.plp-wishlist-btn').forEach(btn => {
+  btn.addEventListener('click', function() {
+    const icon = this.querySelector('i');
+    icon.classList.toggle('fa-regular');
+    icon.classList.toggle('fa-solid');
+    icon.classList.toggle('text-gold');
+  });
+});
+</script>
+@endpush

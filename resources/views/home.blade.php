@@ -23,8 +23,8 @@
                 <i class="fa-solid fa-crown text-gold px-2"></i>
                 <span class="motif-line"></span>
               </div>
-              <p class="hero-eyebrow mb-1" style="margin-bottom:0.5rem !important;">Where Tradition Meets</p>
-              <h1 class="hero-main-title mb-2">ROYAL <br class="d-lg-none">ELEGANCE</h1>
+              <p class="hero-eyebrow mb-1">Where Tradition Meets</p>
+              <h1 class="hero-main-title mb-2">ROYAL ELEGANCE</h1>
               <div class="mb-3">
                 <span class="hero-sub-pill">SAREES &nbsp;•&nbsp; SUITS &nbsp;•&nbsp; LEHENGAS &nbsp;•&nbsp; BRIDAL</span>
               </div>
@@ -60,8 +60,8 @@
                 <i class="fa-solid fa-gem text-gold px-2"></i>
                 <span class="motif-line"></span>
               </div>
-              <p class="hero-eyebrow mb-1" style="margin-bottom:0.5rem !important;">Handcrafted Pure Silk</p>
-              <h1 class="hero-main-title mb-2">BANARASI <br class="d-lg-none">HERITAGE</h1>
+              <p class="hero-eyebrow mb-1">Handcrafted Pure Silk</p>
+              <h1 class="hero-main-title mb-2">BANARASI HERITAGE</h1>
               <div class="mb-3">
                 <span class="hero-sub-pill">ROYAL SAREES &nbsp;•&nbsp; KANJEEVARAM &nbsp;•&nbsp; CHANDERI</span>
               </div>
@@ -97,8 +97,8 @@
                 <i class="fa-solid fa-wand-magic-sparkles text-gold px-2"></i>
                 <span class="motif-line"></span>
               </div>
-              <p class="hero-eyebrow mb-1" style="margin-bottom:0.5rem !important;">Designed Only For You</p>
-              <h1 class="hero-main-title mb-2">EXCLUSIVE <br class="d-lg-none">LEHENGAS</h1>
+              <p class="hero-eyebrow mb-1">Designed Only For You</p>
+              <h1 class="hero-main-title mb-2">EXCLUSIVE LEHENGAS</h1>
               <div class="mb-3">
                 <span class="hero-sub-pill">CUSTOM BRIDAL COUTURE &nbsp;•&nbsp; ONE DESIGN ONE BRIDE</span>
               </div>
@@ -135,55 +135,63 @@
   </div>
 </section>
 
-<!-- Category Section (4 Columns) -->
-<section class="category-section">
-  <div class="container">
-    <div class="row g-3">
-      <!-- Saree -->
-      <div class="col-6 col-lg-3">
-        <div class="cat-card-item">
-          <img src="{{ asset('images/cat_saree.png') }}" alt="Sarees">
-          <div class="cat-card-overlay">
-            <h3>SAREES</h3>
-            <span class="cat-card-price">STARTING ₹1,000</span>
-            <a href="{{ route('sarees') }}" class="btn btn-gold btn-sm">EXPLORE</a>
-          </div>
+
+<!-- Shop by Category — Premium Dark 2x2 Grid -->
+<section class="shop-by-category-section">
+  <!-- Section Heading -->
+  <div class="sbc-heading-wrapper">
+    <span class="sbc-deco-line"></span>
+    <span class="sbc-crown-icon"><i class="fa-solid fa-diamond"></i></span>
+    <h2 class="sbc-heading">SHOP BY CATEGORY</h2>
+    <span class="sbc-crown-icon"><i class="fa-solid fa-diamond"></i></span>
+    <span class="sbc-deco-line"></span>
+  </div>
+
+  <!-- 2x2 Grid -->
+  <div class="sbc-grid">
+    <!-- Sarees -->
+    <a href="{{ route('sarees') }}" class="sbc-card">
+      <img src="{{ asset('images/cat_saree.png') }}" alt="Sarees Collection">
+      <div class="sbc-card-overlay">
+        <div class="sbc-card-text">
+          <h3 class="sbc-card-title">SAREES</h3>
+          <span class="sbc-shop-now">SHOP NOW <i class="fa-solid fa-chevron-right ms-1"></i></span>
         </div>
       </div>
-      <!-- Suits -->
-      <div class="col-6 col-lg-3">
-        <div class="cat-card-item">
-          <img src="{{ asset('images/cat_suit.png') }}" alt="Suits">
-          <div class="cat-card-overlay">
-            <h3>SUITS</h3>
-            <span class="cat-card-price">STARTING ₹1,000</span>
-            <a href="{{ route('suits') }}" class="btn btn-gold btn-sm">EXPLORE</a>
-          </div>
+    </a>
+
+    <!-- Suits -->
+    <a href="{{ route('suits') }}" class="sbc-card">
+      <img src="{{ asset('images/cat_suit.png') }}" alt="Suits Collection">
+      <div class="sbc-card-overlay">
+        <div class="sbc-card-text">
+          <h3 class="sbc-card-title">SUITS</h3>
+          <span class="sbc-shop-now">SHOP NOW <i class="fa-solid fa-chevron-right ms-1"></i></span>
         </div>
       </div>
-      <!-- Lehengas -->
-      <div class="col-6 col-lg-3">
-        <div class="cat-card-item">
-          <img src="{{ asset('images/cat_lehenga.png') }}" alt="Lehengas">
-          <div class="cat-card-overlay">
-            <h3>LEHENGAS</h3>
-            <span class="cat-card-price">STARTING ₹1,000</span>
-            <a href="{{ route('lehengas') }}" class="btn btn-gold btn-sm">EXPLORE</a>
-          </div>
+    </a>
+
+    <!-- Lehengas -->
+    <a href="{{ route('lehengas') }}" class="sbc-card">
+      <img src="{{ asset('images/cat_lehenga.png') }}" alt="Lehengas Collection">
+      <div class="sbc-card-overlay">
+        <div class="sbc-card-text">
+          <h3 class="sbc-card-title">LEHENGAS</h3>
+          <span class="sbc-shop-now">SHOP NOW <i class="fa-solid fa-chevron-right ms-1"></i></span>
         </div>
       </div>
-      <!-- Bridal Collection -->
-      <div class="col-6 col-lg-3">
-        <div class="cat-card-item">
-          <img src="{{ asset('images/cat_bridal.png') }}" alt="Bridal Collection">
-          <div class="cat-card-overlay">
-            <h3>BRIDAL</h3>
-            <span class="cat-card-price">COLLECTION</span>
-            <a href="{{ route('bridal-collection') }}" class="btn btn-gold btn-sm">EXPLORE</a>
-          </div>
+    </a>
+
+    <!-- Bridal Collection -->
+    <a href="{{ route('bridal-collection') }}" class="sbc-card">
+      <img src="{{ asset('images/cat_bridal.png') }}" alt="Bridal Collection">
+      <div class="sbc-card-overlay">
+        <div class="sbc-card-text">
+          <h3 class="sbc-card-title">BRIDAL<br>COLLECTION</h3>
+          <span class="sbc-shop-now">SHOP NOW <i class="fa-solid fa-chevron-right ms-1"></i></span>
         </div>
       </div>
-    </div>
+    </a>
   </div>
 </section>
 
@@ -238,8 +246,8 @@
 <section id="packages" class="packages-section">
   <div class="container">
     <div class="section-title-wrapper">
-      <span class="motif">❖</span>
-      <h2>BRIDAL PACKAGES</h2>
+      <span class="motif text-gold">❖</span>
+      <h2 class="text-gold-light">BRIDAL PACKAGES</h2>
     </div>
 
     <div class="row g-4">
@@ -346,8 +354,8 @@
       <!-- Gallery Left -->
       <div class="col-lg-7">
         <div class="section-title-wrapper text-start mb-4">
-          <span class="motif">❖</span>
-          <h2 style="font-size:1.8rem;">REAL BRIDES, REAL STORIES</h2>
+          <span class="motif text-gold">❖</span>
+          <h2 class="text-gold-light" style="font-size:1.8rem;">REAL BRIDES, REAL STORIES</h2>
         </div>
         <div class="gallery-grid-6">
           <div class="gallery-thumb-item"><img src="{{ asset('images/hero_bride.png') }}" alt="Bride 1"></div>
@@ -367,7 +375,7 @@
       <!-- Testimonials Right -->
       <div class="col-lg-5">
         <div class="section-title-wrapper text-start mb-4">
-          <h2 style="font-size:1.4rem;">WHAT OUR BEAUTIFUL CLIENTS SAY</h2>
+          <h2 class="text-gold-light" style="font-size:1.4rem;">WHAT OUR BEAUTIFUL CLIENTS SAY</h2>
         </div>
         <div class="testimonial-card-box">
           <div class="testimonial-stars">
@@ -454,3 +462,5 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 </script>
 @endpush
+
+

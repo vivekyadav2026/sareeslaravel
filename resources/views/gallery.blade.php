@@ -3,71 +3,150 @@
 @section('title', 'Real Brides Gallery — RANISAHAB Luxury')
 
 @section('content')
-<!-- Header Banner -->
-<div class="bg-black text-ivory py-5">
-  <div class="container text-center">
-    <span class="motif text-gold">❖</span>
-    <h1 class="font-display text-gold-light display-4 mb-2">REAL BRIDES, REAL STORIES</h1>
-    <p class="lead text-muted mx-auto" style="max-width:650px;">Witness the joy of over 10,000 brides across India who made their wedding unforgettable with RANISAHAB.</p>
+<div class="plp-page">
+
+  <!-- Breadcrumb -->
+  <div class="plp-breadcrumb">
+    <a href="{{ route('home') }}"><i class="fa-solid fa-house"></i></a>
+    <span class="plp-bc-sep">/</span>
+    <span>Gallery</span>
   </div>
+
+  <!-- Page Header -->
+  <div class="plp-header">
+    <div class="plp-header-deco">
+      <span class="plp-deco-line"></span>
+      <i class="fa-solid fa-heart plp-deco-icon"></i>
+      <span class="plp-deco-line"></span>
+    </div>
+    <h1 class="plp-page-title">REAL BRIDES</h1>
+    <p class="plp-page-subtitle">Real Stories, Timeless Memories.</p>
+  </div>
+
+  <!-- Filter Tabs -->
+  <div class="gallery-tab-bar">
+    <button class="gallery-tab active" data-filter="all">ALL BRIDES</button>
+    <button class="gallery-tab" data-filter="lehenga">LEHENGAS</button>
+    <button class="gallery-tab" data-filter="saree">SAREES</button>
+    <button class="gallery-tab" data-filter="video"><i class="fa-solid fa-play me-1"></i>VIDEOS</button>
+  </div>
+
+  <!-- Gallery Grid -->
+  <div class="gallery-dark-grid">
+
+    <div class="gallery-dark-item" data-cat="lehenga">
+      <img src="{{ asset('images/hero_bride.png') }}" alt="Bride Story 1">
+      <div class="gallery-dark-overlay">
+        <span class="gallery-dark-tag">Bridal Lehenga</span>
+      </div>
+    </div>
+
+    <div class="gallery-dark-item" data-cat="saree">
+      <img src="{{ asset('images/promise_bride.png') }}" alt="Bride Story 2">
+      <div class="gallery-dark-overlay">
+        <span class="gallery-dark-tag">Silk Saree</span>
+      </div>
+    </div>
+
+    <div class="gallery-dark-item" data-cat="lehenga">
+      <img src="{{ asset('images/cat_bridal.png') }}" alt="Bride Story 3">
+      <div class="gallery-dark-overlay">
+        <span class="gallery-dark-tag">Royal Bridal</span>
+      </div>
+    </div>
+
+    <div class="gallery-dark-item" data-cat="video">
+      <img src="{{ asset('images/cat_lehenga.png') }}" alt="Bride Story 4">
+      <div class="gallery-dark-overlay">
+        <span class="gallery-dark-tag">Lehenga Story</span>
+      </div>
+      <div class="gallery-play-btn"><i class="fa-solid fa-play"></i></div>
+    </div>
+
+    <div class="gallery-dark-item" data-cat="lehenga">
+      <img src="{{ asset('images/pkg_royal.png') }}" alt="Bride Story 5">
+      <div class="gallery-dark-overlay">
+        <span class="gallery-dark-tag">Royal Package</span>
+      </div>
+    </div>
+
+    <div class="gallery-dark-item" data-cat="saree">
+      <img src="{{ asset('images/pkg_gold.png') }}" alt="Bride Story 6">
+      <div class="gallery-dark-overlay">
+        <span class="gallery-dark-tag">Gold Package</span>
+      </div>
+    </div>
+
+    <div class="gallery-dark-item" data-cat="lehenga">
+      <img src="{{ asset('images/pkg_silver.png') }}" alt="Bride Story 7">
+      <div class="gallery-dark-overlay">
+        <span class="gallery-dark-tag">Silver Package</span>
+      </div>
+    </div>
+
+    <div class="gallery-dark-item" data-cat="saree">
+      <img src="{{ asset('images/cat_saree.png') }}" alt="Bride Story 8">
+      <div class="gallery-dark-overlay">
+        <span class="gallery-dark-tag">Banarasi Saree</span>
+      </div>
+    </div>
+
+    <div class="gallery-dark-item" data-cat="lehenga">
+      <img src="{{ asset('images/cat_bridal.png') }}" alt="Bride Story 9">
+      <div class="gallery-dark-overlay">
+        <span class="gallery-dark-tag">Bridal Couture</span>
+      </div>
+    </div>
+
+    <div class="gallery-dark-item" data-cat="saree">
+      <img src="{{ asset('images/hero_bride.png') }}" alt="Bride Story 10">
+      <div class="gallery-dark-overlay">
+        <span class="gallery-dark-tag">Wedding Saree</span>
+      </div>
+    </div>
+
+    <div class="gallery-dark-item" data-cat="video">
+      <img src="{{ asset('images/promise_bride.png') }}" alt="Bride Story 11">
+      <div class="gallery-dark-overlay">
+        <span class="gallery-dark-tag">Bridal Story</span>
+      </div>
+      <div class="gallery-play-btn"><i class="fa-solid fa-play"></i></div>
+    </div>
+
+    <div class="gallery-dark-item" data-cat="lehenga">
+      <img src="{{ asset('images/pkg_royal.png') }}" alt="Bride Story 12">
+      <div class="gallery-dark-overlay">
+        <span class="gallery-dark-tag">Custom Lehenga</span>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="plp-load-more">
+    <button class="plp-load-more-btn">LOAD MORE STORIES <i class="fa-solid fa-chevron-down ms-2"></i></button>
+  </div>
+
 </div>
-
-<section class="py-5 bg-ivory">
-  <div class="container">
-    
-    <!-- Gallery Filter Tabs -->
-    <div class="d-flex justify-content-center gap-2 mb-4 flex-wrap">
-      <button class="btn btn-gold btn-sm">ALL BRIDES</button>
-      <button class="btn btn-outline-gold btn-sm">BRIDAL LEHENGAS</button>
-      <button class="btn btn-outline-gold btn-sm">HALDI &amp; MEHENDI</button>
-      <button class="btn btn-outline-gold btn-sm">RECEPTION SAREES</button>
-      <button class="btn btn-outline-gold btn-sm"><i class="fa-solid fa-play me-1"></i>VIDEO STORIES</button>
-    </div>
-
-    <!-- Gallery Grid -->
-    <div class="row g-3">
-      <div class="col-6 col-md-4 col-lg-3">
-        <div class="gallery-thumb-item" style="height:280px;">
-          <img src="{{ asset('images/hero_bride.png') }}" alt="Bride Story 1">
-        </div>
-      </div>
-      <div class="col-6 col-md-4 col-lg-3">
-        <div class="gallery-thumb-item" style="height:280px;">
-          <img src="{{ asset('images/promise_bride.png') }}" alt="Bride Story 2">
-        </div>
-      </div>
-      <div class="col-6 col-md-4 col-lg-3">
-        <div class="gallery-thumb-item" style="height:280px;">
-          <img src="{{ asset('images/cat_bridal.png') }}" alt="Bride Story 3">
-        </div>
-      </div>
-      <div class="col-6 col-md-4 col-lg-3">
-        <div class="gallery-thumb-item" style="height:280px;">
-          <img src="{{ asset('images/cat_lehenga.png') }}" alt="Bride Story 4">
-          <div class="video-play-btn"><i class="fa-solid fa-circle-play"></i></div>
-        </div>
-      </div>
-      <div class="col-6 col-md-4 col-lg-3">
-        <div class="gallery-thumb-item" style="height:280px;">
-          <img src="{{ asset('images/pkg_royal.png') }}" alt="Bride Story 5">
-        </div>
-      </div>
-      <div class="col-6 col-md-4 col-lg-3">
-        <div class="gallery-thumb-item" style="height:280px;">
-          <img src="{{ asset('images/pkg_gold.png') }}" alt="Bride Story 6">
-        </div>
-      </div>
-      <div class="col-6 col-md-4 col-lg-3">
-        <div class="gallery-thumb-item" style="height:280px;">
-          <img src="{{ asset('images/pkg_silver.png') }}" alt="Bride Story 7">
-        </div>
-      </div>
-      <div class="col-6 col-md-4 col-lg-3">
-        <div class="gallery-thumb-item" style="height:280px;">
-          <img src="{{ asset('images/cat_saree.png') }}" alt="Bride Story 8">
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
 @endsection
+
+@push('scripts')
+<script>
+// Gallery filter tabs
+const tabs = document.querySelectorAll('.gallery-tab');
+const items = document.querySelectorAll('.gallery-dark-item');
+tabs.forEach(tab => {
+  tab.addEventListener('click', function() {
+    tabs.forEach(t => t.classList.remove('active'));
+    this.classList.add('active');
+    const filter = this.dataset.filter;
+    items.forEach(item => {
+      if (filter === 'all' || item.dataset.cat === filter) {
+        item.style.display = 'block';
+      } else {
+        item.style.display = 'none';
+      }
+    });
+  });
+});
+</script>
+@endpush

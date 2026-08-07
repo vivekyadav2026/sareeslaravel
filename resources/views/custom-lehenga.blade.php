@@ -3,90 +3,121 @@
 @section('title', 'One Design, One Bride — Custom Lehenga Studio | RANISAHAB Luxury')
 
 @section('content')
-<!-- Studio Banner -->
-<section class="bg-black text-ivory py-5">
-  <div class="container">
-    <div class="row align-items-center g-5">
-      <div class="col-lg-6">
-        <span class="label-title">BESPOKE BRIDAL COUTURE</span>
-        <h1 class="font-display text-gold-light display-4 mb-3">ONE DESIGN, ONE BRIDE</h1>
-        <p class="lead text-muted mb-4">Design your dream bridal outfit with RANISAHAB master couturiers. Once created for you, your design blueprint is retired and guaranteed never to be made for anyone else.</p>
-        <a href="#customForm" class="btn btn-gold">START DESIGNING NOW</a>
+<div class="plp-page">
+
+  <!-- Breadcrumb -->
+  <div class="plp-breadcrumb">
+    <a href="{{ route('home') }}"><i class="fa-solid fa-house"></i></a>
+    <span class="plp-bc-sep">/</span>
+    <span>Custom Lehenga Studio</span>
+  </div>
+
+  <!-- Hero Split -->
+  <div class="dark-split-hero">
+    <div class="dark-split-container">
+      <div class="dark-split-content">
+        <span class="dark-split-label">BESPOKE BRIDAL COUTURE</span>
+        <h1 class="dark-split-title">ONE DESIGN,<br>ONE BRIDE</h1>
+        <p class="dark-split-text">Design your dream bridal outfit with RANISAHAB master couturiers. Once created for you, your design blueprint is retired and guaranteed never to be made for anyone else.</p>
+        <div class="dark-split-actions">
+          <a href="#customForm" class="bp-book-btn bp-book-featured" style="width:auto;padding:0.85rem 2rem;display:inline-flex;">START DESIGNING NOW</a>
+          <a href="{{ route('contact') }}" class="dark-wa-btn"><i class="fa-brands fa-whatsapp"></i> WHATSAPP</a>
+        </div>
       </div>
-      <div class="col-lg-6 text-center text-lg-end">
-        <img src="{{ asset('images/custom_studio.png') }}" alt="Custom Lehenga Studio" class="img-fluid rounded border border-warning shadow-lg">
+      <div class="dark-split-img-wrap">
+        <div class="dark-split-img">
+          <img src="{{ asset('images/custom_studio.png') }}" alt="Custom Lehenga Studio">
+        </div>
       </div>
     </div>
   </div>
-</section>
 
-<!-- Custom Design Process -->
-<section class="py-5 bg-ivory">
-  <div class="container">
-    <div class="section-title-wrapper text-center mb-5">
-      <span class="motif">❖</span>
-      <h2>HOW CUSTOM DESIGN WORKS</h2>
+  <!-- How it works -->
+  <div class="dark-section-title">
+    <span class="plp-deco-line" style="max-width:80px;"></span>
+    <span class="dark-section-label">HOW CUSTOM DESIGN WORKS</span>
+    <span class="plp-deco-line" style="max-width:80px;"></span>
+  </div>
+
+  <div class="dark-steps-grid">
+    <div class="dark-step-card">
+      <div class="dark-step-number">01</div>
+      <div class="dark-step-icon"><i class="fa-solid fa-pencil"></i></div>
+      <h3 class="dark-step-title">Design Consultation</h3>
+      <p class="dark-step-text">Share your vision, color preferences, and wedding theme with our lead designers.</p>
     </div>
-
-    <div class="row g-4 text-center">
-      <div class="col-md-3">
-        <div class="p-4 border rounded bg-white h-100 shadow-sm">
-          <div class="text-gold fs-1 mb-2"><i class="fa-solid fa-pencil-ruler"></i></div>
-          <h5 class="font-display text-maroon">1. Design Consultation</h5>
-          <p class="small text-muted mb-0">Share your vision, color preferences, and wedding theme with our lead designers.</p>
-        </div>
-      </div>
-      <div class="col-md-3">
-        <div class="p-4 border rounded bg-white h-100 shadow-sm">
-          <div class="text-gold fs-1 mb-2"><i class="fa-solid fa-scroll"></i></div>
-          <h5 class="font-display text-maroon">2. Custom Sketch &amp; Swatch</h5>
-          <p class="small text-muted mb-0">Receive high-fashion sketches and physical embroidery thread samples.</p>
-        </div>
-      </div>
-      <div class="col-md-3">
-        <div class="p-4 border rounded bg-white h-100 shadow-sm">
-          <div class="text-gold fs-1 mb-2"><i class="fa-solid fa-hands-holding-circle"></i></div>
-          <h5 class="font-display text-maroon">3. Master Hand-Crafting</h5>
-          <p class="small text-muted mb-0">Our heritage artisans spend over 300 hours hand-embroidering your piece.</p>
-        </div>
-      </div>
-      <div class="col-md-3">
-        <div class="p-4 border rounded bg-white h-100 shadow-sm">
-          <div class="text-gold fs-1 mb-2"><i class="fa-solid fa-award"></i></div>
-          <h5 class="font-display text-maroon">4. Certificate &amp; Delivery</h5>
-          <p class="small text-muted mb-0">Delivered in our luxury vault box with your Exclusive Design Certificate.</p>
-        </div>
-      </div>
+    <div class="dark-step-card">
+      <div class="dark-step-number">02</div>
+      <div class="dark-step-icon"><i class="fa-solid fa-scroll"></i></div>
+      <h3 class="dark-step-title">Custom Sketch &amp; Swatch</h3>
+      <p class="dark-step-text">Receive high-fashion sketches and physical embroidery thread samples for approval.</p>
     </div>
-
-    <!-- Inquiry Form -->
-    <div id="customForm" class="mt-5 p-4 rounded bg-white border shadow-sm mx-auto" style="max-width:720px;">
-      <h4 class="font-display text-maroon text-center mb-3">REQUEST CUSTOM LEHENGA CONSULTATION</h4>
-      <form class="row g-3">
-        <div class="col-md-6"><input type="text" class="form-control form-control-luxury" placeholder="Full Name"></div>
-        <div class="col-md-6"><input type="tel" class="form-control form-control-luxury" placeholder="Phone Number"></div>
-        <div class="col-md-6"><input type="email" class="form-control form-control-luxury" placeholder="Email Address"></div>
-        <div class="col-md-6"><input type="date" class="form-control form-control-luxury" placeholder="Wedding Date"></div>
-        <div class="col-md-6">
-          <select class="form-select form-control-luxury">
-            <option>Estimated Budget Range</option>
-            <option>₹25,000 – ₹50,000</option>
-            <option>₹50,000 – ₹1,000,000</option>
-            <option>₹1,00,000+</option>
-          </select>
-        </div>
-        <div class="col-md-6">
-          <select class="form-select form-control-luxury">
-            <option>Preferred Fabric</option>
-            <option>Pure Velvet</option>
-            <option>Banarasi Silk</option>
-            <option>Organza &amp; Net</option>
-          </select>
-        </div>
-        <div class="col-12"><textarea class="form-control form-control-luxury" rows="3" placeholder="Describe your dream lehenga color, embroidery work, or inspiration ideas..."></textarea></div>
-        <div class="col-12 text-center"><button class="btn btn-gold w-100 py-3" type="submit">SUBMIT CONSULTATION REQUEST</button></div>
-      </form>
+    <div class="dark-step-card">
+      <div class="dark-step-number">03</div>
+      <div class="dark-step-icon"><i class="fa-solid fa-hands"></i></div>
+      <h3 class="dark-step-title">Master Hand-Crafting</h3>
+      <p class="dark-step-text">Our heritage artisans spend over 300 hours hand-embroidering your unique piece.</p>
+    </div>
+    <div class="dark-step-card">
+      <div class="dark-step-number">04</div>
+      <div class="dark-step-icon"><i class="fa-solid fa-award"></i></div>
+      <h3 class="dark-step-title">Certificate &amp; Delivery</h3>
+      <p class="dark-step-text">Delivered in our luxury vault box with your Exclusive Design Certificate.</p>
     </div>
   </div>
-</section>
+
+  <!-- Consultation Form -->
+  <div class="dark-form-wrap" id="customForm">
+    <div class="dark-form-header">
+      <i class="fa-solid fa-scissors dark-form-icon"></i>
+      <h3 class="dark-form-title">REQUEST CUSTOM LEHENGA CONSULTATION</h3>
+      <p class="dark-form-subtitle">Tell us about your dream design and we'll connect you with our master couturiers.</p>
+    </div>
+    <form class="dark-form-grid">
+      <div class="dark-form-group">
+        <label class="dark-label">Full Name</label>
+        <input type="text" class="dark-input" placeholder="e.g. Priya Sharma">
+      </div>
+      <div class="dark-form-group">
+        <label class="dark-label">Phone Number</label>
+        <input type="tel" class="dark-input" placeholder="+91 98765 43210">
+      </div>
+      <div class="dark-form-group">
+        <label class="dark-label">Email Address</label>
+        <input type="email" class="dark-input" placeholder="name@example.com">
+      </div>
+      <div class="dark-form-group">
+        <label class="dark-label">Wedding Date</label>
+        <input type="date" class="dark-input">
+      </div>
+      <div class="dark-form-group">
+        <label class="dark-label">Estimated Budget</label>
+        <select class="dark-input dark-select">
+          <option>Select Budget Range</option>
+          <option>₹25,000 – ₹50,000</option>
+          <option>₹50,000 – ₹1,00,000</option>
+          <option>₹1,00,000+</option>
+        </select>
+      </div>
+      <div class="dark-form-group">
+        <label class="dark-label">Preferred Fabric</label>
+        <select class="dark-input dark-select">
+          <option>Select Fabric</option>
+          <option>Pure Velvet</option>
+          <option>Banarasi Silk</option>
+          <option>Organza &amp; Net</option>
+          <option>Chanderi Silk</option>
+        </select>
+      </div>
+      <div class="dark-form-group dark-form-full">
+        <label class="dark-label">Describe Your Dream Lehenga</label>
+        <textarea class="dark-input dark-textarea" rows="4" placeholder="Color, embroidery work, inspiration images, special requirements..."></textarea>
+      </div>
+      <div class="dark-form-full">
+        <button type="submit" class="bp-book-btn bp-book-featured" style="font-size:0.75rem;">SUBMIT CONSULTATION REQUEST <i class="fa-solid fa-arrow-right ms-2"></i></button>
+      </div>
+    </form>
+  </div>
+
+</div>
 @endsection

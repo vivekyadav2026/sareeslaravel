@@ -1,338 +1,213 @@
 @extends('layouts.app')
 
-@section('title', 'RANISAHAB Royal Banarasi Silk Saree — RANISAHAB Luxury')
+@section('title', 'RANISAHAB Royal Banarasi Silk Saree — Luxury Sarees Collection')
 
 @section('content')
-<!-- Breadcrumb -->
-<div class="container py-3">
-  <p class="small text-muted mb-0">Home &nbsp;&gt;&nbsp; Sarees &nbsp;&gt;&nbsp; Banarasi Sarees &nbsp;&gt;&nbsp; <strong class="text-maroon">RANISAHAB Royal Banarasi Silk Saree</strong></p>
+<div class="plp-page">
+
+  <!-- Breadcrumb -->
+  <div class="plp-breadcrumb">
+    <a href="{{ route('home') }}"><i class="fa-solid fa-house"></i></a>
+    <span class="plp-bc-sep">/</span>
+    <span>Sarees Collection</span>
+  </div>
+
+  <!-- Page Header -->
+  <div class="plp-header">
+    <div class="plp-header-deco">
+      <span class="plp-deco-line"></span>
+      <i class="fa-solid fa-crown plp-deco-icon"></i>
+      <span class="plp-deco-line"></span>
+    </div>
+    <h1 class="plp-page-title">ROYAL SAREES</h1>
+    <p class="plp-page-subtitle">Pure Silk, Pure Tradition, Pure You.</p>
+  </div>
+
+  <!-- Filter & Sort Bar -->
+  <div class="plp-filter-bar">
+    <button class="plp-filter-btn" id="filterToggleBtn">
+      <i class="fa-solid fa-sliders"></i> FILTER
+    </button>
+    <button class="plp-filter-btn">
+      <i class="fa-solid fa-arrow-up-wide-short"></i> SORT BY
+    </button>
+  </div>
+
+  <!-- Filter Drawer -->
+  <div class="plp-filter-drawer" id="filterDrawer">
+    <div class="plp-filter-section">
+      <p class="plp-filter-label">SAREE TYPE</p>
+      <label class="plp-filter-check"><input type="checkbox" checked> Banarasi Silk <span>(56)</span></label>
+      <label class="plp-filter-check"><input type="checkbox"> Kanjivaram <span>(34)</span></label>
+      <label class="plp-filter-check"><input type="checkbox"> Chanderi <span>(22)</span></label>
+      <label class="plp-filter-check"><input type="checkbox"> Organza <span>(18)</span></label>
+    </div>
+    <div class="plp-filter-section">
+      <p class="plp-filter-label">OCCASION</p>
+      <label class="plp-filter-check"><input type="checkbox" checked> Wedding &amp; Festive</label>
+      <label class="plp-filter-check"><input type="checkbox"> Party &amp; Reception</label>
+      <label class="plp-filter-check"><input type="checkbox"> Casual Wear</label>
+    </div>
+    <div class="plp-filter-section">
+      <p class="plp-filter-label">PRICE RANGE</p>
+      <label class="plp-filter-check"><input type="checkbox" checked> Under ₹5,000</label>
+      <label class="plp-filter-check"><input type="checkbox"> ₹5,000 – ₹10,000</label>
+      <label class="plp-filter-check"><input type="checkbox"> ₹10,000+</label>
+    </div>
+  </div>
+
+  <!-- Product Grid -->
+  <div class="plp-grid">
+
+    <div class="plp-card">
+      <div class="plp-card-img-wrap">
+        <img src="{{ asset('images/cat_saree.png') }}" alt="Royal Banarasi Silk Saree" class="plp-card-img">
+        <span class="plp-badge badge-best">BEST SELLER</span>
+        <button class="plp-wishlist-btn"><i class="fa-regular fa-heart"></i></button>
+      </div>
+      <div class="plp-card-body">
+        <p class="plp-card-name">Royal Banarasi Silk Saree</p>
+        <p class="plp-card-price">₹3,999</p>
+        <div class="plp-card-footer">
+          <span class="plp-rating"><i class="fa-solid fa-star"></i> 4.9 <span class="plp-rating-count">(312)</span></span>
+          <button class="plp-cart-btn"><i class="fa-solid fa-bag-shopping"></i></button>
+        </div>
+      </div>
+    </div>
+
+    <div class="plp-card">
+      <div class="plp-card-img-wrap">
+        <img src="{{ asset('images/product_main.png') }}" alt="Maroon Zari Weaving Saree" class="plp-card-img">
+        <span class="plp-badge badge-new">NEW ARRIVAL</span>
+        <button class="plp-wishlist-btn"><i class="fa-regular fa-heart"></i></button>
+      </div>
+      <div class="plp-card-body">
+        <p class="plp-card-name">Maroon Zari Weaving Saree</p>
+        <p class="plp-card-price">₹4,499</p>
+        <div class="plp-card-footer">
+          <span class="plp-rating"><i class="fa-solid fa-star"></i> 4.8 <span class="plp-rating-count">(187)</span></span>
+          <button class="plp-cart-btn"><i class="fa-solid fa-bag-shopping"></i></button>
+        </div>
+      </div>
+    </div>
+
+    <div class="plp-card">
+      <div class="plp-card-img-wrap">
+        <img src="{{ asset('images/fabric_detail.png') }}" alt="Pure Katan Silk Saree" class="plp-card-img">
+        <span class="plp-badge badge-excl">EXCLUSIVE</span>
+        <button class="plp-wishlist-btn"><i class="fa-regular fa-heart"></i></button>
+      </div>
+      <div class="plp-card-body">
+        <p class="plp-card-name">Pure Katan Silk Saree</p>
+        <p class="plp-card-price">₹5,999</p>
+        <div class="plp-card-footer">
+          <span class="plp-rating"><i class="fa-solid fa-star"></i> 4.9 <span class="plp-rating-count">(143)</span></span>
+          <button class="plp-cart-btn"><i class="fa-solid fa-bag-shopping"></i></button>
+        </div>
+      </div>
+    </div>
+
+    <div class="plp-card">
+      <div class="plp-card-img-wrap">
+        <img src="{{ asset('images/hero_bride.png') }}" alt="Kanjivaram Wedding Saree" class="plp-card-img">
+        <span class="plp-badge badge-best">BEST SELLER</span>
+        <button class="plp-wishlist-btn"><i class="fa-regular fa-heart"></i></button>
+      </div>
+      <div class="plp-card-body">
+        <p class="plp-card-name">Kanjivaram Wedding Saree</p>
+        <p class="plp-card-price">₹7,499</p>
+        <div class="plp-card-footer">
+          <span class="plp-rating"><i class="fa-solid fa-star"></i> 5.0 <span class="plp-rating-count">(256)</span></span>
+          <button class="plp-cart-btn"><i class="fa-solid fa-bag-shopping"></i></button>
+        </div>
+      </div>
+    </div>
+
+    <div class="plp-card">
+      <div class="plp-card-img-wrap">
+        <img src="{{ asset('images/promise_bride.png') }}" alt="Organza Silk Bridal Saree" class="plp-card-img">
+        <span class="plp-badge badge-new">NEW ARRIVAL</span>
+        <button class="plp-wishlist-btn"><i class="fa-regular fa-heart"></i></button>
+      </div>
+      <div class="plp-card-body">
+        <p class="plp-card-name">Organza Silk Bridal Saree</p>
+        <p class="plp-card-price">₹6,299</p>
+        <div class="plp-card-footer">
+          <span class="plp-rating"><i class="fa-solid fa-star"></i> 4.7 <span class="plp-rating-count">(89)</span></span>
+          <button class="plp-cart-btn"><i class="fa-solid fa-bag-shopping"></i></button>
+        </div>
+      </div>
+    </div>
+
+    <div class="plp-card">
+      <div class="plp-card-img-wrap">
+        <img src="{{ asset('images/cat_bridal.png') }}" alt="Crimson Paithani Saree" class="plp-card-img">
+        <button class="plp-wishlist-btn"><i class="fa-regular fa-heart"></i></button>
+      </div>
+      <div class="plp-card-body">
+        <p class="plp-card-name">Crimson Paithani Saree</p>
+        <p class="plp-card-price">₹8,999</p>
+        <div class="plp-card-footer">
+          <span class="plp-rating"><i class="fa-solid fa-star"></i> 4.8 <span class="plp-rating-count">(112)</span></span>
+          <button class="plp-cart-btn"><i class="fa-solid fa-bag-shopping"></i></button>
+        </div>
+      </div>
+    </div>
+
+    <div class="plp-card">
+      <div class="plp-card-img-wrap">
+        <img src="{{ asset('images/pkg_royal.png') }}" alt="Chanderi Silk Festive Saree" class="plp-card-img">
+        <span class="plp-badge badge-excl">EXCLUSIVE</span>
+        <button class="plp-wishlist-btn"><i class="fa-regular fa-heart"></i></button>
+      </div>
+      <div class="plp-card-body">
+        <p class="plp-card-name">Chanderi Silk Festive Saree</p>
+        <p class="plp-card-price">₹3,499</p>
+        <div class="plp-card-footer">
+          <span class="plp-rating"><i class="fa-solid fa-star"></i> 4.6 <span class="plp-rating-count">(74)</span></span>
+          <button class="plp-cart-btn"><i class="fa-solid fa-bag-shopping"></i></button>
+        </div>
+      </div>
+    </div>
+
+    <div class="plp-card">
+      <div class="plp-card-img-wrap">
+        <img src="{{ asset('images/pkg_gold.png') }}" alt="Gold Soft Silk Saree" class="plp-card-img">
+        <span class="plp-badge badge-best">BEST SELLER</span>
+        <button class="plp-wishlist-btn"><i class="fa-regular fa-heart"></i></button>
+      </div>
+      <div class="plp-card-body">
+        <p class="plp-card-name">Gold Soft Silk Saree</p>
+        <p class="plp-card-price">₹4,199</p>
+        <div class="plp-card-footer">
+          <span class="plp-rating"><i class="fa-solid fa-star"></i> 4.9 <span class="plp-rating-count">(198)</span></span>
+          <button class="plp-cart-btn"><i class="fa-solid fa-bag-shopping"></i></button>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="plp-load-more">
+    <button class="plp-load-more-btn">LOAD MORE SAREES <i class="fa-solid fa-chevron-down ms-2"></i></button>
+  </div>
+
 </div>
-
-<!-- Product Main Section -->
-<section class="container pb-5">
-  <div class="row g-4">
-    <!-- Product Gallery Left -->
-    <div class="col-lg-6">
-      <div class="row g-2">
-        <div class="col-2 product-thumb-rail">
-          <img src="{{ asset('images/product_main.png') }}" class="active" alt="Thumb 1">
-          <img src="{{ asset('images/fabric_detail.png') }}" alt="Thumb 2">
-          <img src="{{ asset('images/cat_saree.png') }}" alt="Thumb 3">
-          <img src="{{ asset('images/hero_bride.png') }}" alt="Thumb 4">
-        </div>
-        <div class="col-10">
-          <div class="product-main-view">
-            <span class="badge bg-maroon position-absolute text-ivory px-3 py-2" style="top:15px;left:15px;font-family:var(--font-label);font-size:0.65rem;letter-spacing:0.1em;">Bestseller</span>
-            <img src="{{ asset('images/product_main.png') }}" id="mainImage" alt="RANISAHAB Saree Main">
-            <span class="badge-360"><i class="fa-solid fa-cube me-1"></i>VIEW 360°</span>
-          </div>
-        </div>
-      </div>
-
-      <div class="row g-2 text-center mt-3 small text-muted">
-        <div class="col-3"><i class="fa-solid fa-medal text-gold d-block mb-1 fs-5"></i>100% ORIGINAL<br><small>Premium Quality</small></div>
-        <div class="col-3"><i class="fa-solid fa-truck-fast text-gold d-block mb-1 fs-5"></i>PAN INDIA DELIVERY<br><small>5-7 Days Delivery</small></div>
-        <div class="col-3"><i class="fa-solid fa-lock text-gold d-block mb-1 fs-5"></i>SECURE PAYMENT<br><small>100% Safe &amp; Secure</small></div>
-        <div class="col-3"><i class="fa-solid fa-rotate-left text-gold d-block mb-1 fs-5"></i>EASY RETURNS<br><small>No Questions Asked</small></div>
-      </div>
-    </div>
-
-    <!-- Product Info Right -->
-    <div class="col-lg-6">
-      <span class="badge bg-light text-maroon border border-maroon mb-2 px-3 py-1" style="font-family:var(--font-label);font-size:0.65rem;"><i class="fa-solid fa-star text-gold me-1"></i>PREMIUM COLLECTION</span>
-      <h1 class="h2 font-display mb-2">RANISAHAB Royal Banarasi Silk Saree</h1>
-      
-      <div class="d-flex align-items-center gap-2 mb-3">
-        <span class="text-gold">★★★★<i class="fa-regular fa-star-half-stroke"></i></span>
-        <span class="small text-muted">(4.8) | 156 Reviews</span>
-        <a href="#" class="ms-auto text-muted"><i class="fa-solid fa-share-nodes"></i></a>
-      </div>
-
-      <div class="d-flex align-items-baseline gap-2 mb-1">
-        <span class="price-now-large">₹3,999</span>
-        <span class="price-strike">₹7,999</span>
-        <span class="price-discount-tag">50% OFF</span>
-      </div>
-      <p class="small text-muted mb-3">Inclusive of all taxes</p>
-
-      <div class="d-flex align-items-center gap-2 mb-4">
-        <span class="text-success small fw-bold"><i class="fa-solid fa-circle-check"></i> In Stock</span>
-        <span class="text-muted small">| SKU: RSBS-1024</span>
-      </div>
-
-      <!-- Color Swatches -->
-      <div class="mb-4">
-        <p class="small fw-bold text-uppercase mb-2" style="font-family:var(--font-label);letter-spacing:0.1em;">SELECT COLOR</p>
-        <div class="d-flex align-items-center gap-3">
-          <div class="text-center">
-            <span class="swatch-item active" style="background:#5a0b16;"></span>
-            <span class="d-block small text-muted mt-1">Maroon</span>
-          </div>
-          <div class="text-center">
-            <span class="swatch-item" style="background:#1b4332;"></span>
-            <span class="d-block small text-muted mt-1">Green</span>
-          </div>
-          <div class="text-center">
-            <span class="swatch-item" style="background:#b7094c;"></span>
-            <span class="d-block small text-muted mt-1">Red</span>
-          </div>
-          <div class="text-center">
-            <span class="swatch-item" style="background:#001d3d;"></span>
-            <span class="d-block small text-muted mt-1">Navy Blue</span>
-          </div>
-          <div class="text-center">
-            <span class="swatch-item" style="background:#3c096c;"></span>
-            <span class="d-block small text-muted mt-1">Purple</span>
-          </div>
-        </div>
-      </div>
-
-      <!-- Specs Table -->
-      <div class="mb-4">
-        <p class="small fw-bold text-uppercase mb-2" style="font-family:var(--font-label);letter-spacing:0.1em;">PRODUCT DETAILS</p>
-        <table class="table table-sm table-borderless small mb-0">
-          <tr><td class="text-muted" style="width:30%;">Fabric</td><td>: Banarasi Silk</td></tr>
-          <tr><td class="text-muted">Work</td><td>: Zari Weaving</td></tr>
-          <tr><td class="text-muted">Blouse</td><td>: Unstitched (0.80 Meter)</td></tr>
-          <tr><td class="text-muted">Length</td><td>: 6.3 Meter</td></tr>
-          <tr><td class="text-muted">Weight</td><td>: 650 Gram (Approx.)</td></tr>
-          <tr><td class="text-muted">Occasion</td><td>: Wedding, Festive, Party</td></tr>
-        </table>
-      </div>
-
-      <!-- Quantity + Cart Actions -->
-      <div class="d-flex align-items-center gap-3 mb-4">
-        <span class="small fw-bold text-uppercase" style="font-family:var(--font-label);">QUANTITY</span>
-        <div class="qty-control-box">
-          <button type="button" id="btnMinus">−</button>
-          <input type="text" id="qtyVal" value="1">
-          <button type="button" id="btnPlus">+</button>
-        </div>
-      </div>
-
-      <div class="d-flex gap-3 mb-3">
-        <button class="btn btn-black flex-fill bg-black text-ivory border-0 py-3" style="font-family:var(--font-label);font-size:0.75rem;letter-spacing:0.1em;"><i class="fa-solid fa-bag-shopping me-2"></i>ADD TO CART</button>
-        <a href="{{ route('checkout') }}" class="btn btn-gold flex-fill py-3"><i class="fa-solid fa-bolt me-2"></i>BUY NOW</a>
-      </div>
-
-      <a href="#" class="btn btn-outline-success w-100 py-2 d-flex align-items-center justify-content-center gap-2" style="border-color:#25D366;color:#25D366;"><i class="fa-brands fa-whatsapp fs-5"></i> ORDER ON WHATSAPP</a>
-    </div>
-  </div>
-</section>
-
-<!-- One Design One Bride Certificate Strip -->
-<section class="container mb-5">
-  <div class="p-4 rounded border border-warning" style="background:#fcf8f2;">
-    <div class="row align-items-center g-3">
-      <div class="col-md-6 d-flex align-items-center gap-3">
-        <i class="fa-solid fa-crown text-gold fs-1"></i>
-        <div>
-          <h5 class="font-display text-maroon mb-1" style="letter-spacing:0.05em;">ONE DESIGN, ONE BRIDE</h5>
-          <p class="small text-muted mb-0">This design will be made for one bride only and never repeated for anyone else.</p>
-        </div>
-      </div>
-      <div class="col-md-6 d-flex align-items-center gap-3 border-start-md ps-md-4">
-        <i class="fa-solid fa-certificate text-gold fs-1"></i>
-        <div>
-          <h5 class="font-display text-maroon mb-1" style="letter-spacing:0.05em;">EXCLUSIVE DESIGN CERTIFICATE</h5>
-          <p class="small text-muted mb-0">You will get an exclusive certificate that this design is only yours.</p>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- Description Tabs -->
-<section class="container pb-5">
-  <div class="row g-4">
-    <div class="col-lg-3">
-      <div class="nav flex-column pd-tabs-mobile-scroll border rounded mb-3 mb-lg-0" role="tablist">
-        <button class="product-tab-btn active" data-bs-toggle="pill" data-bs-target="#tab-desc"><i class="fa-solid fa-list me-2"></i>DESCRIPTION</button>
-        <button class="product-tab-btn" data-bs-toggle="pill" data-bs-target="#tab-size"><i class="fa-solid fa-shirt me-2"></i>SIZE &amp; CARE</button>
-        <button class="product-tab-btn" data-bs-toggle="pill" data-bs-target="#tab-delivery"><i class="fa-solid fa-truck me-2"></i>DELIVERY INFO</button>
-        <button class="product-tab-btn" data-bs-toggle="pill" data-bs-target="#tab-return"><i class="fa-solid fa-rotate-left me-2"></i>RETURN POLICY</button>
-        <button class="product-tab-btn" data-bs-toggle="pill" data-bs-target="#tab-reviews"><i class="fa-solid fa-star me-2"></i>REVIEWS (156)</button>
-        <button class="product-tab-btn" data-bs-toggle="pill" data-bs-target="#tab-qa"><i class="fa-solid fa-circle-question me-2"></i>Q &amp; A</button>
-      </div>
-    </div>
-    <div class="col-lg-9">
-      <div class="tab-content p-4 border rounded bg-white">
-        <div class="tab-pane fade show active" id="tab-desc">
-          <h5 class="font-display mb-3">PRODUCT DESCRIPTION</h5>
-          <p class="text-muted">RANISAHAB Royal Banarasi Silk Saree is a perfect blend of tradition and royalty. Crafted with the finest Banarasi silk and detailed with rich zari weaving, this saree is designed to make you feel like a queen on your special day.</p>
-          <ul class="text-muted">
-            <li>Luxurious Banarasi Silk Fabric</li>
-            <li>Rich Zari Weaving All Over</li>
-            <li>Elegant &amp; Traditional Look</li>
-            <li>Perfect For Weddings &amp; Festivals</li>
-          </ul>
-          <div class="mt-4">
-            <img src="{{ asset('images/fabric_detail.png') }}" alt="Fabric Detail" class="img-fluid rounded" style="max-height:260px;width:100%;object-fit:cover;">
-          </div>
-        </div>
-        <div class="tab-pane fade" id="tab-size"><p class="text-muted">Free size saree (6.3 meters including blouse). Dry clean recommended for long lasting shine.</p></div>
-        <div class="tab-pane fade" id="tab-delivery"><p class="text-muted">Free Pan-India shipping. Delivered safely in signature RANISAHAB box within 5–7 business days.</p></div>
-        <div class="tab-pane fade" id="tab-return"><p class="text-muted">Easy 7-day return policy for unstitched pieces in original condition with tags.</p></div>
-        <div class="tab-pane fade" id="tab-reviews"><p class="text-muted">Over 156 verified buyers rated 4.8 out of 5 stars.</p></div>
-        <div class="tab-pane fade" id="tab-qa"><p class="text-muted">Q: Does this include blouse piece? A: Yes, unstitched 0.80m Banarasi silk blouse piece is attached.</p></div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- What Our Customers Say -->
-<section class="container pb-5">
-  <div class="section-title-wrapper text-center mb-4">
-    <span class="motif">❖</span>
-    <h2>WHAT OUR CUSTOMERS SAY</h2>
-  </div>
-  <div class="row g-3">
-    <div class="col-md-3">
-      <div class="p-3 border rounded bg-white h-100">
-        <div class="d-flex align-items-center gap-2 mb-2">
-          <strong class="small">Anjali Sharma</strong>
-          <span class="badge bg-success small" style="font-size:0.55rem;"><i class="fa-solid fa-check"></i> Verified</span>
-        </div>
-        <div class="text-gold small mb-2">★★★★★</div>
-        <p class="small text-muted mb-0">The saree is exactly like the picture. Amazing quality and beautiful work.</p>
-      </div>
-    </div>
-    <div class="col-md-3">
-      <div class="p-3 border rounded bg-white h-100">
-        <div class="d-flex align-items-center gap-2 mb-2">
-          <strong class="small">Priya Verma</strong>
-          <span class="badge bg-success small" style="font-size:0.55rem;"><i class="fa-solid fa-check"></i> Verified</span>
-        </div>
-        <div class="text-gold small mb-2">★★★★★</div>
-        <p class="small text-muted mb-0">Got so many compliments when I wore this saree. Thank you RANISAHAB!</p>
-      </div>
-    </div>
-    <div class="col-md-3">
-      <div class="p-3 border rounded bg-white h-100">
-        <div class="d-flex align-items-center gap-2 mb-2">
-          <strong class="small">Neha Patel</strong>
-          <span class="badge bg-success small" style="font-size:0.55rem;"><i class="fa-solid fa-check"></i> Verified</span>
-        </div>
-        <div class="text-gold small mb-2">★★★★★</div>
-        <p class="small text-muted mb-0">Very soft fabric and premium quality. Totally worth it.</p>
-      </div>
-    </div>
-    <div class="col-md-3">
-      <div class="p-3 border rounded bg-white h-100">
-        <div class="d-flex align-items-center gap-2 mb-2">
-          <strong class="small">Kavita Singh</strong>
-          <span class="badge bg-success small" style="font-size:0.55rem;"><i class="fa-solid fa-check"></i> Verified</span>
-        </div>
-        <div class="text-gold small mb-2">★★★★★</div>
-        <p class="small text-muted mb-0">Loved the color and the zari work. Highly recommended!</p>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- You May Also Like (6 Cards) -->
-<section class="container pb-5">
-  <div class="section-title-wrapper text-center mb-4">
-    <span class="motif">❖</span>
-    <h2>YOU MAY ALSO LIKE</h2>
-  </div>
-  <div class="row g-3">
-    <div class="col-6 col-md-2">
-      <div class="card h-100 border-0 shadow-sm">
-        <img src="{{ asset('images/cat_saree.png') }}" class="card-img-top" alt="Saree 1" style="height:180px;object-fit:cover;">
-        <div class="card-body p-2 text-center">
-          <h6 class="small mb-1 font-display">RANISAHAB Kanjivaram Silk Saree</h6>
-          <p class="text-maroon small fw-bold mb-2">₹4,499</p>
-          <button class="btn btn-outline-gold btn-sm w-100" style="font-size:0.6rem;">ADD TO CART</button>
-        </div>
-      </div>
-    </div>
-    <div class="col-6 col-md-2">
-      <div class="card h-100 border-0 shadow-sm">
-        <img src="{{ asset('images/product_main.png') }}" class="card-img-top" alt="Saree 2" style="height:180px;object-fit:cover;">
-        <div class="card-body p-2 text-center">
-          <h6 class="small mb-1 font-display">RANISAHAB Pure Katan Silk Saree</h6>
-          <p class="text-maroon small fw-bold mb-2">₹3,699</p>
-          <button class="btn btn-outline-gold btn-sm w-100" style="font-size:0.6rem;">ADD TO CART</button>
-        </div>
-      </div>
-    </div>
-    <div class="col-6 col-md-2">
-      <div class="card h-100 border-0 shadow-sm">
-        <img src="{{ asset('images/fabric_detail.png') }}" class="card-img-top" alt="Saree 3" style="height:180px;object-fit:cover;">
-        <div class="card-body p-2 text-center">
-          <h6 class="small mb-1 font-display">RANISAHAB Zari Weaving Saree</h6>
-          <p class="text-maroon small fw-bold mb-2">₹2,999</p>
-          <button class="btn btn-outline-gold btn-sm w-100" style="font-size:0.6rem;">ADD TO CART</button>
-        </div>
-      </div>
-    </div>
-    <div class="col-6 col-md-2">
-      <div class="card h-100 border-0 shadow-sm">
-        <img src="{{ asset('images/cat_suit.png') }}" class="card-img-top" alt="Saree 4" style="height:180px;object-fit:cover;">
-        <div class="card-body p-2 text-center">
-          <h6 class="small mb-1 font-display">RANISAHAB Organza Silk Saree</h6>
-          <p class="text-maroon small fw-bold mb-2">₹3,299</p>
-          <button class="btn btn-outline-gold btn-sm w-100" style="font-size:0.6rem;">ADD TO CART</button>
-        </div>
-      </div>
-    </div>
-    <div class="col-6 col-md-2">
-      <div class="card h-100 border-0 shadow-sm">
-        <img src="{{ asset('images/hero_bride.png') }}" class="card-img-top" alt="Saree 5" style="height:180px;object-fit:cover;">
-        <div class="card-body p-2 text-center">
-          <h6 class="small mb-1 font-display">RANISAHAB Paithani Silk Saree</h6>
-          <p class="text-maroon small fw-bold mb-2">₹5,499</p>
-          <button class="btn btn-outline-gold btn-sm w-100" style="font-size:0.6rem;">ADD TO CART</button>
-        </div>
-      </div>
-    </div>
-    <div class="col-6 col-md-2">
-      <div class="card h-100 border-0 shadow-sm">
-        <img src="{{ asset('images/cat_bridal.png') }}" class="card-img-top" alt="Saree 6" style="height:180px;object-fit:cover;">
-        <div class="card-body p-2 text-center">
-          <h6 class="small mb-1 font-display">RANISAHAB Soft Silk Saree</h6>
-          <p class="text-maroon small fw-bold mb-2">₹2,699</p>
-          <button class="btn btn-outline-gold btn-sm w-100" style="font-size:0.6rem;">ADD TO CART</button>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
 @endsection
 
 @push('scripts')
 <script>
-// Quantity Selector
-const btnMinus = document.getElementById('btnMinus');
-const btnPlus = document.getElementById('btnPlus');
-const qtyVal = document.getElementById('qtyVal');
-
-if(btnMinus && btnPlus && qtyVal){
-  btnMinus.addEventListener('click', () => {
-    let val = parseInt(qtyVal.value) || 1;
-    if (val > 1) qtyVal.value = val - 1;
-  });
-  btnPlus.addEventListener('click', () => {
-    let val = parseInt(qtyVal.value) || 1;
-    qtyVal.value = val + 1;
-  });
+const filterBtn = document.getElementById('filterToggleBtn');
+const filterDrawer = document.getElementById('filterDrawer');
+if (filterBtn && filterDrawer) {
+  filterBtn.addEventListener('click', function() { filterDrawer.classList.toggle('open'); });
 }
-
-// Swatch Selector
-document.querySelectorAll('.swatch-item').forEach(swatch => {
-  swatch.addEventListener('click', () => {
-    document.querySelectorAll('.swatch-item').forEach(s => s.classList.remove('active'));
-    swatch.classList.add('active');
-  });
-});
-
-// Thumb Selector
-document.querySelectorAll('.product-thumb-rail img').forEach(thumb => {
-  thumb.addEventListener('click', () => {
-    document.querySelectorAll('.product-thumb-rail img').forEach(t => t.classList.remove('active'));
-    thumb.classList.add('active');
-    document.getElementById('mainImage').src = thumb.src;
+document.querySelectorAll('.plp-wishlist-btn').forEach(btn => {
+  btn.addEventListener('click', function() {
+    const icon = this.querySelector('i');
+    icon.classList.toggle('fa-regular');
+    icon.classList.toggle('fa-solid');
+    icon.classList.toggle('text-gold');
   });
 });
 </script>
