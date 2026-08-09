@@ -73,46 +73,75 @@
       <h3 class="dark-form-title">REQUEST CUSTOM LEHENGA CONSULTATION</h3>
       <p class="dark-form-subtitle">Tell us about your dream design and we'll connect you with our master couturiers.</p>
     </div>
-    <form class="dark-form-grid">
-      <div class="dark-form-group">
-        <label class="dark-label">Full Name</label>
-        <input type="text" class="dark-input" placeholder="e.g. Priya Sharma">
+
+    @if (session('success'))
+      <div class="alert alert-success mx-4 my-2" style="background: rgba(40, 167, 69, 0.1); border: 1px solid var(--gold); color: #fff;">
+        <i class="fa-solid fa-circle-check text-gold me-2"></i> {{ session('success') }}
       </div>
-      <div class="dark-form-group">
-        <label class="dark-label">Phone Number</label>
-        <input type="tel" class="dark-input" placeholder="+91 98765 43210">
+    @endif
+
+    @if ($errors->any())
+      <div class="alert alert-danger mx-4 my-2" style="background: rgba(220, 53, 69, 0.1); border: 1px solid red; color: #fff;">
+        <ul class="mb-0">
+          @foreach ($errors->all() as $error)
+            <li>{{ $error }}</li>
+          @endforeach
+        </ul>
       </div>
-      <div class="dark-form-group">
-        <label class="dark-label">Email Address</label>
-        <input type="email" class="dark-input" placeholder="name@example.com">
-      </div>
-      <div class="dark-form-group">
-        <label class="dark-label">Wedding Date</label>
-        <input type="date" class="dark-input">
-      </div>
-      <div class="dark-form-group">
-        <label class="dark-label">Estimated Budget</label>
-        <select class="dark-input dark-select">
-          <option>Select Budget Range</option>
-          <option>₹25,000 – ₹50,000</option>
-          <option>₹50,000 – ₹1,00,000</option>
-          <option>₹1,00,000+</option>
-        </select>
-      </div>
+    @endif
+
+    <form action="{{ route('custom-lehenga.submit') }}" method="POST" enctype="multipart/form-data" class="dark-form-grid">
+      @csrf
+
+      @guest
+        <input type="hidden" name="is_guest" value="1">
+        <div class="dark-form-group">
+          <label class="dark-label">Full Name <span class="text-danger">*</span></label>
+          <input type="text" name="guest_name" class="dark-input" placeholder="e.g. Priya Sharma" required value="{{ old('guest_name') }}">
+        </div>
+        <div class="dark-form-group">
+          <label class="dark-label">Phone Number <span class="text-danger">*</span></label>
+          <input type="tel" name="guest_phone" class="dark-input" placeholder="+91 98765 43210" required value="{{ old('guest_phone') }}">
+        </div>
+        <div class="dark-form-group">
+          <label class="dark-label">Email Address <span class="text-danger">*</span></label>
+          <input type="email" name="guest_email" class="dark-input" placeholder="name@example.com" required value="{{ old('guest_email') }}">
+        </div>
+      @else
+        <input type="hidden" name="is_guest" value="0">
+      @endguest
+
       <div class="dark-form-group">
         <label class="dark-label">Preferred Fabric</label>
-        <select class="dark-input dark-select">
-          <option>Select Fabric</option>
+        <select name="fabric_preference" class="dark-input dark-select">
+          <option value="">Select Fabric</option>
           <option>Pure Velvet</option>
           <option>Banarasi Silk</option>
           <option>Organza &amp; Net</option>
           <option>Chanderi Silk</option>
         </select>
       </div>
-      <div class="dark-form-group dark-form-full">
-        <label class="dark-label">Describe Your Dream Lehenga</label>
-        <textarea class="dark-input dark-textarea" rows="4" placeholder="Color, embroidery work, inspiration images, special requirements..."></textarea>
+
+      <div class="dark-form-group">
+        <label class="dark-label">Estimated Budget</label>
+        <select name="budget_range" class="dark-input dark-select">
+          <option value="">Select Budget Range</option>
+          <option>₹25,000 – ₹50,000</option>
+          <option>₹50,000 – ₹1,00,000</option>
+          <option>₹1,00,000+</option>
+        </select>
       </div>
+
+      <div class="dark-form-group">
+        <label class="dark-label">Upload Inspiration Sketch / Image</label>
+        <input type="file" name="design_image" class="dark-input">
+      </div>
+
+      <div class="dark-form-group dark-form-full">
+        <label class="dark-label">Describe Your Dream Lehenga <span class="text-danger">*</span></label>
+        <textarea name="design_details" class="dark-input dark-textarea" rows="4" placeholder="Color, embroidery work, inspiration details, special sizing requirements..." required>{{ old('design_details') }}</textarea>
+      </div>
+
       <div class="dark-form-full">
         <button type="submit" class="bp-book-btn bp-book-featured" style="font-size:0.75rem;">SUBMIT CONSULTATION REQUEST <i class="fa-solid fa-arrow-right ms-2"></i></button>
       </div>

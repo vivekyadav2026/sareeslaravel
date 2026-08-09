@@ -4,11 +4,64 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>@yield('title', 'RANISAHAB — Luxury Fashion for Every Woman | Sarees, Lehengas & Bridal Wear')</title>
+    <link rel="shortcut icon" href="{{ asset('favicon.ico') }}" type="image/x-icon">
+    <link rel="icon" href="{{ asset('favicon.png') }}" type="image/png">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <link rel="stylesheet" href="{{ asset('css/style.css') }}?v={{ time() }}">
     <link rel="stylesheet" href="{{ asset('style.css') }}?v={{ time() }}">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
+    <style>
+        .border-gold { border: 1px solid var(--gold) !important; }
+        .text-gold { color: var(--gold) !important; }
+
+        /* Bulletproof Mobile Navigation Vertical Alignment Fix */
+        @media (max-width: 991.98px) {
+            .nav-ranisahab-menu {
+                flex-direction: column !important;
+                align-items: flex-start !important;
+                gap: 0.35rem !important;
+                padding: 1.2rem 1rem 1.2rem 2.5rem !important;
+            }
+            .nav-ranisahab-menu .nav-item {
+                width: 100% !important;
+                max-width: 260px !important;
+                text-align: left !important;
+            }
+            .nav-ranisahab-menu .nav-item:not(:last-child)::after,
+            .nav-ranisahab-menu .nav-item::after {
+                display: none !important;
+            }
+            .nav-ranisahab-menu .nav-link {
+                font-size: 0.78rem !important;
+                padding: 0.65rem 1rem !important;
+                letter-spacing: 0.14em !important;
+                text-align: left !important;
+                display: flex !important;
+                align-items: center !important;
+                justify-content: flex-start !important;
+                border-radius: 4px !important;
+                background: rgba(255, 255, 255, 0.02) !important;
+                border: 1px solid rgba(201, 162, 75, 0.12) !important;
+                width: 100% !important;
+            }
+            .nav-ranisahab-menu .nav-link.active {
+                background: linear-gradient(90deg, rgba(90, 11, 22, 0.9) 0%, rgba(20, 15, 12, 0.95) 100%) !important;
+                border-color: var(--gold) !important;
+                color: var(--gold-light) !important;
+                box-shadow: 0 4px 15px rgba(201, 162, 75, 0.25) !important;
+            }
+            .nav-ranisahab-menu .nav-link i {
+                color: var(--gold) !important;
+                font-size: 0.9rem !important;
+                width: 24px !important;
+                text-align: center !important;
+                margin-right: 0.8rem !important;
+                display: inline-block !important;
+            }
+        }
+    </style>
     @stack('styles')
 </head>
 <body>
@@ -53,12 +106,16 @@
           <i class="fa-solid fa-magnifying-glass"></i>
         </button>
 
-        <a href="#" class="action-icon d-none d-lg-inline-flex"><i class="fa-regular fa-user"></i><span>ACCOUNT</span></a>
-        <a href="#" class="action-icon d-none d-lg-inline-flex"><i class="fa-regular fa-heart"></i><span>WISHLIST</span></a>
+        @auth
+          <a href="{{ route('customer.dashboard') }}" class="action-icon d-none d-lg-inline-flex"><i class="fa-regular fa-user"></i><span>ACCOUNT</span></a>
+        @else
+          <a href="{{ route('customer.login') }}" class="action-icon d-none d-lg-inline-flex"><i class="fa-regular fa-user"></i><span>ACCOUNT</span></a>
+        @endauth
+        <a href="{{ route('customer.wishlist') }}" class="action-icon d-none d-lg-inline-flex"><i class="fa-regular fa-heart"></i><span>WISHLIST</span></a>
         <a href="{{ route('checkout') }}" class="action-icon ms-1 ms-lg-3">
           <i class="fa-solid fa-bag-shopping"></i>
           <span class="d-none d-lg-inline">BAG</span>
-          <span class="badge-cart">1</span>
+          <span class="badge-cart" id="headerCartCount">{{ collect(session('cart', []))->sum('quantity') }}</span>
         </a>
       </div>
     </div>
@@ -218,7 +275,32 @@
   </div>
 </footer>
 
+<div class="toast-container position-fixed bottom-0 end-0 p-3" style="z-index: 9999;">
+  <div id="luxuryToast" class="toast align-items-center text-white bg-dark border-gold border-opacity-50" role="alert" aria-live="assertive" aria-atomic="true">
+    <div class="d-flex">
+      <div class="toast-body">
+        <i class="fa-solid fa-crown text-gold me-2"></i> <span id="toastMessage">Item added to bag!</span>
+      </div>
+      <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+    </div>
+  </div>
+</div>
+
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+  function showToast(message) {
+    const toastEl = document.getElementById('luxuryToast');
+    const toastMsg = document.getElementById('toastMessage');
+    if (toastEl && toastMsg) {
+      toastMsg.innerHTML = '<i class="fa-solid fa-crown text-gold me-2"></i>' + message;
+      const toast = new bootstrap.Toast(toastEl, { delay: 3500 });
+      toast.show();
+    }
+  }
+
+  // Set CSRF Token header globally for AJAX
+  const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+</script>
 @stack('scripts')
 </body>
 </html>

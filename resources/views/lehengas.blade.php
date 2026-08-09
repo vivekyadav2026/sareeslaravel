@@ -30,170 +30,81 @@
     <button class="plp-filter-btn" id="filterToggleBtn">
       <i class="fa-solid fa-sliders"></i> FILTER
     </button>
-    <button class="plp-filter-btn">
-      <i class="fa-solid fa-arrow-up-wide-short"></i> SORT BY
-    </button>
+    <div class="position-relative d-inline-block">
+      <select class="plp-filter-btn" id="sortSelect" onchange="applySorting(this.value)" style="appearance: none; -webkit-appearance: none; padding-right: 2.2rem; cursor: pointer; background: transparent; border: 1px solid rgba(255,255,255,0.15); color: #fff;">
+        <option value="" style="background:#130f0c; color:#fff;">SORT BY</option>
+        <option value="price_low_high" {{ request('sort_by') === 'price_low_high' ? 'selected' : '' }} style="background:#130f0c; color:#fff;">PRICE: LOW TO HIGH</option>
+        <option value="price_high_low" {{ request('sort_by') === 'price_high_low' ? 'selected' : '' }} style="background:#130f0c; color:#fff;">PRICE: HIGH TO LOW</option>
+        <option value="newest" {{ request('sort_by') === 'newest' ? 'selected' : '' }} style="background:#130f0c; color:#fff;">NEW ARRIVALS</option>
+        <option value="popular" {{ request('sort_by') === 'popular' ? 'selected' : '' }} style="background:#130f0c; color:#fff;">MOST POPULAR</option>
+      </select>
+      <i class="fa-solid fa-chevron-down text-gold" style="position: absolute; right: 0.85rem; top: 50%; transform: translateY(-50%); pointer-events: none; font-size: 0.75rem;"></i>
+    </div>
   </div>
 
   <!-- Filter Drawer (hidden by default on mobile) -->
-  <div class="plp-filter-drawer" id="filterDrawer">
+  <form id="filterDrawer" method="GET" action="{{ route('lehengas') }}" class="plp-filter-drawer {{ (request()->has('occasions') || request()->has('types') || request()->has('price') || request()->has('sort_by')) ? 'open' : '' }}">
+    <input type="hidden" name="sort_by" id="sortByInput" value="{{ request('sort_by') }}">
     <div class="plp-filter-section">
       <p class="plp-filter-label">OCCASION</p>
-      <label class="plp-filter-check"><input type="checkbox" checked> Bridal Lehenga <span>(42)</span></label>
-      <label class="plp-filter-check"><input type="checkbox"> Sangeet &amp; Reception <span>(28)</span></label>
-      <label class="plp-filter-check"><input type="checkbox"> Mehendi &amp; Haldi <span>(19)</span></label>
+      <label class="plp-filter-check"><input type="checkbox" name="occasions[]" value="Bridal" {{ is_array(request('occasions')) && in_array('Bridal', request('occasions')) ? 'checked' : '' }} onchange="submitFilterForm()"> Bridal Lehenga</label>
+      <label class="plp-filter-check"><input type="checkbox" name="occasions[]" value="Sangeet" {{ is_array(request('occasions')) && in_array('Sangeet', request('occasions')) ? 'checked' : '' }} onchange="submitFilterForm()"> Sangeet &amp; Reception</label>
+      <label class="plp-filter-check"><input type="checkbox" name="occasions[]" value="Haldi" {{ is_array(request('occasions')) && in_array('Haldi', request('occasions')) ? 'checked' : '' }} onchange="submitFilterForm()"> Mehendi &amp; Haldi</label>
     </div>
     <div class="plp-filter-section">
       <p class="plp-filter-label">WORK TYPE</p>
-      <label class="plp-filter-check"><input type="checkbox" checked> Heavy Zardozi &amp; Zari</label>
-      <label class="plp-filter-check"><input type="checkbox"> Kundan &amp; Sequins</label>
-      <label class="plp-filter-check"><input type="checkbox"> Gotapatti Embroidery</label>
+      <label class="plp-filter-check"><input type="checkbox" name="types[]" value="Zardozi" {{ is_array(request('types')) && in_array('Zardozi', request('types')) ? 'checked' : '' }} onchange="submitFilterForm()"> Heavy Zardozi &amp; Zari</label>
+      <label class="plp-filter-check"><input type="checkbox" name="types[]" value="Kundan" {{ is_array(request('types')) && in_array('Kundan', request('types')) ? 'checked' : '' }} onchange="submitFilterForm()"> Kundan &amp; Sequins</label>
+      <label class="plp-filter-check"><input type="checkbox" name="types[]" value="Gotapatti" {{ is_array(request('types')) && in_array('Gotapatti', request('types')) ? 'checked' : '' }} onchange="submitFilterForm()"> Gotapatti Embroidery</label>
     </div>
     <div class="plp-filter-section">
       <p class="plp-filter-label">PRICE RANGE</p>
-      <label class="plp-filter-check"><input type="checkbox" checked> Under ₹15,000</label>
-      <label class="plp-filter-check"><input type="checkbox"> ₹15,000 – ₹30,000</label>
-      <label class="plp-filter-check"><input type="checkbox"> ₹30,000+</label>
+      <label class="plp-filter-check"><input type="radio" name="price" value="" {{ !request('price') ? 'checked' : '' }} onchange="submitFilterForm()"> All Prices</label>
+      <label class="plp-filter-check"><input type="radio" name="price" value="under_15000" {{ request('price') === 'under_15000' ? 'checked' : '' }} onchange="submitFilterForm()"> Under ₹15,000</label>
+      <label class="plp-filter-check"><input type="radio" name="price" value="15000_30000" {{ request('price') === '15000_30000' ? 'checked' : '' }} onchange="submitFilterForm()"> ₹15,000 – ₹30,000</label>
+      <label class="plp-filter-check"><input type="radio" name="price" value="above_30000" {{ request('price') === 'above_30000' ? 'checked' : '' }} onchange="submitFilterForm()"> ₹30,000+</label>
     </div>
-  </div>
+  </form>
 
   <!-- Product Grid -->
   <div class="plp-grid">
+    @forelse ($products as $product)
+      <div class="plp-card">
+        <div class="plp-card-img-wrap">
+          <a href="{{ route('product.show', $product->slug) }}">
+            @if ($product->images && $product->images->isNotEmpty())
+              <img src="{{ asset($product->images->first()->file_path) }}" alt="{{ $product->name }}" class="plp-card-img">
+            @else
+              <img src="{{ asset('images/cat_lehenga.png') }}" alt="{{ $product->name }}" class="plp-card-img">
+            @endif
+          </a>
 
-    <!-- Card 1 -->
-    <div class="plp-card">
-      <div class="plp-card-img-wrap">
-        <img src="{{ asset('images/cat_lehenga.png') }}" alt="Royal Velvet Bridal Lehenga" class="plp-card-img">
-        <span class="plp-badge badge-new">NEW ARRIVAL</span>
-        <button class="plp-wishlist-btn" aria-label="Add to Wishlist"><i class="fa-regular fa-heart"></i></button>
-      </div>
-      <div class="plp-card-body">
-        <p class="plp-card-name">Royal Velvet Bridal Lehenga</p>
-        <p class="plp-card-price">₹24,999</p>
-        <div class="plp-card-footer">
-          <span class="plp-rating"><i class="fa-solid fa-star"></i> 4.9 <span class="plp-rating-count">(120)</span></span>
-          <button class="plp-cart-btn" aria-label="Add to Cart"><i class="fa-solid fa-bag-shopping"></i></button>
+          @if ($product->is_best_seller)
+            <span class="plp-badge badge-best">BEST SELLER</span>
+          @elseif ($product->is_new_arrival)
+            <span class="plp-badge badge-new">NEW ARRIVAL</span>
+          @elseif ($product->is_featured)
+            <span class="plp-badge badge-excl">EXCLUSIVE</span>
+          @endif
+          
+          <button class="plp-wishlist-btn" onclick="toggleWishlist({{ $product->id }}, this)" aria-label="Add to Wishlist">
+            <i class="@if(Auth::check() ? \App\Models\Wishlist::where('customer_id', auth()->user()->customer->id ?? 0)->where('product_id', $product->id)->exists() : in_array($product->id, session('wishlist', []))) fa-solid text-gold @else fa-regular @endif fa-heart"></i>
+          </button>
+        </div>
+        <div class="plp-card-body">
+          <p class="plp-card-name"><a href="{{ route('product.show', $product->slug) }}" class="text-white text-decoration-none">{{ $product->name }}</a></p>
+          <p class="plp-card-price">₹{{ number_format($product->price, 0) }}</p>
+          <div class="plp-card-footer">
+            <span class="plp-rating"><i class="fa-solid fa-star"></i> {{ $product->average_rating }} <span class="plp-rating-count">({{ $product->reviews_count }})</span></span>
+            <button class="plp-cart-btn" onclick="addToBag({{ $product->id }})" aria-label="Add to Cart"><i class="fa-solid fa-bag-shopping"></i></button>
+          </div>
         </div>
       </div>
-    </div>
-
-    <!-- Card 2 -->
-    <div class="plp-card">
-      <div class="plp-card-img-wrap">
-        <img src="{{ asset('images/hero_bride.png') }}" alt="Rose Gold Zari Lehenga" class="plp-card-img">
-        <span class="plp-badge badge-best">BEST SELLER</span>
-        <button class="plp-wishlist-btn" aria-label="Add to Wishlist"><i class="fa-regular fa-heart"></i></button>
+    @empty
+      <div class="col-12 text-center py-5">
+        <p class="text-muted">No lehengas found matching your criteria.</p>
       </div>
-      <div class="plp-card-body">
-        <p class="plp-card-name">Rose Gold Zari Lehenga</p>
-        <p class="plp-card-price">₹22,999</p>
-        <div class="plp-card-footer">
-          <span class="plp-rating"><i class="fa-solid fa-star"></i> 4.8 <span class="plp-rating-count">(98)</span></span>
-          <button class="plp-cart-btn" aria-label="Add to Cart"><i class="fa-solid fa-bag-shopping"></i></button>
-        </div>
-      </div>
-    </div>
-
-    <!-- Card 3 -->
-    <div class="plp-card">
-      <div class="plp-card-img-wrap">
-        <img src="{{ asset('images/promise_bride.png') }}" alt="Emerald Heritage Lehenga" class="plp-card-img">
-        <span class="plp-badge badge-excl">EXCLUSIVE</span>
-        <button class="plp-wishlist-btn" aria-label="Add to Wishlist"><i class="fa-regular fa-heart"></i></button>
-      </div>
-      <div class="plp-card-body">
-        <p class="plp-card-name">Emerald Heritage Lehenga</p>
-        <p class="plp-card-price">₹26,999</p>
-        <div class="plp-card-footer">
-          <span class="plp-rating"><i class="fa-solid fa-star"></i> 4.9 <span class="plp-rating-count">(76)</span></span>
-          <button class="plp-cart-btn" aria-label="Add to Cart"><i class="fa-solid fa-bag-shopping"></i></button>
-        </div>
-      </div>
-    </div>
-
-    <!-- Card 4 -->
-    <div class="plp-card">
-      <div class="plp-card-img-wrap">
-        <img src="{{ asset('images/cat_bridal.png') }}" alt="Red Royal Bridal Lehenga" class="plp-card-img">
-        <button class="plp-wishlist-btn" aria-label="Add to Wishlist"><i class="fa-regular fa-heart"></i></button>
-      </div>
-      <div class="plp-card-body">
-        <p class="plp-card-name">Red Royal Bridal Lehenga</p>
-        <p class="plp-card-price">₹28,999</p>
-        <div class="plp-card-footer">
-          <span class="plp-rating"><i class="fa-solid fa-star"></i> 4.9 <span class="plp-rating-count">(134)</span></span>
-          <button class="plp-cart-btn" aria-label="Add to Cart"><i class="fa-solid fa-bag-shopping"></i></button>
-        </div>
-      </div>
-    </div>
-
-    <!-- Card 5 -->
-    <div class="plp-card">
-      <div class="plp-card-img-wrap">
-        <img src="{{ asset('images/pkg_royal.png') }}" alt="Crimson Kundan Lehenga" class="plp-card-img">
-        <span class="plp-badge badge-new">NEW ARRIVAL</span>
-        <button class="plp-wishlist-btn" aria-label="Add to Wishlist"><i class="fa-regular fa-heart"></i></button>
-      </div>
-      <div class="plp-card-body">
-        <p class="plp-card-name">Crimson Kundan Lehenga</p>
-        <p class="plp-card-price">₹19,999</p>
-        <div class="plp-card-footer">
-          <span class="plp-rating"><i class="fa-solid fa-star"></i> 4.7 <span class="plp-rating-count">(54)</span></span>
-          <button class="plp-cart-btn" aria-label="Add to Cart"><i class="fa-solid fa-bag-shopping"></i></button>
-        </div>
-      </div>
-    </div>
-
-    <!-- Card 6 -->
-    <div class="plp-card">
-      <div class="plp-card-img-wrap">
-        <img src="{{ asset('images/pkg_gold.png') }}" alt="Golden Zardozi Lehenga" class="plp-card-img">
-        <span class="plp-badge badge-best">BEST SELLER</span>
-        <button class="plp-wishlist-btn" aria-label="Add to Wishlist"><i class="fa-regular fa-heart"></i></button>
-      </div>
-      <div class="plp-card-body">
-        <p class="plp-card-name">Golden Zardozi Lehenga</p>
-        <p class="plp-card-price">₹31,999</p>
-        <div class="plp-card-footer">
-          <span class="plp-rating"><i class="fa-solid fa-star"></i> 5.0 <span class="plp-rating-count">(212)</span></span>
-          <button class="plp-cart-btn" aria-label="Add to Cart"><i class="fa-solid fa-bag-shopping"></i></button>
-        </div>
-      </div>
-    </div>
-
-    <!-- Card 7 -->
-    <div class="plp-card">
-      <div class="plp-card-img-wrap">
-        <img src="{{ asset('images/pkg_silver.png') }}" alt="Ivory Pearl Sangeet Lehenga" class="plp-card-img">
-        <span class="plp-badge badge-excl">EXCLUSIVE</span>
-        <button class="plp-wishlist-btn" aria-label="Add to Wishlist"><i class="fa-regular fa-heart"></i></button>
-      </div>
-      <div class="plp-card-body">
-        <p class="plp-card-name">Ivory Pearl Sangeet Lehenga</p>
-        <p class="plp-card-price">₹17,499</p>
-        <div class="plp-card-footer">
-          <span class="plp-rating"><i class="fa-solid fa-star"></i> 4.6 <span class="plp-rating-count">(43)</span></span>
-          <button class="plp-cart-btn" aria-label="Add to Cart"><i class="fa-solid fa-bag-shopping"></i></button>
-        </div>
-      </div>
-    </div>
-
-    <!-- Card 8 -->
-    <div class="plp-card">
-      <div class="plp-card-img-wrap">
-        <img src="{{ asset('images/fabric_detail.png') }}" alt="Maroon Velvet Haldi Lehenga" class="plp-card-img">
-        <button class="plp-wishlist-btn" aria-label="Add to Wishlist"><i class="fa-regular fa-heart"></i></button>
-      </div>
-      <div class="plp-card-body">
-        <p class="plp-card-name">Maroon Velvet Haldi Lehenga</p>
-        <p class="plp-card-price">₹13,999</p>
-        <div class="plp-card-footer">
-          <span class="plp-rating"><i class="fa-solid fa-star"></i> 4.8 <span class="plp-rating-count">(88)</span></span>
-          <button class="plp-cart-btn" aria-label="Add to Cart"><i class="fa-solid fa-bag-shopping"></i></button>
-        </div>
-      </div>
-    </div>
-
+    @endforelse
   </div><!-- /.plp-grid -->
 
   <!-- Load More -->
@@ -216,14 +127,68 @@ if (filterBtn && filterDrawer) {
   });
 }
 
-// Wishlist heart toggle
-document.querySelectorAll('.plp-wishlist-btn').forEach(btn => {
-  btn.addEventListener('click', function() {
-    const icon = this.querySelector('i');
-    icon.classList.toggle('fa-regular');
-    icon.classList.toggle('fa-solid');
-    icon.classList.toggle('text-gold');
-  });
-});
+function addToBag(productId) {
+    fetch("{{ route('cart.add') }}", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+            "X-CSRF-TOKEN": csrfToken
+        },
+        body: JSON.stringify({ product_id: productId, quantity: 1 })
+    })
+    .then(res => res.json())
+    .then(data => {
+        if(data.success) {
+            showToast(data.message);
+            const counter = document.getElementById('headerCartCount');
+            if(counter) counter.innerText = data.cart_count;
+        } else {
+            alert(data.message);
+        }
+    })
+    .catch(err => {
+        console.error(err);
+        showToast("Error adding item to bag. Please try again.");
+    });
+}
+
+function toggleWishlist(productId, button) {
+    fetch("{{ route('customer.wishlist.toggle') }}", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+            "X-CSRF-TOKEN": csrfToken
+        },
+        body: JSON.stringify({ product_id: productId })
+    })
+    .then(res => res.json())
+    .then(data => {
+        if(data.success) {
+            showToast(data.message);
+            const icon = button.querySelector('i');
+            if(data.action === 'added') {
+                icon.classList.remove('fa-regular');
+                icon.classList.add('fa-solid', 'text-gold');
+            } else {
+                icon.classList.remove('fa-solid', 'text-gold');
+                icon.classList.add('fa-regular');
+            }
+        } else {
+            window.location.href = "{{ route('customer.login') }}";
+        }
+    })
+    .catch(err => {
+        window.location.href = "{{ route('customer.login') }}";
+    });
+}
+
+function submitFilterForm() {
+    document.getElementById('filterDrawer').submit();
+}
+
+function applySorting(val) {
+    document.getElementById('sortByInput').value = val;
+    submitFilterForm();
+}
 </script>
 @endpush

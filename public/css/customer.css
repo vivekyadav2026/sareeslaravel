@@ -1,0 +1,750 @@
+/* =========================================================
+   RANISAHAB — CUSTOMER PANEL STYLES v2.0
+   Dark luxury theme: Deep Black × Antique Gold × Velvet Maroon
+   ========================================================= */
+
+/* ── Dashboard Wrapper ── */
+.customer-dashboard-wrapper {
+  background: var(--bg-black);
+  background-image:
+    radial-gradient(ellipse at 20% 10%, rgba(90, 11, 22, 0.18) 0%, transparent 50%),
+    radial-gradient(ellipse at 80% 90%, rgba(201, 162, 75, 0.07) 0%, transparent 50%);
+  font-family: var(--font-body);
+  min-height: 80vh;
+  padding: 3rem 0 4rem;
+}
+
+/* ── Dashboard Cards ── */
+.dashboard-card {
+  background: var(--bg-black-card);
+  border: 1px solid rgba(201, 162, 75, 0.2);
+  border-radius: var(--radius);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.35);
+  padding: 1.8rem;
+  margin-bottom: 1.8rem;
+  position: relative;
+  transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
+  color: var(--ivory);
+  overflow: hidden;
+}
+
+.dashboard-card::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, rgba(201, 162, 75, 0.04) 0%, transparent 60%);
+  pointer-events: none;
+}
+
+.dashboard-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 12px 40px rgba(201, 162, 75, 0.12);
+  border-color: rgba(201, 162, 75, 0.4);
+}
+
+.dashboard-card h4 {
+  color: var(--gold-light) !important;
+}
+
+.dashboard-card p {
+  color: rgba(251, 248, 241, 0.65) !important;
+}
+
+/* ── Sidebar ── */
+.customer-sidebar {
+  background: var(--bg-black-card);
+  border: 1px solid rgba(201, 162, 75, 0.25);
+  border-radius: var(--radius);
+  padding: 0;
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.4);
+  overflow: hidden;
+  position: sticky;
+  top: 1.5rem;
+}
+
+/* Sidebar Header */
+.customer-sidebar-header {
+  background: linear-gradient(135deg, #1c060a 0%, #110f0e 100%);
+  padding: 1.8rem 1.5rem 1.4rem;
+  border-bottom: 1px solid rgba(201, 162, 75, 0.2);
+  position: relative;
+  overflow: hidden;
+}
+
+.customer-sidebar-header::before {
+  content: '';
+  position: absolute;
+  top: -20px;
+  right: -20px;
+  width: 100px;
+  height: 100px;
+  background: radial-gradient(circle, rgba(201, 162, 75, 0.15), transparent 70%);
+  pointer-events: none;
+}
+
+/* Avatar circle */
+.customer-sidebar-header .sidebar-avatar {
+  width: 52px;
+  height: 52px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--maroon) 0%, var(--maroon-dark) 100%);
+  border: 2px solid var(--gold);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font-display);
+  font-size: 1.3rem;
+  font-weight: 700;
+  color: var(--gold-light);
+  margin-bottom: 0.85rem;
+  box-shadow: 0 4px 16px rgba(90, 11, 22, 0.5);
+}
+
+.customer-sidebar-header h5 {
+  font-family: var(--font-display);
+  color: var(--gold-light);
+  font-weight: 700;
+  font-size: 1.05rem;
+  margin: 0 0 0.3rem;
+  line-height: 1.2;
+}
+
+.customer-sidebar-header span {
+  font-family: var(--font-label);
+  font-size: 0.62rem;
+  letter-spacing: 0.14em;
+  color: rgba(251, 248, 241, 0.45);
+  text-transform: uppercase;
+}
+
+/* Nav List */
+.customer-nav-list {
+  list-style: none;
+  padding: 0.6rem 0;
+  margin: 0;
+}
+
+.customer-nav-item {
+  position: relative;
+}
+
+.customer-nav-item a {
+  display: flex;
+  align-items: center;
+  gap: 0.85rem;
+  padding: 0.75rem 1.5rem;
+  font-family: var(--font-label);
+  font-size: 0.7rem;
+  letter-spacing: 0.1em;
+  color: rgba(251, 248, 241, 0.65);
+  text-transform: uppercase;
+  border-left: 3px solid transparent;
+  transition: all 0.22s ease;
+  text-decoration: none;
+}
+
+.customer-nav-item a:hover {
+  color: var(--gold-light);
+  background: rgba(201, 162, 75, 0.07);
+  border-left-color: rgba(201, 162, 75, 0.5);
+}
+
+.customer-nav-item.active a {
+  color: var(--gold-light);
+  background: linear-gradient(90deg, rgba(90, 11, 22, 0.35) 0%, rgba(201, 162, 75, 0.06) 100%);
+  border-left-color: var(--gold);
+  font-weight: 600;
+}
+
+.customer-nav-item a i {
+  font-size: 0.9rem;
+  width: 1.1rem;
+  text-align: center;
+  color: var(--gold);
+  flex-shrink: 0;
+  transition: transform 0.2s ease;
+}
+
+.customer-nav-item a:hover i,
+.customer-nav-item.active a i {
+  transform: scale(1.15);
+}
+
+/* Logout link */
+.customer-nav-item a.text-danger {
+  color: rgba(220, 53, 69, 0.75) !important;
+}
+.customer-nav-item a.text-danger:hover {
+  color: #dc3545 !important;
+  background: rgba(220, 53, 69, 0.07);
+  border-left-color: rgba(220, 53, 69, 0.4);
+}
+.customer-nav-item a.text-danger i {
+  color: rgba(220, 53, 69, 0.75) !important;
+}
+.customer-nav-item a.text-danger:hover i {
+  color: #dc3545 !important;
+}
+
+/* ── Metric Cards ── */
+.metric-card {
+  display: flex;
+  align-items: center;
+  gap: 1.1rem;
+  background: var(--bg-black-card);
+  border: 1px solid rgba(201, 162, 75, 0.18);
+  border-radius: var(--radius);
+  padding: 1.4rem 1.2rem;
+  position: relative;
+  overflow: hidden;
+  transition: transform 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.metric-card::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, var(--maroon), var(--gold), transparent);
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.metric-card:hover {
+  transform: translateY(-3px);
+  border-color: rgba(201, 162, 75, 0.38);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+}
+
+.metric-card:hover::after {
+  opacity: 1;
+}
+
+.metric-card-icon {
+  width: 48px;
+  height: 48px;
+  border-radius: 10px;
+  background: linear-gradient(135deg, rgba(90, 11, 22, 0.5) 0%, rgba(90, 11, 22, 0.2) 100%);
+  color: var(--gold);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.15rem;
+  border: 1px solid rgba(201, 162, 75, 0.2);
+  flex-shrink: 0;
+}
+
+.metric-card-info h3 {
+  font-family: var(--font-display);
+  font-size: 1.65rem;
+  font-weight: 700;
+  color: var(--gold-light);
+  margin: 0;
+  line-height: 1;
+}
+
+.metric-card-info p {
+  font-family: var(--font-label);
+  font-size: 0.62rem;
+  letter-spacing: 0.12em;
+  color: rgba(251, 248, 241, 0.45) !important;
+  text-transform: uppercase;
+  margin: 0.3rem 0 0;
+}
+
+/* ── Auth Pages ── */
+.auth-page-bg {
+  background: linear-gradient(135deg, #0c0908 0%, #1c060a 100%);
+  min-height: 80vh;
+  display: flex;
+  align-items: center;
+  padding: 4rem 0;
+  position: relative;
+}
+
+.auth-page-bg::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image:
+    radial-gradient(circle at 80% 20%, rgba(201, 162, 75, 0.12), transparent 50%),
+    radial-gradient(circle at 20% 80%, rgba(90, 11, 22, 0.2), transparent 50%);
+  pointer-events: none;
+}
+
+.auth-card {
+  background: rgba(24, 21, 19, 0.92);
+  border: 1px solid rgba(201, 162, 75, 0.3);
+  border-radius: var(--radius);
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5), 0 0 0 1px rgba(201, 162, 75, 0.05) inset;
+  backdrop-filter: blur(20px);
+  padding: 3rem;
+  color: var(--ivory);
+  position: relative;
+  overflow: hidden;
+}
+
+.auth-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, var(--gold), transparent);
+  pointer-events: none;
+}
+
+.auth-card::after {
+  content: '';
+  position: absolute;
+  inset: 5px;
+  border: 1px solid rgba(201, 162, 75, 0.06);
+  border-radius: var(--radius);
+  pointer-events: none;
+}
+
+.auth-card-title {
+  font-family: var(--font-display);
+  font-size: 2.2rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  color: var(--gold-light);
+  text-align: center;
+  margin-bottom: 0.4rem;
+  letter-spacing: 0.05em;
+}
+
+.auth-card-subtitle {
+  font-family: var(--font-label);
+  font-size: 0.7rem;
+  letter-spacing: 0.18em;
+  color: rgba(251, 248, 241, 0.5) !important;
+  text-transform: uppercase;
+  text-align: center;
+  margin-bottom: 2.5rem;
+}
+
+.auth-form-label {
+  font-family: var(--font-label);
+  font-size: 0.65rem;
+  letter-spacing: 0.15em;
+  color: var(--gold-light);
+  text-transform: uppercase;
+  margin-bottom: 0.5rem;
+}
+
+.auth-form-input {
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(201, 162, 75, 0.25);
+  color: var(--ivory) !important;
+  padding: 0.75rem 1rem;
+  border-radius: var(--radius);
+  font-weight: 300;
+  transition: all 0.25s ease;
+}
+
+.auth-form-input:focus {
+  background: rgba(255, 255, 255, 0.07);
+  border-color: var(--gold);
+  box-shadow: 0 0 16px rgba(201, 162, 75, 0.2);
+  outline: none;
+  color: var(--ivory) !important;
+}
+
+.auth-form-input::placeholder {
+  color: rgba(251, 248, 241, 0.3) !important;
+}
+
+.auth-card .text-muted {
+  color: rgba(251, 248, 241, 0.5) !important;
+}
+
+/* ── Luxury Form Inputs (white-bg panel pages) ── */
+.luxury-input-group label {
+  font-family: var(--font-label);
+  font-size: 0.68rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--gold-light);
+  font-weight: 600;
+  margin-bottom: 0.4rem;
+}
+
+.luxury-input {
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(201, 162, 75, 0.22);
+  border-radius: var(--radius);
+  padding: 0.7rem 1rem;
+  color: var(--ivory);
+  font-size: 0.85rem;
+  transition: all 0.25s ease;
+}
+
+.luxury-input:focus {
+  border-color: var(--gold);
+  box-shadow: 0 0 12px rgba(201, 162, 75, 0.18);
+  outline: none;
+  background: rgba(255, 255, 255, 0.08);
+  color: var(--ivory);
+}
+
+/* ── Order Status Timeline ── */
+.timeline-log {
+  list-style: none;
+  padding: 0;
+  margin: 1.5rem 0 0 1rem;
+  position: relative;
+}
+
+.timeline-log::before {
+  content: '';
+  position: absolute;
+  top: 0.5rem;
+  bottom: 0.5rem;
+  left: 6px;
+  width: 1px;
+  background: rgba(201, 162, 75, 0.2);
+}
+
+.timeline-item {
+  position: relative;
+  padding-left: 2rem;
+  margin-bottom: 1.5rem;
+}
+
+.timeline-item::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0.35rem;
+  width: 13px;
+  height: 13px;
+  border-radius: 50%;
+  background: var(--bg-black-card);
+  border: 2px solid rgba(201, 162, 75, 0.3);
+}
+
+.timeline-item.active::after {
+  background: var(--gold);
+  border-color: var(--maroon);
+  box-shadow: 0 0 10px rgba(201, 162, 75, 0.7);
+}
+
+.timeline-date {
+  font-family: var(--font-label);
+  font-size: 0.65rem;
+  letter-spacing: 0.12em;
+  color: rgba(251, 248, 241, 0.4);
+}
+
+.timeline-status {
+  font-family: var(--font-display);
+  font-weight: 700;
+  color: var(--gold-light);
+  font-size: 0.95rem;
+  margin-bottom: 0.1rem;
+}
+
+.timeline-desc {
+  font-size: 0.8rem;
+  color: rgba(251, 248, 241, 0.55);
+  margin: 0;
+}
+
+/* ── Measurement Sketch ── */
+.measurement-sketch-container {
+  border: 1px solid rgba(201, 162, 75, 0.2);
+  border-radius: var(--radius);
+  background: var(--bg-black-soft);
+  padding: 2rem;
+  position: relative;
+}
+
+.measurement-body-outline {
+  max-width: 100%;
+  height: auto;
+  opacity: 0.8;
+  filter: drop-shadow(0 4px 12px rgba(201, 162, 75, 0.1));
+}
+
+.measurement-label-indicator {
+  font-size: 0.72rem;
+  font-family: var(--font-label);
+  letter-spacing: 0.1em;
+  color: var(--gold);
+  font-weight: bold;
+}
+
+.measurement-number-badge {
+  background: var(--maroon);
+  color: var(--gold-light);
+  font-size: 0.65rem;
+  font-weight: 700;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  margin-right: 0.4rem;
+  border: 1px solid rgba(201, 162, 75, 0.3);
+}
+
+/* ── Status Badges ── */
+.badge-luxury-pending {
+  background-color: rgba(201, 162, 75, 0.14);
+  color: var(--gold-light);
+  border: 1px solid rgba(201, 162, 75, 0.35);
+  font-family: var(--font-label);
+  font-size: 0.62rem;
+  letter-spacing: 0.1em;
+  padding: 0.3rem 0.75rem;
+  text-transform: uppercase;
+  border-radius: 4px;
+}
+
+.badge-luxury-success {
+  background-color: rgba(26, 117, 41, 0.14);
+  color: #4ade80;
+  border: 1px solid rgba(26, 117, 41, 0.3);
+  font-family: var(--font-label);
+  font-size: 0.62rem;
+  letter-spacing: 0.1em;
+  padding: 0.3rem 0.75rem;
+  text-transform: uppercase;
+  border-radius: 4px;
+}
+
+.badge-luxury-danger {
+  background-color: rgba(220, 53, 69, 0.12);
+  color: #f87171;
+  border: 1px solid rgba(220, 53, 69, 0.3);
+  font-family: var(--font-label);
+  font-size: 0.62rem;
+  letter-spacing: 0.1em;
+  padding: 0.3rem 0.75rem;
+  text-transform: uppercase;
+  border-radius: 4px;
+}
+
+/* ── Luxury Table ── */
+.table-luxury {
+  border-collapse: separate;
+  border-spacing: 0 6px;
+  color: var(--ivory);
+}
+
+.table-luxury th {
+  font-family: var(--font-label);
+  font-size: 0.65rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: rgba(201, 162, 75, 0.7);
+  border: none;
+  padding: 0.8rem 1.2rem;
+  background: transparent;
+}
+
+.table-luxury td {
+  background: rgba(255, 255, 255, 0.03);
+  padding: 1.1rem 1.2rem;
+  vertical-align: middle;
+  border-top: 1px solid rgba(201, 162, 75, 0.1);
+  border-bottom: 1px solid rgba(201, 162, 75, 0.1);
+  color: var(--ivory);
+  transition: background 0.2s ease;
+  font-size: 0.88rem;
+}
+
+.table-luxury td:first-child {
+  border-left: 1px solid rgba(201, 162, 75, 0.1);
+  border-top-left-radius: 6px;
+  border-bottom-left-radius: 6px;
+}
+
+.table-luxury td:last-child {
+  border-right: 1px solid rgba(201, 162, 75, 0.1);
+  border-top-right-radius: 6px;
+  border-bottom-right-radius: 6px;
+}
+
+.table-luxury tr:hover td {
+  background: rgba(201, 162, 75, 0.05);
+}
+
+/* ── Custom Design Cards ── */
+.design-preview-box {
+  width: 90px;
+  height: 90px;
+  border-radius: 6px;
+  border: 1px solid rgba(201, 162, 75, 0.2);
+  object-fit: cover;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.3);
+}
+
+.design-form-upload-area {
+  border: 2px dashed rgba(201, 162, 75, 0.35);
+  border-radius: var(--radius);
+  padding: 2.2rem;
+  text-align: center;
+  background: rgba(201, 162, 75, 0.03);
+  cursor: pointer;
+  transition: all 0.25s ease;
+  color: rgba(251, 248, 241, 0.55);
+}
+
+.design-form-upload-area:hover {
+  background: rgba(201, 162, 75, 0.07);
+  border-color: rgba(201, 162, 75, 0.55);
+  color: var(--gold-light);
+}
+
+/* ── Alert overrides inside dark panel ── */
+.customer-dashboard-wrapper .alert-success {
+  background: rgba(26, 117, 41, 0.12);
+  border: 1px solid rgba(26, 117, 41, 0.3);
+  color: #4ade80;
+  border-radius: var(--radius);
+}
+
+.customer-dashboard-wrapper .alert-danger {
+  background: rgba(220, 53, 69, 0.1);
+  border: 1px solid rgba(220, 53, 69, 0.28);
+  color: #f87171;
+  border-radius: var(--radius);
+}
+
+/* ── Divider line inside cards ── */
+.dashboard-card .border-bottom {
+  border-bottom-color: rgba(201, 162, 75, 0.15) !important;
+}
+
+/* ── Misc ── */
+.customer-dashboard-wrapper .text-muted {
+  color: rgba(251, 248, 241, 0.45) !important;
+}
+
+.customer-dashboard-wrapper .fs-6 {
+  font-size: 0.95rem !important;
+}
+
+/* ── Global Dark Mode Overrides for Bootstap elements inside wrapper ── */
+.customer-dashboard-wrapper .text-dark,
+.customer-dashboard-wrapper .text-black,
+.customer-dashboard-wrapper h1,
+.customer-dashboard-wrapper h2,
+.customer-dashboard-wrapper h3,
+.customer-dashboard-wrapper h4,
+.customer-dashboard-wrapper h5,
+.customer-dashboard-wrapper h6,
+.customer-dashboard-wrapper .font-display {
+  color: var(--gold-light) !important;
+}
+
+.customer-dashboard-wrapper .text-secondary,
+.customer-dashboard-wrapper .text-muted,
+.customer-dashboard-wrapper p {
+  color: rgba(251, 248, 241, 0.6) !important;
+}
+
+.customer-dashboard-wrapper strong,
+.customer-dashboard-wrapper b {
+  color: var(--ivory) !important;
+}
+
+.customer-dashboard-wrapper strong.text-dark,
+.customer-dashboard-wrapper strong.text-black {
+  color: var(--gold-light) !important;
+}
+
+/* Form Controls & Inputs */
+.customer-dashboard-wrapper .form-control {
+  background-color: rgba(255, 255, 255, 0.04) !important;
+  border: 1px solid rgba(201, 162, 75, 0.25) !important;
+  color: var(--ivory) !important;
+  transition: all 0.25s ease;
+}
+
+.customer-dashboard-wrapper .form-control:focus {
+  background-color: rgba(255, 255, 255, 0.08) !important;
+  border-color: var(--gold) !important;
+  box-shadow: 0 0 12px rgba(201, 162, 75, 0.2) !important;
+  color: var(--ivory) !important;
+}
+
+.customer-dashboard-wrapper .form-control::placeholder {
+  color: rgba(251, 248, 241, 0.3) !important;
+}
+
+.customer-dashboard-wrapper .form-control:disabled,
+.customer-dashboard-wrapper .form-control[readonly] {
+  background-color: rgba(0, 0, 0, 0.25) !important;
+  border-color: rgba(201, 162, 75, 0.15) !important;
+  color: rgba(251, 248, 241, 0.35) !important;
+}
+
+.customer-dashboard-wrapper label {
+  color: var(--gold) !important;
+}
+
+/* Bootstrap default Cards inside customer wrapper */
+.customer-dashboard-wrapper .card {
+  background: var(--bg-black-soft) !important;
+  border: 1px solid rgba(201, 162, 75, 0.18) !important;
+  color: var(--ivory) !important;
+}
+
+.customer-dashboard-wrapper .card-header {
+  background: rgba(201, 162, 75, 0.06) !important;
+  border-bottom: 1px solid rgba(201, 162, 75, 0.18) !important;
+  color: var(--gold-light) !important;
+}
+
+/* Bootstrap List Groups inside customer wrapper */
+.customer-dashboard-wrapper .list-group-item {
+  background: var(--bg-black-card) !important;
+  border-color: rgba(201, 162, 75, 0.1) !important;
+  color: var(--ivory) !important;
+}
+
+.customer-dashboard-wrapper .bg-light,
+.customer-dashboard-wrapper .bg-body-secondary {
+  background-color: rgba(255, 255, 255, 0.03) !important;
+  color: var(--ivory) !important;
+}
+
+.customer-dashboard-wrapper code.text-dark {
+  color: var(--gold-light) !important;
+  background-color: rgba(201, 162, 75, 0.12) !important;
+}
+
+/* Accordions */
+.customer-dashboard-wrapper .accordion-item {
+  background-color: transparent !important;
+  border-color: rgba(201, 162, 75, 0.15) !important;
+}
+
+.customer-dashboard-wrapper .accordion-button {
+  background-color: rgba(255, 255, 255, 0.02) !important;
+  color: var(--gold-light) !important;
+}
+
+.customer-dashboard-wrapper .accordion-button:not(.collapsed) {
+  background-color: rgba(90, 11, 22, 0.2) !important;
+  color: var(--gold) !important;
+}
+
+/* ── Responsive ── */
+@media (max-width: 767.98px) {
+  .customer-sidebar {
+    position: static;
+    margin-bottom: 1.5rem;
+  }
+
+  .customer-dashboard-wrapper {
+    padding: 1.5rem 0 2.5rem;
+  }
+}

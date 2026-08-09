@@ -117,31 +117,63 @@
       <h3 class="dark-form-title">BOOK YOUR BRIDAL MAKEUP ARTIST</h3>
       <p class="dark-form-subtitle">Fill in your details and we'll confirm your appointment within 24 hours.</p>
     </div>
-    <form class="dark-form-grid">
-      <div class="dark-form-group">
-        <label class="dark-label">Full Name</label>
-        <input type="text" class="dark-input" placeholder="e.g. Priya Sharma">
+
+    @if (session('success'))
+      <div class="alert alert-success mx-4 my-2" style="background: rgba(40, 167, 69, 0.1); border: 1px solid var(--gold); color: #fff;">
+        <i class="fa-solid fa-circle-check text-gold me-2"></i> {{ session('success') }}
       </div>
-      <div class="dark-form-group">
-        <label class="dark-label">Phone Number</label>
-        <input type="tel" class="dark-input" placeholder="+91 98765 43210">
+    @endif
+
+    @if ($errors->any())
+      <div class="alert alert-danger mx-4 my-2" style="background: rgba(220, 53, 69, 0.1); border: 1px solid red; color: #fff;">
+        <ul class="mb-0">
+          @foreach ($errors->all() as $error)
+            <li>{{ $error }}</li>
+          @endforeach
+        </ul>
       </div>
+    @endif
+
+    <form action="{{ route('makeup-services.submit') }}" method="POST" class="dark-form-grid">
+      @csrf
+
+      @guest
+        <input type="hidden" name="is_guest" value="1">
+        <div class="dark-form-group">
+          <label class="dark-label">Full Name <span class="text-danger">*</span></label>
+          <input type="text" name="guest_name" class="dark-input" placeholder="e.g. Priya Sharma" required value="{{ old('guest_name') }}">
+        </div>
+        <div class="dark-form-group">
+          <label class="dark-label">Phone Number <span class="text-danger">*</span></label>
+          <input type="tel" name="guest_phone" class="dark-input" placeholder="+91 98765 43210" required value="{{ old('guest_phone') }}">
+        </div>
+        <div class="dark-form-group">
+          <label class="dark-label">Email Address <span class="text-danger">*</span></label>
+          <input type="email" name="guest_email" class="dark-input" placeholder="name@example.com" required value="{{ old('guest_email') }}">
+        </div>
+      @else
+        <input type="hidden" name="is_guest" value="0">
+      @endguest
+
       <div class="dark-form-group">
-        <label class="dark-label">Wedding Date</label>
-        <input type="date" class="dark-input">
+        <label class="dark-label">Wedding Date <span class="text-danger">*</span></label>
+        <input type="date" name="booking_date" class="dark-input" required value="{{ old('booking_date') }}">
       </div>
+      
       <div class="dark-form-group">
-        <label class="dark-label">Select Package</label>
-        <select class="dark-input dark-select">
-          <option>HD Bridal Makeup (₹11,999)</option>
-          <option>Airbrush Royal Makeup (₹17,999)</option>
-          <option>Signature RANISAHAB (₹24,999)</option>
+        <label class="dark-label">Select Package <span class="text-danger">*</span></label>
+        <select name="makeup_package" class="dark-input dark-select" required>
+          <option value="HD Bridal Makeup (₹11,999)">HD Bridal Makeup (₹11,999)</option>
+          <option value="Airbrush Royal Makeup (₹17,999)">Airbrush Royal Makeup (₹17,999)</option>
+          <option value="Signature RANISAHAB (₹24,999)">Signature RANISAHAB (₹24,999)</option>
         </select>
       </div>
+
       <div class="dark-form-group dark-form-full">
         <label class="dark-label">Wedding Venue &amp; Additional Details</label>
-        <textarea class="dark-input dark-textarea" rows="3" placeholder="Venue location, city, timing..."></textarea>
+        <textarea name="notes" class="dark-input dark-textarea" rows="3" placeholder="Venue location, city, timing, look preference...">{{ old('notes') }}</textarea>
       </div>
+      
       <div class="dark-form-full">
         <button type="submit" class="bp-book-btn bp-book-featured" style="font-size:0.75rem;">SUBMIT BOOKING REQUEST <i class="fa-solid fa-arrow-right ms-2"></i></button>
       </div>

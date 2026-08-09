@@ -28,163 +28,82 @@
     <button class="plp-filter-btn" id="filterToggleBtn">
       <i class="fa-solid fa-sliders"></i> FILTER
     </button>
-    <button class="plp-filter-btn">
-      <i class="fa-solid fa-arrow-up-wide-short"></i> SORT BY
-    </button>
+    <div class="position-relative d-inline-block">
+      <select class="plp-filter-btn" id="sortSelect" onchange="applySorting(this.value)" style="appearance: none; -webkit-appearance: none; padding-right: 2.2rem; cursor: pointer; background: transparent; border: 1px solid rgba(255,255,255,0.15); color: #fff;">
+        <option value="" style="background:#130f0c; color:#fff;">SORT BY</option>
+        <option value="price_low_high" {{ request('sort_by') === 'price_low_high' ? 'selected' : '' }} style="background:#130f0c; color:#fff;">PRICE: LOW TO HIGH</option>
+        <option value="price_high_low" {{ request('sort_by') === 'price_high_low' ? 'selected' : '' }} style="background:#130f0c; color:#fff;">PRICE: HIGH TO LOW</option>
+        <option value="newest" {{ request('sort_by') === 'newest' ? 'selected' : '' }} style="background:#130f0c; color:#fff;">NEW ARRIVALS</option>
+        <option value="popular" {{ request('sort_by') === 'popular' ? 'selected' : '' }} style="background:#130f0c; color:#fff;">MOST POPULAR</option>
+      </select>
+      <i class="fa-solid fa-chevron-down text-gold" style="position: absolute; right: 0.85rem; top: 50%; transform: translateY(-50%); pointer-events: none; font-size: 0.75rem;"></i>
+    </div>
   </div>
 
   <!-- Filter Drawer -->
-  <div class="plp-filter-drawer" id="filterDrawer">
+  <form id="filterDrawer" method="GET" action="{{ route('suits') }}" class="plp-filter-drawer {{ (request()->has('occasions') || request()->has('types') || request()->has('price') || request()->has('sort_by')) ? 'open' : '' }}">
+    <input type="hidden" name="sort_by" id="sortByInput" value="{{ request('sort_by') }}">
     <div class="plp-filter-section">
       <p class="plp-filter-label">SUIT TYPE</p>
-      <label class="plp-filter-check"><input type="checkbox" checked> Anarkali Suits <span>(24)</span></label>
-      <label class="plp-filter-check"><input type="checkbox"> Straight Cut Suits <span>(18)</span></label>
-      <label class="plp-filter-check"><input type="checkbox"> Sharara &amp; Gharara <span>(15)</span></label>
-      <label class="plp-filter-check"><input type="checkbox"> Palazzo Suits <span>(12)</span></label>
+      <label class="plp-filter-check"><input type="checkbox" name="types[]" value="Anarkali" {{ is_array(request('types')) && in_array('Anarkali', request('types')) ? 'checked' : '' }} onchange="submitFilterForm()"> Anarkali Suits</label>
+      <label class="plp-filter-check"><input type="checkbox" name="types[]" value="Straight" {{ is_array(request('types')) && in_array('Straight', request('types')) ? 'checked' : '' }} onchange="submitFilterForm()"> Straight Cut Suits</label>
+      <label class="plp-filter-check"><input type="checkbox" name="types[]" value="Sharara" {{ is_array(request('types')) && in_array('Sharara', request('types')) ? 'checked' : '' }} onchange="submitFilterForm()"> Sharara &amp; Gharara</label>
+      <label class="plp-filter-check"><input type="checkbox" name="types[]" value="Palazzo" {{ is_array(request('types')) && in_array('Palazzo', request('types')) ? 'checked' : '' }} onchange="submitFilterForm()"> Palazzo Suits</label>
     </div>
     <div class="plp-filter-section">
       <p class="plp-filter-label">FABRIC</p>
-      <label class="plp-filter-check"><input type="checkbox" checked> Pure Silk &amp; Georgette</label>
-      <label class="plp-filter-check"><input type="checkbox"> Chanderi &amp; Organza</label>
-      <label class="plp-filter-check"><input type="checkbox"> Velvet Embroidery</label>
+      <label class="plp-filter-check"><input type="checkbox" name="occasions[]" value="Silk" {{ is_array(request('occasions')) && in_array('Silk', request('occasions')) ? 'checked' : '' }} onchange="submitFilterForm()"> Pure Silk &amp; Georgette</label>
+      <label class="plp-filter-check"><input type="checkbox" name="occasions[]" value="Chanderi" {{ is_array(request('occasions')) && in_array('Chanderi', request('occasions')) ? 'checked' : '' }} onchange="submitFilterForm()"> Chanderi &amp; Organza</label>
+      <label class="plp-filter-check"><input type="checkbox" name="occasions[]" value="Velvet" {{ is_array(request('occasions')) && in_array('Velvet', request('occasions')) ? 'checked' : '' }} onchange="submitFilterForm()"> Velvet Embroidery</label>
     </div>
     <div class="plp-filter-section">
       <p class="plp-filter-label">PRICE RANGE</p>
-      <label class="plp-filter-check"><input type="checkbox" checked> Under ₹5,000</label>
-      <label class="plp-filter-check"><input type="checkbox"> ₹5,000 – ₹15,000</label>
-      <label class="plp-filter-check"><input type="checkbox"> ₹15,000+</label>
+      <label class="plp-filter-check"><input type="radio" name="price" value="" {{ !request('price') ? 'checked' : '' }} onchange="submitFilterForm()"> All Prices</label>
+      <label class="plp-filter-check"><input type="radio" name="price" value="under_5000" {{ request('price') === 'under_5000' ? 'checked' : '' }} onchange="submitFilterForm()"> Under ₹5,000</label>
+      <label class="plp-filter-check"><input type="radio" name="price" value="5000_15000" {{ request('price') === '5000_15000' ? 'checked' : '' }} onchange="submitFilterForm()"> ₹5,000 – ₹15,000</label>
+      <label class="plp-filter-check"><input type="radio" name="price" value="above_15000" {{ request('price') === 'above_15000' ? 'checked' : '' }} onchange="submitFilterForm()"> ₹15,000+</label>
     </div>
-  </div>
+  </form>
 
   <!-- Product Grid -->
   <div class="plp-grid">
+    @forelse ($products as $product)
+      <div class="plp-card">
+        <div class="plp-card-img-wrap">
+          <a href="{{ route('product.show', $product->slug) }}">
+            @if ($product->images && $product->images->isNotEmpty())
+              <img src="{{ asset($product->images->first()->file_path) }}" alt="{{ $product->name }}" class="plp-card-img">
+            @else
+              <img src="{{ asset('images/cat_suit.png') }}" alt="{{ $product->name }}" class="plp-card-img">
+            @endif
+          </a>
 
-    <div class="plp-card">
-      <div class="plp-card-img-wrap">
-        <img src="{{ asset('images/cat_suit.png') }}" alt="Royal White Georgette Suit" class="plp-card-img">
-        <span class="plp-badge badge-best">BEST SELLER</span>
-        <button class="plp-wishlist-btn"><i class="fa-regular fa-heart"></i></button>
-      </div>
-      <div class="plp-card-body">
-        <p class="plp-card-name">Royal White Georgette Suit</p>
-        <p class="plp-card-price">₹3,499</p>
-        <div class="plp-card-footer">
-          <span class="plp-rating"><i class="fa-solid fa-star"></i> 4.8 <span class="plp-rating-count">(142)</span></span>
-          <button class="plp-cart-btn"><i class="fa-solid fa-bag-shopping"></i></button>
+          @if ($product->is_best_seller)
+            <span class="plp-badge badge-best">BEST SELLER</span>
+          @elseif ($product->is_new_arrival)
+            <span class="plp-badge badge-new">NEW ARRIVAL</span>
+          @elseif ($product->is_featured)
+            <span class="plp-badge badge-excl">EXCLUSIVE</span>
+          @endif
+          
+          <button class="plp-wishlist-btn" onclick="toggleWishlist({{ $product->id }}, this)">
+            <i class="@if(Auth::check() ? \App\Models\Wishlist::where('customer_id', auth()->user()->customer->id ?? 0)->where('product_id', $product->id)->exists() : in_array($product->id, session('wishlist', []))) fa-solid text-gold @else fa-regular @endif fa-heart"></i>
+          </button>
+        </div>
+        <div class="plp-card-body">
+          <p class="plp-card-name"><a href="{{ route('product.show', $product->slug) }}" class="text-white text-decoration-none">{{ $product->name }}</a></p>
+          <p class="plp-card-price">₹{{ number_format($product->price, 0) }}</p>
+          <div class="plp-card-footer">
+            <span class="plp-rating"><i class="fa-solid fa-star"></i> {{ $product->average_rating }} <span class="plp-rating-count">({{ $product->reviews_count }})</span></span>
+            <button class="plp-cart-btn" onclick="addToBag({{ $product->id }})"><i class="fa-solid fa-bag-shopping"></i></button>
+          </div>
         </div>
       </div>
-    </div>
-
-    <div class="plp-card">
-      <div class="plp-card-img-wrap">
-        <img src="{{ asset('images/cat_bridal.png') }}" alt="Crimson Velvet Anarkali" class="plp-card-img">
-        <span class="plp-badge badge-new">NEW ARRIVAL</span>
-        <button class="plp-wishlist-btn"><i class="fa-regular fa-heart"></i></button>
+    @empty
+      <div class="col-12 text-center py-5">
+        <p class="text-muted">No suits found matching your criteria.</p>
       </div>
-      <div class="plp-card-body">
-        <p class="plp-card-name">Crimson Velvet Anarkali</p>
-        <p class="plp-card-price">₹5,999</p>
-        <div class="plp-card-footer">
-          <span class="plp-rating"><i class="fa-solid fa-star"></i> 4.7 <span class="plp-rating-count">(86)</span></span>
-          <button class="plp-cart-btn"><i class="fa-solid fa-bag-shopping"></i></button>
-        </div>
-      </div>
-    </div>
-
-    <div class="plp-card">
-      <div class="plp-card-img-wrap">
-        <img src="{{ asset('images/hero_bride.png') }}" alt="Maroon Zardozi Sharara Set" class="plp-card-img">
-        <span class="plp-badge badge-excl">EXCLUSIVE</span>
-        <button class="plp-wishlist-btn"><i class="fa-regular fa-heart"></i></button>
-      </div>
-      <div class="plp-card-body">
-        <p class="plp-card-name">Maroon Zardozi Sharara Set</p>
-        <p class="plp-card-price">₹8,499</p>
-        <div class="plp-card-footer">
-          <span class="plp-rating"><i class="fa-solid fa-star"></i> 4.9 <span class="plp-rating-count">(63)</span></span>
-          <button class="plp-cart-btn"><i class="fa-solid fa-bag-shopping"></i></button>
-        </div>
-      </div>
-    </div>
-
-    <div class="plp-card">
-      <div class="plp-card-img-wrap">
-        <img src="{{ asset('images/pkg_gold.png') }}" alt="Mustard Silk Gota Suit" class="plp-card-img">
-        <button class="plp-wishlist-btn"><i class="fa-regular fa-heart"></i></button>
-      </div>
-      <div class="plp-card-body">
-        <p class="plp-card-name">Mustard Silk Gota Suit</p>
-        <p class="plp-card-price">₹2,999</p>
-        <div class="plp-card-footer">
-          <span class="plp-rating"><i class="fa-solid fa-star"></i> 4.6 <span class="plp-rating-count">(54)</span></span>
-          <button class="plp-cart-btn"><i class="fa-solid fa-bag-shopping"></i></button>
-        </div>
-      </div>
-    </div>
-
-    <div class="plp-card">
-      <div class="plp-card-img-wrap">
-        <img src="{{ asset('images/pkg_silver.png') }}" alt="Silver Mirror Work Anarkali" class="plp-card-img">
-        <span class="plp-badge badge-best">BEST SELLER</span>
-        <button class="plp-wishlist-btn"><i class="fa-regular fa-heart"></i></button>
-      </div>
-      <div class="plp-card-body">
-        <p class="plp-card-name">Silver Mirror Work Anarkali</p>
-        <p class="plp-card-price">₹4,799</p>
-        <div class="plp-card-footer">
-          <span class="plp-rating"><i class="fa-solid fa-star"></i> 4.8 <span class="plp-rating-count">(97)</span></span>
-          <button class="plp-cart-btn"><i class="fa-solid fa-bag-shopping"></i></button>
-        </div>
-      </div>
-    </div>
-
-    <div class="plp-card">
-      <div class="plp-card-img-wrap">
-        <img src="{{ asset('images/cat_saree.png') }}" alt="Rose Silk Straight Suit" class="plp-card-img">
-        <span class="plp-badge badge-new">NEW ARRIVAL</span>
-        <button class="plp-wishlist-btn"><i class="fa-regular fa-heart"></i></button>
-      </div>
-      <div class="plp-card-body">
-        <p class="plp-card-name">Rose Silk Straight Suit</p>
-        <p class="plp-card-price">₹2,499</p>
-        <div class="plp-card-footer">
-          <span class="plp-rating"><i class="fa-solid fa-star"></i> 4.5 <span class="plp-rating-count">(38)</span></span>
-          <button class="plp-cart-btn"><i class="fa-solid fa-bag-shopping"></i></button>
-        </div>
-      </div>
-    </div>
-
-    <div class="plp-card">
-      <div class="plp-card-img-wrap">
-        <img src="{{ asset('images/promise_bride.png') }}" alt="Deep Blue Embroidered Suit" class="plp-card-img">
-        <span class="plp-badge badge-excl">EXCLUSIVE</span>
-        <button class="plp-wishlist-btn"><i class="fa-regular fa-heart"></i></button>
-      </div>
-      <div class="plp-card-body">
-        <p class="plp-card-name">Deep Blue Embroidered Suit</p>
-        <p class="plp-card-price">₹6,299</p>
-        <div class="plp-card-footer">
-          <span class="plp-rating"><i class="fa-solid fa-star"></i> 4.7 <span class="plp-rating-count">(71)</span></span>
-          <button class="plp-cart-btn"><i class="fa-solid fa-bag-shopping"></i></button>
-        </div>
-      </div>
-    </div>
-
-    <div class="plp-card">
-      <div class="plp-card-img-wrap">
-        <img src="{{ asset('images/pkg_royal.png') }}" alt="Peach Organza Palazzo Suit" class="plp-card-img">
-        <button class="plp-wishlist-btn"><i class="fa-regular fa-heart"></i></button>
-      </div>
-      <div class="plp-card-body">
-        <p class="plp-card-name">Peach Organza Palazzo Suit</p>
-        <p class="plp-card-price">₹3,799</p>
-        <div class="plp-card-footer">
-          <span class="plp-rating"><i class="fa-solid fa-star"></i> 4.6 <span class="plp-rating-count">(49)</span></span>
-          <button class="plp-cart-btn"><i class="fa-solid fa-bag-shopping"></i></button>
-        </div>
-      </div>
-    </div>
-
+    @endforelse
   </div>
 
   <div class="plp-load-more">
@@ -201,13 +120,69 @@ const filterDrawer = document.getElementById('filterDrawer');
 if (filterBtn && filterDrawer) {
   filterBtn.addEventListener('click', function() { filterDrawer.classList.toggle('open'); });
 }
-document.querySelectorAll('.plp-wishlist-btn').forEach(btn => {
-  btn.addEventListener('click', function() {
-    const icon = this.querySelector('i');
-    icon.classList.toggle('fa-regular');
-    icon.classList.toggle('fa-solid');
-    icon.classList.toggle('text-gold');
-  });
-});
+
+function addToBag(productId) {
+    fetch("{{ route('cart.add') }}", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+            "X-CSRF-TOKEN": csrfToken
+        },
+        body: JSON.stringify({ product_id: productId, quantity: 1 })
+    })
+    .then(res => res.json())
+    .then(data => {
+        if(data.success) {
+            showToast(data.message);
+            const counter = document.getElementById('headerCartCount');
+            if(counter) counter.innerText = data.cart_count;
+        } else {
+            alert(data.message);
+        }
+    })
+    .catch(err => {
+        console.error(err);
+        showToast("Error adding item to bag. Please try again.");
+    });
+}
+
+function toggleWishlist(productId, button) {
+    fetch("{{ route('customer.wishlist.toggle') }}", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+            "X-CSRF-TOKEN": csrfToken
+        },
+        body: JSON.stringify({ product_id: productId })
+    })
+    .then(res => res.json())
+    .then(data => {
+        if(data.success) {
+            showToast(data.message);
+            const icon = button.querySelector('i');
+            if(data.action === 'added') {
+                icon.classList.remove('fa-regular');
+                icon.classList.add('fa-solid', 'text-gold');
+            } else {
+                icon.classList.remove('fa-solid', 'text-gold');
+                icon.classList.add('fa-regular');
+            }
+        } else {
+            window.location.href = "{{ route('customer.login') }}";
+        }
+    })
+    .catch(err => {
+        window.location.href = "{{ route('customer.login') }}";
+    });
+}
+
+function submitFilterForm() {
+    document.getElementById('filterDrawer').submit();
+}
+
+function applySorting(val) {
+    document.getElementById('sortByInput').value = val;
+    submitFilterForm();
+}
 </script>
 @endpush

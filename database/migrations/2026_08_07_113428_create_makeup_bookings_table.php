@@ -1,0 +1,34 @@
+<?php
+
+use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
+
+return new class extends Migration
+{
+    /**
+     * Run the migrations.
+     */
+    public function up(): void
+    {
+        Schema::create('makeup_bookings', function (Blueprint $table) {
+            $table->id();
+            $table->foreignId('customer_id')->constrained()->onDelete('cascade');
+            $table->foreignId('makeup_service_id')->constrained()->onDelete('cascade');
+            $table->string('artist_name')->nullable();
+            $table->dateTime('booking_date');
+            $table->string('status')->default('pending'); // pending, confirmed, completed, cancelled
+            $table->decimal('total_price', 10, 2);
+            $table->text('notes')->nullable();
+            $table->timestamps();
+        });
+    }
+
+    /**
+     * Reverse the migrations.
+     */
+    public function down(): void
+    {
+        Schema::dropIfExists('makeup_bookings');
+    }
+};

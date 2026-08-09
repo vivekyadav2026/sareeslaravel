@@ -91,32 +91,50 @@
           <h3 class="dark-form-title">SEND US A MESSAGE</h3>
           <p class="dark-form-subtitle">Have questions about orders, custom designs, or appointments? We'll respond within 24 hours.</p>
         </div>
-        <form class="dark-form-grid">
+
+        @if (session('success'))
+          <div class="alert alert-success mx-4 my-2 text-gold border-gold" style="background: rgba(201, 162, 75, 0.1);">
+            <i class="fa-solid fa-circle-check text-gold me-2"></i> {{ session('success') }}
+          </div>
+        @endif
+
+        @if ($errors->any())
+          <div class="alert alert-danger mx-4 my-2 text-danger border-danger" style="background: rgba(220, 53, 69, 0.1);">
+            <ul class="mb-0">
+              @foreach ($errors->all() as $error)
+                <li>{{ $error }}</li>
+              @endforeach
+            </ul>
+          </div>
+        @endif
+
+        <form action="{{ route('contact.submit') }}" method="POST" class="dark-form-grid" style="padding: 1.5rem;">
+          @csrf
           <div class="dark-form-group">
-            <label class="dark-label">Your Full Name</label>
-            <input type="text" class="dark-input" placeholder="e.g. Neha Sharma">
+            <label class="dark-label">Your Full Name <span class="text-danger">*</span></label>
+            <input type="text" name="name" class="dark-input" placeholder="e.g. Neha Sharma" required value="{{ old('name') }}">
           </div>
           <div class="dark-form-group">
             <label class="dark-label">Phone Number</label>
-            <input type="tel" class="dark-input" placeholder="+91 98765 43210">
+            <input type="tel" name="phone" class="dark-input" placeholder="+91 98765 43210" value="{{ old('phone') }}">
           </div>
           <div class="dark-form-group">
-            <label class="dark-label">Email Address</label>
-            <input type="email" class="dark-input" placeholder="name@example.com">
+            <label class="dark-label">Email Address <span class="text-danger">*</span></label>
+            <input type="email" name="email" class="dark-input" placeholder="name@example.com" required value="{{ old('email') }}">
           </div>
           <div class="dark-form-group">
-            <label class="dark-label">Inquiry Subject</label>
-            <select class="dark-input dark-select">
-              <option>Custom Bridal Lehenga</option>
-              <option>Saree Order Inquiry</option>
-              <option>Bridal Package Booking</option>
-              <option>Makeup Artist Appointment</option>
-              <option>Order Tracking</option>
+            <label class="dark-label">Inquiry Subject <span class="text-danger">*</span></label>
+            <select name="subject" class="dark-input dark-select" required>
+              <option value="Custom Bridal Lehenga">Custom Bridal Lehenga</option>
+              <option value="Saree Order Inquiry">Saree Order Inquiry</option>
+              <option value="Bridal Package Booking">Bridal Package Booking</option>
+              <option value="Makeup Artist Appointment">Makeup Artist Appointment</option>
+              <option value="Order Tracking">Order Tracking</option>
             </select>
           </div>
           <div class="dark-form-group dark-form-full">
-            <label class="dark-label">Your Message</label>
-            <textarea class="dark-input dark-textarea" rows="4" placeholder="Write your message or questions here..."></textarea>
+            <label class="dark-label">Your Message <span class="text-danger">*</span></label>
+            <textarea name="message" class="dark-input dark-textarea" rows="4" placeholder="Write your message or questions here..." required>{{ old('message') }}</textarea>
           </div>
           <div class="dark-form-full">
             <button type="submit" class="bp-book-btn bp-book-featured" style="font-size:0.75rem;">SEND MESSAGE NOW <i class="fa-solid fa-arrow-right ms-2"></i></button>

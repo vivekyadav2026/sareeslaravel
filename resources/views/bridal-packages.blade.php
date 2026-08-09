@@ -21,116 +21,75 @@
     </div>
     <h1 class="plp-page-title">BRIDAL PACKAGES</h1>
     <p class="plp-page-subtitle">Complete Wedding Solutions, Curated for You.</p>
-  </div>
-
-  <!-- Packages Grid -->
+  </div>  <!-- Packages Grid -->
   <div class="bp-grid">
+    @foreach ($packages as $package)
+      @php
+        $isFeatured = \Illuminate\Support\Str::contains(strtolower($package->name), 'gold') || \Illuminate\Support\Str::contains(strtolower($package->name), 'silhouette');
+        $tier = 'SILVER';
+        $badgeClass = 'bp-silver';
+        $icon = 'fa-gem';
+        $image = 'images/pkg_silver.png';
 
-    <!-- Silver Package -->
-    <div class="bp-card">
-      <div class="bp-card-img-wrap">
-        <img src="{{ asset('images/pkg_silver.png') }}" alt="Silver Bridal Package" class="bp-card-img">
-        <span class="bp-tier-badge bp-silver">
-          <i class="fa-solid fa-gem me-1"></i> SILVER
-        </span>
-      </div>
-      <div class="bp-card-body">
-        <div class="bp-card-header">
-          <div>
-            <p class="bp-card-name">Silver Bridal Package</p>
-            <p class="bp-card-tagline">Perfect for an intimate celebration</p>
-          </div>
-          <p class="bp-card-price">₹24,999</p>
+        if (\Illuminate\Support\Str::contains(strtolower($package->name), 'gold') || \Illuminate\Support\Str::contains(strtolower($package->name), 'silhouette')) {
+            $tier = 'GOLD';
+            $badgeClass = 'bp-gold';
+            $icon = 'fa-crown';
+            $image = 'images/pkg_gold.png';
+        } elseif (\Illuminate\Support\Str::contains(strtolower($package->name), 'royal') || \Illuminate\Support\Str::contains(strtolower($package->name), 'heritage') || \Illuminate\Support\Str::contains(strtolower($package->name), 'zardozi')) {
+            $tier = 'ROYAL';
+            $badgeClass = 'bp-royal';
+            $icon = 'fa-star';
+            $image = 'images/pkg_royal.png';
+        }
+      @endphp
+      <div class="bp-card {{ $isFeatured ? 'bp-card-featured' : '' }}">
+        @if ($isFeatured)
+          <div class="bp-popular-badge">⭐ MOST POPULAR</div>
+        @endif
+        <div class="bp-card-img-wrap">
+          <img src="{{ asset($image) }}" alt="{{ $package->name }}" class="bp-card-img">
+          <span class="bp-tier-badge {{ $badgeClass }}">
+            <i class="fa-solid {{ $icon }} me-1"></i> {{ $tier }}
+          </span>
         </div>
-
-        <ul class="bp-feature-list">
-          <li><i class="fa-solid fa-check"></i> Bridal Lehenga (Designer Choice)</li>
-          <li><i class="fa-solid fa-check"></i> Waterproof Bridal Makeup</li>
-          <li><i class="fa-solid fa-check"></i> Luxury Gift Hamper</li>
-          <li><i class="fa-solid fa-check"></i> Exclusive Accessories Set</li>
-          <li><i class="fa-solid fa-xmark bp-cross"></i> Haldi Saree</li>
-          <li><i class="fa-solid fa-xmark bp-cross"></i> Bridal Suit</li>
-        </ul>
-
-        <a href="{{ route('checkout') }}" class="bp-book-btn">
-          BOOK PACKAGE NOW <i class="fa-solid fa-arrow-right ms-1"></i>
-        </a>
-        <p class="bp-whatsapp-link">
-          <a href="#"><i class="fa-brands fa-whatsapp me-1"></i>Enquire on WhatsApp</a>
-        </p>
-      </div>
-    </div>
-
-    <!-- Gold Package -->
-    <div class="bp-card bp-card-featured">
-      <div class="bp-popular-badge">⭐ MOST POPULAR</div>
-      <div class="bp-card-img-wrap">
-        <img src="{{ asset('images/pkg_gold.png') }}" alt="Gold Bridal Package" class="bp-card-img">
-        <span class="bp-tier-badge bp-gold">
-          <i class="fa-solid fa-crown me-1"></i> GOLD
-        </span>
-      </div>
-      <div class="bp-card-body">
-        <div class="bp-card-header">
-          <div>
-            <p class="bp-card-name">Gold Bridal Package</p>
-            <p class="bp-card-tagline">Most loved by our brides</p>
+        <div class="bp-card-body">
+          <div class="bp-card-header">
+            <div>
+              <p class="bp-card-name">{{ $package->name }}</p>
+              <p class="bp-card-tagline" style="font-size:0.75rem; color:rgba(255,255,255,0.65);">{{ \Illuminate\Support\Str::limit($package->description, 60) }}</p>
+            </div>
+            <p class="bp-card-price">₹{{ number_format($package->price, 0) }}</p>
           </div>
-          <p class="bp-card-price">₹39,999</p>
+
+          <ul class="bp-feature-list">
+            @if ($package->features && is_array($package->features))
+              @foreach ($package->features as $feature)
+                <li><i class="fa-solid fa-check"></i> {{ $feature }}</li>
+              @endforeach
+            @else
+              <li><i class="fa-solid fa-check"></i> Luxury Bridal Lehenga</li>
+              <li><i class="fa-solid fa-check"></i> Waterproof Makeup Session</li>
+              <li><i class="fa-solid fa-check"></i> Designer Consultation & Fittings</li>
+            @endif
+          </ul>
+
+          <form action="{{ route('cart.add-package') }}" method="POST" class="w-100 mt-2">
+            @csrf
+            <input type="hidden" name="package_id" value="{{ $package->id }}">
+            <button type="submit" class="bp-book-btn {{ $isFeatured ? 'bp-book-featured' : '' }}">
+              BOOK PACKAGE NOW <i class="fa-solid fa-arrow-right ms-1"></i>
+            </button>
+          </form>
+          <p class="bp-whatsapp-link">
+            <a href="https://wa.me/911234567890?text=I%20am%20interested%20in%20the%20{{ urlencode($package->name) }}" target="_blank">
+              <i class="fa-brands fa-whatsapp me-1"></i>Enquire on WhatsApp
+            </a>
+          </p>
         </div>
-
-        <ul class="bp-feature-list">
-          <li><i class="fa-solid fa-check"></i> Bridal Lehenga (Designer Choice)</li>
-          <li><i class="fa-solid fa-check"></i> Haldi Saree (Free)</li>
-          <li><i class="fa-solid fa-check"></i> Waterproof Bridal Makeup</li>
-          <li><i class="fa-solid fa-check"></i> Luxury Gift Hamper</li>
-          <li><i class="fa-solid fa-check"></i> Exclusive Accessories Set</li>
-          <li><i class="fa-solid fa-xmark bp-cross"></i> Custom Couture Lehenga</li>
-        </ul>
-
-        <a href="{{ route('checkout') }}" class="bp-book-btn bp-book-featured">
-          BOOK PACKAGE NOW <i class="fa-solid fa-arrow-right ms-1"></i>
-        </a>
-        <p class="bp-whatsapp-link">
-          <a href="#"><i class="fa-brands fa-whatsapp me-1"></i>Enquire on WhatsApp</a>
-        </p>
       </div>
-    </div>
-
-    <!-- Royal Package -->
-    <div class="bp-card">
-      <div class="bp-card-img-wrap">
-        <img src="{{ asset('images/pkg_royal.png') }}" alt="Royal Ranisahab Package" class="bp-card-img">
-        <span class="bp-tier-badge bp-royal">
-          <i class="fa-solid fa-star me-1"></i> ROYAL
-        </span>
-      </div>
-      <div class="bp-card-body">
-        <div class="bp-card-header">
-          <div>
-            <p class="bp-card-name">Royal RANISAHAB Package</p>
-            <p class="bp-card-tagline">The ultimate bridal experience</p>
-          </div>
-          <p class="bp-card-price">₹59,999</p>
-        </div>
-
-        <ul class="bp-feature-list">
-          <li><i class="fa-solid fa-check"></i> Custom Lehenga (Your Design)</li>
-          <li><i class="fa-solid fa-check"></i> Bridal Suit Included</li>
-          <li><i class="fa-solid fa-check"></i> Haldi Saree (Free)</li>
-          <li><i class="fa-solid fa-check"></i> Waterproof Bridal Makeup</li>
-          <li><i class="fa-solid fa-check"></i> Luxury Gifts &amp; Accessories</li>
-          <li><i class="fa-solid fa-check"></i> Premium Bridal Experience</li>
-        </ul>
-
-        <a href="{{ route('checkout') }}" class="bp-book-btn">
-          BOOK PACKAGE NOW <i class="fa-solid fa-arrow-right ms-1"></i>
-        </a>
-        <p class="bp-whatsapp-link">
-          <a href="#"><i class="fa-brands fa-whatsapp me-1"></i>Enquire on WhatsApp</a>
-        </p>
-      </div>
-    </div>
+    @endforeach
+  </div>
 
   </div>
 
