@@ -9,8 +9,8 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-    <link rel="stylesheet" href="{{ asset('css/style.css') }}?v={{ time() }}">
-    <link rel="stylesheet" href="{{ asset('style.css') }}?v={{ time() }}">
+    <link rel="stylesheet" href="{{ asset('css/style.css') }}?v={{ file_exists(public_path('css/style.css')) ? filemtime(public_path('css/style.css')) : time() }}">
+    <link rel="stylesheet" href="{{ asset('style.css') }}?v={{ file_exists(public_path('style.css')) ? filemtime(public_path('style.css')) : time() }}">
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <style>
         .border-gold { border: 1px solid var(--gold) !important; }
@@ -138,10 +138,34 @@
       <div class="collapse navbar-collapse justify-content-center" id="navMain">
         <ul class="navbar-nav nav-ranisahab-menu text-center py-2 py-lg-0">
           <li class="nav-item"><a class="nav-link {{ request()->routeIs('home') ? 'active' : '' }}" href="{{ route('home') }}"><i class="fa-solid fa-house me-2 d-lg-none"></i>HOME</a></li>
-          <li class="nav-item"><a class="nav-link {{ request()->routeIs('sarees') ? 'active' : '' }}" href="{{ route('sarees') }}"><i class="fa-solid fa-gem me-2 d-lg-none"></i>SAREES</a></li>
-          <li class="nav-item"><a class="nav-link {{ request()->routeIs('suits') ? 'active' : '' }}" href="{{ route('suits') }}"><i class="fa-solid fa-shirt me-2 d-lg-none"></i>SUITS</a></li>
-          <li class="nav-item"><a class="nav-link {{ request()->routeIs('lehengas') ? 'active' : '' }}" href="{{ route('lehengas') }}"><i class="fa-solid fa-wand-magic-sparkles me-2 d-lg-none"></i>LEHENGAS</a></li>
-          <li class="nav-item"><a class="nav-link {{ request()->routeIs('bridal-collection') ? 'active' : '' }}" href="{{ route('bridal-collection') }}"><i class="fa-solid fa-crown me-2 d-lg-none"></i>BRIDAL COLLECTION</a></li>
+          
+          {{-- Dynamic Category Menu Links --}}
+          @php
+            $navCategories = \App\Models\Category::where('is_active', true)->orderBy('id', 'asc')->get();
+          @endphp
+          @foreach($navCategories as $cat)
+            @php
+              // Map database category slug to predefined routes
+              $routeName = $cat->slug;
+              if ($cat->slug === 'bridal-wear') {
+                  $routeName = 'bridal-collection';
+              }
+              $isActive = request()->routeIs($routeName);
+              
+              // Select class-matching icons for responsive layout drawer
+              $icon = 'fa-tag';
+              if ($cat->slug === 'sarees') $icon = 'fa-gem';
+              elseif ($cat->slug === 'suits') $icon = 'fa-shirt';
+              elseif ($cat->slug === 'lehengas') $icon = 'fa-wand-magic-sparkles';
+              elseif ($cat->slug === 'bridal-wear') $icon = 'fa-crown';
+            @endphp
+            <li class="nav-item">
+              <a class="nav-link {{ $isActive ? 'active' : '' }}" href="{{ Route::has($routeName) ? route($routeName) : '#' }}">
+                <i class="fa-solid {{ $icon }} me-2 d-lg-none"></i>{{ strtoupper($cat->name) }}
+              </a>
+            </li>
+          @endforeach
+
           <li class="nav-item"><a class="nav-link {{ request()->routeIs('bridal-packages') ? 'active' : '' }}" href="{{ route('bridal-packages') }}"><i class="fa-solid fa-box-open me-2 d-lg-none"></i>BRIDAL PACKAGES</a></li>
           <li class="nav-item"><a class="nav-link {{ request()->routeIs('makeup-services') ? 'active' : '' }}" href="{{ route('makeup-services') }}"><i class="fa-solid fa-spa me-2 d-lg-none"></i>MAKEUP SERVICES</a></li>
           <li class="nav-item"><a class="nav-link {{ request()->routeIs('custom-lehenga') ? 'active' : '' }}" href="{{ route('custom-lehenga') }}"><i class="fa-solid fa-scissors me-2 d-lg-none"></i>CUSTOM LEHENGA</a></li>
@@ -275,8 +299,8 @@
   </div>
 </footer>
 
-<div class="toast-container position-fixed bottom-0 end-0 p-3" style="z-index: 9999;">
-  <div id="luxuryToast" class="toast align-items-center text-white bg-dark border-gold border-opacity-50" role="alert" aria-live="assertive" aria-atomic="true">
+<div class="toast-container position-fixed bottom-0 end-0 p-3" style="z-index: 9999; pointer-events: none;">
+  <div id="luxuryToast" class="toast align-items-center text-white bg-dark border-gold border-opacity-50" role="alert" aria-live="assertive" aria-atomic="true" style="pointer-events: auto;">
     <div class="d-flex">
       <div class="toast-body">
         <i class="fa-solid fa-crown text-gold me-2"></i> <span id="toastMessage">Item added to bag!</span>
@@ -298,8 +322,87 @@
     }
   }
 
+  // Global AJAX handler for Add to Cart / Shopping Bag
+  function addToBag(productId, qty = 1, size = 'Free Size', color = 'Maroon') {
+    fetch("{{ route('cart.add') }}", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "X-CSRF-TOKEN": document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
+        "Accept": "application/json"
+      },
+      body: JSON.stringify({
+        product_id: productId,
+        quantity: qty,
+        size: size,
+        color: color
+      })
+    })
+    .then(response => response.json())
+    .then(data => {
+      if (data.success) {
+        showToast(data.message || 'Item added to your shopping bag!');
+        // Update header cart counter badge
+        const headerCartCount = document.getElementById('headerCartCount');
+        if (headerCartCount) {
+          headerCartCount.textContent = data.cart_count;
+        }
+        const cartBadges = document.querySelectorAll('.header-cart-badge, .cart-count-badge, .badge-cart');
+        cartBadges.forEach(badge => {
+          badge.textContent = data.cart_count;
+        });
+      } else {
+        showToast(data.message || 'Failed to add item to shopping bag.');
+      }
+    })
+    .catch(err => {
+      console.error('Error adding to bag:', err);
+      showToast('An error occurred while adding to bag.');
+    });
+  }
+
+  // Global AJAX handler for Toggle Wishlist
+  function toggleWishlist(productId, btnElement) {
+    fetch("{{ route('customer.wishlist.toggle') }}", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "X-CSRF-TOKEN": document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
+        "Accept": "application/json"
+      },
+      body: JSON.stringify({
+        product_id: productId
+      })
+    })
+    .then(response => response.json())
+    .then(data => {
+      if (data.success) {
+        showToast(data.message);
+        if (btnElement) {
+          const icon = btnElement.querySelector('i');
+          if (icon) {
+            if (data.action === 'added') {
+              icon.classList.remove('fa-regular');
+              icon.classList.add('fa-solid', 'text-gold');
+            } else {
+              icon.classList.remove('fa-solid', 'text-gold');
+              icon.classList.add('fa-regular');
+            }
+          }
+        }
+      } else {
+        showToast(data.message || 'Failed to update wishlist.');
+      }
+    })
+    .catch(err => {
+      console.error('Error toggling wishlist:', err);
+      showToast('An error occurred while updating wishlist.');
+    });
+  }
+
   // Set CSRF Token header globally for AJAX
-  const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+  window.csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+  var csrfToken = window.csrfToken;
 </script>
 @stack('scripts')
 </body>

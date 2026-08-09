@@ -103,6 +103,55 @@
                                         </div>
                                     </div>
 
+                                    <div class="row mb-3">
+                                        <div class="col-md-6">
+                                            <label for="rating" class="form-label fw-semibold">Product Star Rating (1.0 to 5.0)</label>
+                                            <input type="number" step="0.1" min="1.0" max="5.0" class="form-control" id="rating" name="rating" value="{{ old('rating', '4.9') }}" placeholder="4.9">
+                                        </div>
+                                        <div class="col-md-6">
+                                            <label for="reviews_count" class="form-label fw-semibold">Reviews Count (Number of Reviews)</label>
+                                            <input type="number" min="0" class="form-control" id="reviews_count" name="reviews_count" value="{{ old('reviews_count', '12') }}" placeholder="12">
+                                        </div>
+                                    </div>
+
+                                    <!-- Available Sizes Selection Widget -->
+                                    <div class="mb-4 p-3 bg-dark bg-opacity-50 rounded border border-warning border-opacity-25">
+                                        <label class="form-label fw-bold text-warning"><i class="fas fa-ruler-horizontal me-1"></i> Available Couture Sizes for Customers</label>
+                                        <div class="d-flex flex-wrap gap-3 mt-2">
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="checkbox" name="selected_sizes[]" value="Free Size (Unstitched)" id="sz_free" checked>
+                                                <label class="form-check-label fw-semibold" for="sz_free">Free Size (Unstitched)</label>
+                                            </div>
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="checkbox" name="selected_sizes[]" value="Custom Stitched" id="sz_custom" checked>
+                                                <label class="form-check-label fw-semibold" for="sz_custom">Custom Stitched</label>
+                                            </div>
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="checkbox" name="selected_sizes[]" value="S" id="sz_s">
+                                                <label class="form-check-label" for="sz_s">S (Small)</label>
+                                            </div>
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="checkbox" name="selected_sizes[]" value="M" id="sz_m">
+                                                <label class="form-check-label" for="sz_m">M (Medium)</label>
+                                            </div>
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="checkbox" name="selected_sizes[]" value="L" id="sz_l">
+                                                <label class="form-check-label" for="sz_l">L (Large)</label>
+                                            </div>
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="checkbox" name="selected_sizes[]" value="XL" id="sz_xl">
+                                                <label class="form-check-label" for="sz_xl">XL (Extra Large)</label>
+                                            </div>
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="checkbox" name="selected_sizes[]" value="XXL" id="sz_xxl">
+                                                <label class="form-check-label" for="sz_xxl">XXL (Double XL)</label>
+                                            </div>
+                                        </div>
+                                        <div class="mt-3">
+                                            <input type="text" class="form-control form-control-sm" name="custom_sizes_text" placeholder="Additional custom sizes (comma separated, e.g. 38, 40, 42)">
+                                        </div>
+                                    </div>
+
                                     <div class="mb-3">
                                         <label for="summary" class="form-label fw-semibold">Short Summary Description</label>
                                         <textarea class="form-control" id="summary" name="summary" rows="2" placeholder="Brief summary details for catalog..."></textarea>
@@ -300,6 +349,34 @@
         $(document).on('click', '.remove-variant', function() {
             var index = $(this).data('index');
             $('#variant-row-' + index).remove();
+        });
+
+        // Live Gallery Image Upload Preview
+        $('#images').on('change', function(e) {
+            var files = e.target.files;
+            var previewContainer = $('#image-previews');
+            previewContainer.empty();
+
+            if (files && files.length > 0) {
+                $.each(files, function(index, file) {
+                    var reader = new FileReader();
+                    reader.onload = function(event) {
+                        var html = `
+                            <div class="col-md-3 col-sm-6">
+                                <div class="card bg-dark border border-warning border-opacity-25 h-100 shadow-sm overflow-hidden text-center position-relative">
+                                    <img src="${event.target.result}" class="card-img-top object-fit-cover" style="height: 160px;" alt="Image Preview">
+                                    <div class="card-body p-2 bg-dark bg-opacity-90">
+                                        <span class="badge bg-warning text-dark small fw-bold">New Upload ${index + 1}</span>
+                                        <div class="small text-truncate text-white-50 mt-1" style="font-size: 0.72rem;">${file.name}</div>
+                                    </div>
+                                </div>
+                            </div>
+                        `;
+                        previewContainer.append(html);
+                    };
+                    reader.readAsDataURL(file);
+                });
+            }
         });
     });
 </script>

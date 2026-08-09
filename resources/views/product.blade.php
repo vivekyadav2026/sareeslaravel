@@ -66,42 +66,12 @@
   </form>
 
   <!-- Product Grid -->
-  <div class="plp-grid">
+  <div class="row g-3 g-md-4">
     @forelse ($products as $product)
-      <div class="plp-card">
-        <div class="plp-card-img-wrap">
-          <a href="{{ route('product.show', $product->slug) }}">
-            @if($product->images && $product->images->isNotEmpty())
-              <img src="{{ asset($product->images->first()->file_path) }}" alt="{{ $product->name }}" class="plp-card-img">
-            @else
-              <img src="{{ asset('images/cat_saree.png') }}" alt="{{ $product->name }}" class="plp-card-img">
-            @endif
-          </a>
-
-          @if ($product->is_best_seller)
-            <span class="plp-badge badge-best">BEST SELLER</span>
-          @elseif ($product->is_new_arrival)
-            <span class="plp-badge badge-new">NEW ARRIVAL</span>
-          @elseif ($product->is_featured)
-            <span class="plp-badge badge-excl">EXCLUSIVE</span>
-          @endif
-          
-          <button class="plp-wishlist-btn" onclick="toggleWishlist({{ $product->id }}, this)">
-            <i class="@if(Auth::check() ? \App\Models\Wishlist::where('customer_id', auth()->user()->customer->id ?? 0)->where('product_id', $product->id)->exists() : in_array($product->id, session('wishlist', []))) fa-solid text-gold @else fa-regular @endif fa-heart"></i>
-          </button>
-        </div>
-        <div class="plp-card-body">
-          <p class="plp-card-name"><a href="{{ route('product.show', $product->slug) }}" class="text-white text-decoration-none">{{ $product->name }}</a></p>
-          <p class="plp-card-price">₹{{ number_format($product->price, 0) }}</p>
-          <div class="plp-card-footer">
-            <span class="plp-rating"><i class="fa-solid fa-star"></i> {{ $product->average_rating }} <span class="plp-rating-count">({{ $product->reviews_count }})</span></span>
-            <button class="plp-cart-btn" onclick="addToBag({{ $product->id }})"><i class="fa-solid fa-bag-shopping"></i></button>
-          </div>
-        </div>
-      </div>
+      @include('partials.product_card', ['product' => $product])
     @empty
       <div class="col-12 text-center py-5">
-        <p class="text-muted">No sarees found matching your criteria.</p>
+        <p class="text-muted font-label">No sarees found matching your criteria.</p>
       </div>
     @endforelse
   </div>
@@ -184,5 +154,47 @@ function applySorting(val) {
     document.getElementById('sortByInput').value = val;
     submitFilterForm();
 }
+
+// Load More Products Functionality
+document.addEventListener('DOMContentLoaded', function() {
+    const cards = document.querySelectorAll('.plp-grid .plp-card');
+    const loadMoreBtn = document.querySelector('.plp-load-more-btn');
+    const itemsToShow = 8;
+    let currentVisible = itemsToShow;
+
+    if (!loadMoreBtn) return;
+
+    if (cards.length <= itemsToShow) {
+        loadMoreBtn.parentElement.style.display = 'none';
+    } else {
+        for (let i = itemsToShow; i < cards.length; i++) {
+            cards[i].classList.add('d-none');
+        }
+    }
+
+    loadMoreBtn.addEventListener('click', function() {
+        let shownCount = 0;
+        for (let i = currentVisible; i < cards.length; i++) {
+            if (shownCount < itemsToShow) {
+                cards[i].classList.remove('d-none');
+                shownCount++;
+            }
+        }
+        currentVisible += shownCount;
+
+        if (currentVisible >= cards.length) {
+            loadMoreBtn.parentElement.style.display = 'none';
+        }
+    });
+
+    window.addEventListener('scroll', function() {
+        if (loadMoreBtn.parentElement && loadMoreBtn.parentElement.style.display !== 'none') {
+            const rect = loadMoreBtn.getBoundingClientRect();
+            if (rect.top <= window.innerHeight + 250) {
+                loadMoreBtn.click();
+            }
+        }
+    }, { passive: true });
+});
 </script>
 @endpush

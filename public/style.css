@@ -113,6 +113,14 @@ a { text-decoration: none; color: inherit; transition: all 0.2s ease; }
   background: var(--gold);
   color: var(--bg-black);
 }
+.btn-outline-gold.active,
+.cout-size-btn.active {
+  background: linear-gradient(90deg, #c5a880 0%, #b2946c 100%) !important;
+  color: #000000 !important;
+  font-weight: 700 !important;
+  border-color: #c9a24b !important;
+  box-shadow: 0 0 14px rgba(201, 162, 75, 0.45);
+}
 
 .btn-maroon {
   background-color: var(--maroon);
@@ -1399,7 +1407,7 @@ a { text-decoration: none; color: inherit; transition: all 0.2s ease; }
    ========================================================= */
 .packages-section {
   background-color: #0a0806;
-  padding: 5rem 0;
+  padding: 2rem 0 4rem;
 }
 .package-card {
   background-color: #181412;
@@ -2052,7 +2060,7 @@ a { text-decoration: none; color: inherit; transition: all 0.2s ease; }
 
 .plp-card-img-wrap {
   position: relative;
-  height: 240px;
+  height: 320px;
   overflow: hidden;
 }
 .plp-card-img {
@@ -2539,8 +2547,22 @@ a { text-decoration: none; color: inherit; transition: all 0.2s ease; }
   transition: border-color 0.2s;
 }
 .dark-input:focus { border-color: var(--gold); }
-.dark-input::placeholder { color: #4a4540; }
-.dark-select { appearance: none; }
+.dark-input::placeholder { color: #888078; }
+.dark-select {
+  background-color: #1c1815 !important;
+  color: #ffffff !important;
+}
+.dark-select option,
+select option {
+  background-color: #1c1815 !important;
+  color: #ffffff !important;
+  padding: 8px 12px;
+}
+.dark-select option:checked,
+select option:checked {
+  background-color: var(--gold) !important;
+  color: #000000 !important;
+}
 .dark-textarea { resize: vertical; min-height: 90px; }
 
 /* --- Gallery Dark Grid --- */
@@ -2787,4 +2809,101 @@ a { text-decoration: none; color: inherit; transition: all 0.2s ease; }
 .makeup-pkg-grid { padding: 0 1rem 1.5rem; }
 @media (min-width: 992px) {
   .makeup-pkg-grid { padding: 0 3rem 2rem; flex-direction: row; }
+}
+
+/* ==========================================================================
+   UNIVERSAL MOBILE RESPONSIVE ENHANCEMENTS (Smartphones & Tablets)
+   ========================================================================== */
+@media (max-width: 767.98px) {
+  /* Prevent automatic iOS browser zoom on input focus */
+  input[type="text"],
+  input[type="email"],
+  input[type="tel"],
+  input[type="password"],
+  input[type="number"],
+  input[type="date"],
+  select,
+  textarea {
+    font-size: 16px !important;
+  }
+
+  /* Container padding tune */
+  .container, .container-fluid {
+    padding-left: 12px !important;
+    padding-right: 12px !important;
+  }
+
+  /* Product Catalog Grid 2 Columns on Mobile */
+  .plp-grid, .product-grid-mobile {
+    display: grid !important;
+    grid-template-columns: repeat(2, 1fr) !important;
+    gap: 10px !important;
+  }
+
+  .plp-card {
+    border-radius: 8px !important;
+    overflow: hidden !important;
+  }
+
+  .plp-card-img-wrap {
+    height: 220px !important;
+  }
+
+  .plp-card-body {
+    padding: 8px 10px !important;
+  }
+
+  .plp-card-name {
+    font-size: 0.78rem !important;
+    line-height: 1.3 !important;
+    height: 2.6em !important;
+    overflow: hidden !important;
+  }
+
+  .plp-card-price {
+    font-size: 0.88rem !important;
+    margin-bottom: 4px !important;
+  }
+
+  /* Product Details Page Mobile CTA & Image */
+  .product-main-image-wrap {
+    height: 380px !important;
+  }
+
+  .btn-checkout-action,
+  .btn-gold,
+  .btn-maroon {
+    min-height: 46px !important;
+  }
+
+  /* Stepper Bar Mobile Compact */
+  .stepper-wrapper {
+    padding: 0.5rem 0 !important;
+  }
+
+  .step-number {
+    width: 28px !important;
+    height: 28px !important;
+    font-size: 0.75rem !important;
+  }
+
+  .step-label {
+    font-size: 0.65rem !important;
+    letter-spacing: 0.05em !important;
+  }
+
+  /* Modal Dialog Mobile Viewport Fit */
+  .modal-dialog {
+    margin: 10px !important;
+  }
+
+  .modal-body {
+    padding: 1rem !important;
+  }
+
+  /* DataTables & Admin Tables Horizontal Touch Scroll */
+  .table-responsive {
+    overflow-x: auto !important;
+    -webkit-overflow-scrolling: touch !important;
+  }
 }

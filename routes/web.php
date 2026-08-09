@@ -6,8 +6,12 @@ use App\Http\Controllers\CartController;
 use App\Http\Controllers\CheckoutController;
 
 Route::get('/', function () {
-    return view('home');
+    $packages = \App\Models\BridalPackage::where('is_active', true)->orderBy('id', 'asc')->get();
+    $initialProducts = \App\Models\Product::where('is_active', true)->with(['images'])->latest()->paginate(8);
+    return view('home', compact('packages', 'initialProducts'));
 })->name('home');
+
+Route::get('/api/products', [CatalogController::class, 'apiProducts'])->name('api.products');
 
 // Catalog Routes (Dynamic)
 Route::get('/sarees', [CatalogController::class, 'sarees'])->name('sarees');
@@ -16,7 +20,7 @@ Route::get('/lehengas', [CatalogController::class, 'lehengas'])->name('lehengas'
 Route::get('/bridal-collection', [CatalogController::class, 'bridalCollection'])->name('bridal-collection');
 Route::get('/bridal-packages', [CatalogController::class, 'bridalPackages'])->name('bridal-packages');
 Route::post('/cart/add-package', [CartController::class, 'addPackage'])->name('cart.add-package');
-Route::get('/makeup-services', function () { return view('makeup-services'); })->name('makeup-services');
+Route::get('/makeup-services', [CatalogController::class, 'makeupServices'])->name('makeup-services');
 Route::post('/makeup-services', [CatalogController::class, 'submitMakeupBooking'])->name('makeup-services.submit');
 
 Route::get('/product/{slug}', [CatalogController::class, 'showProduct'])->name('product.show');
@@ -34,12 +38,14 @@ Route::post('/cart/add', [CartController::class, 'add'])->name('cart.add');
 Route::post('/cart/update', [CartController::class, 'update'])->name('cart.update');
 Route::post('/cart/remove', [CartController::class, 'remove'])->name('cart.remove');
 
-// Checkout & Payment Gates Routes (Dynamic)
+// Checkout Routes (Cart preview allowed for all; order placement requires login)
+Route::get('/checkout', [CheckoutController::class, 'index'])->name('checkout');
+Route::post('/checkout/giftwrap', [CheckoutController::class, 'updateGiftWrap'])->name('checkout.giftwrap');
+Route::post('/checkout/coupon', [CheckoutController::class, 'applyCoupon'])->name('checkout.coupon');
+Route::post('/checkout/coupon/remove', [CheckoutController::class, 'removeCoupon'])->name('checkout.coupon.remove');
+Route::post('/checkout/check-pincode', [CheckoutController::class, 'checkPincode'])->name('checkout.check-pincode');
+
 Route::middleware('auth')->group(function () {
-    Route::get('/checkout', [CheckoutController::class, 'index'])->name('checkout');
-    Route::post('/checkout/giftwrap', [CheckoutController::class, 'updateGiftWrap'])->name('checkout.giftwrap');
-    Route::post('/checkout/coupon', [CheckoutController::class, 'applyCoupon'])->name('checkout.coupon');
-    Route::post('/checkout/coupon/remove', [CheckoutController::class, 'removeCoupon'])->name('checkout.coupon.remove');
     Route::post('/checkout/place', [CheckoutController::class, 'placeOrder'])->name('checkout.place');
     Route::post('/checkout/payment-verify', [CheckoutController::class, 'verifyPayment'])->name('checkout.payment-verify');
 });
@@ -155,6 +161,7 @@ Route::prefix('admin')->name('admin.')->group(function () {
         Route::delete('questions/{question}', [\App\Http\Controllers\Admin\ProductController::class, 'destroyQuestion'])->name('questions.destroy');
 
         // Products Resource CRUD
+        Route::delete('product-images/{image}', [\App\Http\Controllers\Admin\ProductController::class, 'destroyImage'])->name('product-images.destroy');
         Route::resource('products', \App\Http\Controllers\Admin\ProductController::class);
 
         // Orders Management
@@ -173,6 +180,7 @@ Route::prefix('admin')->name('admin.')->group(function () {
         Route::post('appointments/{appointment}/reschedule', [\App\Http\Controllers\Admin\BridalController::class, 'rescheduleAppointment'])->name('appointments.reschedule');
         Route::get('bridal-packages', [\App\Http\Controllers\Admin\BridalController::class, 'packagesIndex'])->name('bridal-packages.index');
         Route::post('bridal-packages', [\App\Http\Controllers\Admin\BridalController::class, 'packagesStore'])->name('bridal-packages.store');
+        Route::put('bridal-packages/{package}', [\App\Http\Controllers\Admin\BridalController::class, 'packagesUpdate'])->name('bridal-packages.update');
         Route::delete('bridal-packages/{package}', [\App\Http\Controllers\Admin\BridalController::class, 'packagesDestroy'])->name('bridal-packages.destroy');
 
         // Custom Bridal Design Requests

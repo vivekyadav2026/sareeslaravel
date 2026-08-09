@@ -16,14 +16,14 @@
   <div class="dark-split-hero reverse">
     <div class="dark-split-container">
       <div class="dark-split-content">
-        <span class="dark-split-label">CRAFTED WITH LOVE</span>
-        <h1 class="dark-split-title">PRESERVING<br>CENTURIES OF<br>ZARI ARTISTRY</h1>
-        <p class="dark-split-text">Founded with a vision to make royal bridal fashion accessible without compromising quality, RANISAHAB collaborates directly with master handloom weavers in Varanasi, Jaipur, and Kanchipuram.</p>
-        <p class="dark-split-text" style="margin-top:0.75rem;">Every saree, lehenga, and suit tells a story of meticulous zari weaving, pure silk fabrics, and authentic craftsmanship passed down through generations.</p>
+        <span class="dark-split-label text-gold"><i class="fa-solid fa-sparkles me-1"></i> NEW AGE LUXURY BRIDAL HOUSE</span>
+        <h1 class="dark-split-title">REDEFINING<br>BRIDAL COUTURE<br>&amp; HANDLOOM ZARI</h1>
+        <p class="dark-split-text">Welcome to RANISAHAB — a fresh luxury bridal house launched with a vision to connect modern brides directly with master handloom weavers across Varanasi, Kanchipuram, and Jaipur.</p>
+        <p class="dark-split-text" style="margin-top:0.75rem;">By eliminating traditional retail markups, we deliver 100% certified pure silk sarees, handcrafted lehengas, and bespoke bridal wear straight to your doorstep with guaranteed one-design exclusivity.</p>
       </div>
       <div class="dark-split-img-wrap">
         <div class="dark-split-img">
-          <img src="{{ asset('images/fabric_detail.png') }}" alt="Zari Craftsmanship">
+          <img src="{{ asset('images/about_heritage.png') }}" alt="RANISAHAB Heritage Zari Craftsmanship">
         </div>
       </div>
     </div>
@@ -32,20 +32,20 @@
   <!-- Stats Row -->
   <div class="about-stats-row">
     <div class="about-stat-item">
-      <span class="about-stat-number">10,000+</span>
-      <span class="about-stat-label">Happy Brides</span>
+      <span class="about-stat-number">100%</span>
+      <span class="about-stat-label">Certified Pure Silk</span>
     </div>
     <div class="about-stat-item">
-      <span class="about-stat-number">300+</span>
+      <span class="about-stat-number">500+</span>
+      <span class="about-stat-label">Handcrafted Designs</span>
+    </div>
+    <div class="about-stat-item">
+      <span class="about-stat-number">50+</span>
       <span class="about-stat-label">Master Artisans</span>
     </div>
     <div class="about-stat-item">
-      <span class="about-stat-number">25+</span>
-      <span class="about-stat-label">Years of Heritage</span>
-    </div>
-    <div class="about-stat-item">
-      <span class="about-stat-number">3</span>
-      <span class="about-stat-label">Flagship Boutiques</span>
+      <span class="about-stat-number">25,000+</span>
+      <span class="about-stat-label">Pincodes Delivery</span>
     </div>
   </div>
 

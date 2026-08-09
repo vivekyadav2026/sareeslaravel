@@ -69,41 +69,53 @@
 
       <!-- Ratings & Reviews -->
       <div class="d-flex align-items-center gap-3 mb-4">
-        <span class="text-gold"><i class="fa-solid fa-star"></i> {{ $product->average_rating }}</span>
-        <span class="text-muted">|</span>
-        <span class="small text-white-50">{{ $product->reviews_count }} Royal Reviews</span>
-        <span class="text-muted">|</span>
+        <span class="text-gold fw-bold"><i class="fa-solid fa-star"></i> {{ $product->average_rating }}</span>
+        <span class="text-white-50">|</span>
+        <span class="small text-white opacity-90 fw-semibold">{{ $product->reviews_count }} Royal Reviews</span>
+        <span class="text-white-50">|</span>
         <span class="text-success small fw-bold"><i class="fa-solid fa-circle-check me-1"></i>In Stock</span>
       </div>
 
       <!-- Pricing Block -->
-      <div class="mb-4 p-4 rounded" style="background: rgba(90, 11, 22, 0.15); border: 1px solid rgba(201, 162, 75, 0.25);">
+      <div class="mb-4 p-4 rounded" style="background: rgba(90, 11, 22, 0.25); border: 1px solid rgba(201, 162, 75, 0.4);">
         <div class="d-flex align-items-baseline gap-3 mb-1">
-          <span class="fs-2 fw-bold text-gold">₹{{ number_format($product->price, 0) }}</span>
+          <span class="fs-2 fw-bold text-gold" style="color: #f3dfb2 !important;">₹{{ number_format($product->price, 0) }}</span>
           @if ($product->sale_price)
-            <span class="text-muted text-decoration-line-through">₹{{ number_format($product->sale_price, 0) }}</span>
+            <span class="text-white opacity-60 text-decoration-line-through">₹{{ number_format($product->sale_price, 0) }}</span>
           @endif
         </div>
-        <p class="small text-muted mb-0">Inclusive of all local GST taxes. Free express shipping across India.</p>
+        <p class="small text-white opacity-90 mb-0"><i class="fa-solid fa-truck-fast text-gold me-1"></i> Inclusive of all local GST taxes. Free express shipping across India.</p>
       </div>
 
       <!-- Description -->
       <div class="mb-4">
-        <h5 class="text-gold-light font-display border-bottom pb-2 mb-3">COUTURE DESCRIPTION</h5>
-        <p class="text-white-50" style="line-height: 1.8;">{{ $product->description }}</p>
+        <h5 class="text-gold font-display border-bottom border-warning border-opacity-25 pb-2 mb-3" style="color: #c9a24b !important;">COUTURE DESCRIPTION</h5>
+        <p class="text-white opacity-90" style="line-height: 1.8; color: #f5f0eb !important; font-size: 0.95rem;">{{ $product->description ?: ($product->summary ?: 'Handcrafted luxury boutique ensemble with fine detailing and authentic craftsmanship.') }}</p>
       </div>
 
       <!-- Sizing Options -->
       <div class="mb-4">
         <div class="d-flex justify-content-between align-items-center mb-2">
-          <label class="text-gold-light fw-bold">SELECT COUTURE SIZE</label>
-          <a href="{{ route('customer.measurements') }}" class="small text-gold-light text-decoration-underline"><i class="fa-solid fa-ruler me-1"></i>Sizing Spec Sheet</a>
+          <label class="text-gold fw-bold" style="color: #f3dfb2 !important;">SELECT COUTURE SIZE</label>
+          <a href="{{ route('customer.measurements') }}" class="small text-gold text-decoration-underline" style="color: #c9a24b !important;"><i class="fa-solid fa-ruler me-1"></i>Sizing Spec Sheet</a>
         </div>
-        <div class="d-flex gap-2">
-          <button type="button" class="btn btn-outline-gold active px-4 py-2 font-display text-uppercase" style="font-size: 0.8rem;">Free Size (Unstitched)</button>
-          <button type="button" class="btn btn-outline-gold px-4 py-2 font-display text-uppercase" style="font-size: 0.8rem;" onclick="showToast('Custom fitting details will be retrieved from your profile!')">Custom Stitched</button>
+        <div class="d-flex flex-wrap gap-2" id="coutureSizeButtons">
+          @if ($product->variants && $product->variants->where('size', '!=', null)->isNotEmpty())
+            @foreach($product->variants->pluck('size')->unique() as $sz)
+              <button type="button" class="btn btn-outline-gold cout-size-btn {{ $loop->first ? 'active' : '' }} px-4 py-2 font-display text-uppercase" style="font-size: 0.8rem;" onclick="selectCoutureSize(this, '{{ $sz }}')">
+                {{ $sz }}
+              </button>
+            @endforeach
+          @else
+            <button type="button" class="btn btn-outline-gold cout-size-btn active px-4 py-2 font-display text-uppercase" style="font-size: 0.8rem;" onclick="selectCoutureSize(this, 'Free Size (Unstitched)')">
+              Free Size (Unstitched)
+            </button>
+            <button type="button" class="btn btn-outline-gold cout-size-btn px-4 py-2 font-display text-uppercase" style="font-size: 0.8rem;" onclick="selectCoutureSize(this, 'Custom Stitched')">
+              <i class="fa-solid fa-scissors me-1 text-gold"></i> Custom Stitched
+            </button>
+          @endif
         </div>
-        <small class="text-white-50 d-block mt-2"><i class="fa-solid fa-scissors me-1"></i>All sarees/lehengas include standard sizing margins for personal alterations.</small>
+        <small class="text-white opacity-85 d-block mt-2" style="color: #e5cf9b !important;"><i class="fa-solid fa-scissors me-1 text-gold"></i>All sarees/lehengas include standard sizing margins for personal alterations.</small>
       </div>
 
       <!-- Action Buttons: Buy Now / Add to Bag / Wishlist -->
@@ -121,8 +133,8 @@
         <!-- ADD TO BAG + WISHLIST side by side -->
         <div class="d-flex gap-3">
           <button type="button"
-            class="btn btn-gold flex-grow-1 py-3 d-flex align-items-center justify-content-center gap-2 font-display fw-bold"
-            style="letter-spacing: 0.1em;"
+            class="btn btn-gold flex-grow-1 py-3 d-flex align-items-center justify-content-center gap-2 font-display fw-bold text-dark"
+            style="letter-spacing: 0.1em; background: linear-gradient(90deg, #c5a880 0%, #b2946c 100%); border: none;"
             onclick="addToBag({{ $product->id }})">
             <i class="fa-solid fa-bag-shopping fs-5"></i> ADD TO BAG
           </button>
@@ -139,12 +151,12 @@
       <div class="accordion luxury-accordion mb-4" id="detailsAccordion">
         <div class="accordion-item bg-transparent border-secondary border-opacity-25 text-white">
           <h2 class="accordion-header">
-            <button class="accordion-button collapsed bg-transparent text-gold-light border-0" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne">
+            <button class="accordion-button collapsed bg-transparent text-gold border-0 fw-bold" style="color: #f3dfb2 !important;" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne">
               ❖ DESIGN DETAILS &amp; FABRIC
             </button>
           </h2>
           <div id="collapseOne" class="accordion-collapse collapse" data-bs-parent="#detailsAccordion">
-            <div class="accordion-body text-white-50 small">
+            <div class="accordion-body text-white opacity-90 small" style="color: #e5cf9b !important; line-height: 1.7;">
               @if ($product->category && $product->category->slug === 'sarees')
                 This saree couture creation features 100% pure silk yards hand-loomed with metallic gold thread weavers (Zari). It includes matching blouse fabric materials (80cm) with running borders. Recommend dry-clean only to preserve color fastness.
               @elseif ($product->category && $product->category->slug === 'suits')
@@ -160,12 +172,12 @@
         
         <div class="accordion-item bg-transparent border-secondary border-opacity-25 text-white">
           <h2 class="accordion-header">
-            <button class="accordion-button collapsed bg-transparent text-gold-light border-0" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo">
+            <button class="accordion-button collapsed bg-transparent text-gold border-0 fw-bold" style="color: #f3dfb2 !important;" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo">
               ❖ LOGISTICS, DELIVERY &amp; RETURNS
             </button>
           </h2>
           <div id="collapseTwo" class="accordion-collapse collapse" data-bs-parent="#detailsAccordion">
-            <div class="accordion-body text-white-50 small">
+            <div class="accordion-body text-white opacity-90 small" style="color: #e5cf9b !important; line-height: 1.7;">
               Handled via <strong>Shiprocket logistics</strong>. We provide free express delivery across India within 3-5 business days. Return requested within 7 days is supported with zero reverse logistics pickup fees.
             </div>
           </div>
@@ -176,48 +188,17 @@
 
   </div>
 
-  <!-- Related Products Grid -->
-  @if ($relatedProducts && $relatedProducts->isNotEmpty())
-    <div class="mt-5 pt-4">
+  <!-- You May Also Like / Related Creations -->
+  @if(isset($relatedProducts) && $relatedProducts->isNotEmpty())
+    <div class="mt-5 pt-4 border-top border-warning border-opacity-15">
       <div class="section-title-wrapper text-center mb-4">
-        <span class="motif text-gold">❖ RELATED CREATIONS ❖</span>
-        <h3 class="text-gold font-display text-uppercase" style="letter-spacing: 0.1em;">You May Also Admire</h3>
+        <span class="motif text-gold">❖</span>
+        <h3 class="text-gold-light font-display fs-3 text-uppercase mb-1">YOU MAY ALSO LIKE</h3>
+        <p class="text-white opacity-75 small font-label">Complementary Royal Creations From Our Atelier</p>
       </div>
-
-      <div class="row g-4">
+      <div class="row g-3 g-md-4">
         @foreach ($relatedProducts as $rel)
-          <div class="col-md-3 col-sm-6">
-            <div class="plp-card" style="cursor:pointer;" onclick="window.location='{{ route('product.show', ['slug' => $rel->slug]) }}'">
-              <div class="plp-card-img-wrap">
-                @if ($rel->images && $rel->images->isNotEmpty())
-                  <img src="{{ asset($rel->images->first()->file_path) }}" alt="{{ $rel->name }}" class="plp-card-img">
-                @else
-                  @php
-                    $fallbackImage = 'images/cat_saree.png';
-                    if ($rel->category && $rel->category->slug === 'suits') {
-                        $fallbackImage = 'images/cat_suit.png';
-                    } elseif ($rel->category && $rel->category->slug === 'lehengas') {
-                        $fallbackImage = 'images/cat_lehenga.png';
-                    } elseif ($rel->category && $rel->category->slug === 'bridal-wear') {
-                        $fallbackImage = 'images/cat_bridal.png';
-                    }
-                  @endphp
-                  <img src="{{ asset($fallbackImage) }}" alt="{{ $rel->name }}" class="plp-card-img">
-                @endif
-                <button class="plp-wishlist-btn" onclick="event.stopPropagation(); toggleWishlist({{ $rel->id }}, this)">
-                  <i class="@if(Auth::check() ? \App\Models\Wishlist::where('customer_id', auth()->user()->customer->id ?? 0)->where('product_id', $rel->id)->exists() : in_array($rel->id, session('wishlist', []))) fa-solid text-gold @else fa-regular @endif fa-heart"></i>
-                </button>
-              </div>
-              <div class="plp-card-body">
-                <p class="plp-card-name" style="font-size: 0.85rem;">{{ $rel->name }}</p>
-                <p class="plp-card-price">₹{{ number_format($rel->price, 0) }}</p>
-                <div class="plp-card-footer">
-                  <span class="plp-rating"><i class="fa-solid fa-star"></i> {{ $rel->average_rating }}</span>
-                  <button class="plp-cart-btn" onclick="event.stopPropagation(); addToBag({{ $rel->id }})"><i class="fa-solid fa-bag-shopping"></i></button>
-                </div>
-              </div>
-            </div>
-          </div>
+          @include('partials.product_card', ['product' => $rel])
         @endforeach
       </div>
     </div>
@@ -225,17 +206,100 @@
 
   </div>
 </div>
+
+<!-- Custom Stitched Fitting Details Modal -->
+<div class="modal fade" id="customStitchedModal" tabindex="-1" aria-labelledby="customStitchedModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered modal-lg">
+    <div class="modal-content text-white" style="background: linear-gradient(145deg, #181410 0%, #0c0a08 100%); border: 1px solid rgba(201, 162, 75, 0.4); border-radius: 12px; box-shadow: 0 15px 40px rgba(0,0,0,0.8);">
+      <div class="modal-header border-bottom border-warning border-opacity-25 pb-3">
+        <h5 class="modal-title font-display text-gold d-flex align-items-center gap-2" id="customStitchedModalLabel">
+          <i class="fa-solid fa-scissors text-gold"></i> CUSTOM STITCHING &amp; FITTING SPECIFICATIONS
+        </h5>
+        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body py-4 px-4">
+        <div class="alert alert-dark border-gold border-opacity-25 text-gold-light small mb-4">
+          <i class="fa-solid fa-crown me-2 text-gold"></i> Our royal master tailors will stitch this {{ $product->name }} according to your exact measurements with padding, lining, and finishing.
+        </div>
+
+        <div class="row g-3">
+          <div class="col-md-6">
+            <label class="form-label small text-gold fw-bold">Bust / Chest (Inches)</label>
+            <input type="number" id="fit_bust" class="form-control bg-dark border-secondary text-white" placeholder="e.g. 36">
+          </div>
+          <div class="col-md-6">
+            <label class="form-label small text-gold fw-bold">Waist (Inches)</label>
+            <input type="number" id="fit_waist" class="form-control bg-dark border-secondary text-white" placeholder="e.g. 30">
+          </div>
+          <div class="col-md-6">
+            <div class="form-group">
+              <label class="form-label small text-gold fw-bold">Hip Size (Inches)</label>
+              <input type="number" id="fit_hip" class="form-control bg-dark border-secondary text-white" placeholder="e.g. 38">
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="form-group">
+              <label class="form-label small text-gold fw-bold">Desired Length / Height</label>
+              <input type="text" id="fit_length" class="form-control bg-dark border-secondary text-white" placeholder="e.g. 42 inches / 5ft 5in">
+            </div>
+          </div>
+          <div class="col-12">
+            <label class="form-label small text-gold fw-bold">Special Customisation &amp; Neckline Instructions</label>
+            <textarea id="fit_notes" class="form-control bg-dark border-secondary text-white" rows="3" placeholder="Deep neck preference, sleeve length (e.g. Full Sleeve / Elbow length), padding preference..."></textarea>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer border-top border-warning border-opacity-15">
+        <button type="button" class="btn btn-outline-secondary px-4 text-white" data-bs-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-gold px-4 fw-bold font-label text-dark" onclick="confirmCustomFitting()" style="background: linear-gradient(90deg, #c5a880 0%, #b2946c 100%); border: none;">
+          <i class="fa-solid fa-circle-check me-1"></i> SAVE FITTING &amp; SELECT CUSTOM SIZE
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
 @endsection
 
 @push('scripts')
 <script>
+  let selectedCoutureSize = "{{ $product->variants && $product->variants->where('size', '!=', null)->isNotEmpty() ? $product->variants->pluck('size')->filter()->first() : 'Free Size (Unstitched)' }}";
+
+  function selectCoutureSize(btn, sizeName) {
+      document.querySelectorAll('.cout-size-btn').forEach(b => {
+          b.classList.remove('active');
+          b.style.background = 'transparent';
+          b.style.color = 'var(--gold)';
+      });
+      btn.classList.add('active');
+      btn.style.background = 'linear-gradient(90deg, #c5a880 0%, #b2946c 100%)';
+      btn.style.color = '#000000';
+      selectedCoutureSize = sizeName;
+
+      if (sizeName === 'Custom Stitched') {
+          const modal = new bootstrap.Modal(document.getElementById('customStitchedModal'));
+          modal.show();
+      } else {
+          showToast("Selected size: " + sizeName);
+      }
+  }
+
+  function confirmCustomFitting() {
+      const bust = document.getElementById('fit_bust').value;
+      const waist = document.getElementById('fit_waist').value;
+      const modalEl = document.getElementById('customStitchedModal');
+      const modal = bootstrap.Modal.getInstance(modalEl);
+      if (modal) modal.hide();
+      
+      selectedCoutureSize = `Custom Stitched (${bust ? 'Bust:' + bust + '"' : 'Custom Specs'})`;
+      showToast("Custom fitting measurements saved for your order!");
+  }
+
   function swapMainImage(src, element) {
       document.getElementById('mainProductImg').src = src;
-      // Clear all border highlights
       document.querySelectorAll('.thumb-box').forEach(box => {
           box.style.borderColor = 'rgba(255,255,255,0.1)';
       });
-      // Highlight selected thumb
       element.style.borderColor = 'var(--gold)';
   }
 
@@ -246,12 +310,12 @@
               "Content-Type": "application/json",
               "X-CSRF-TOKEN": csrfToken
           },
-          body: JSON.stringify({ product_id: productId, quantity: 1 })
+          body: JSON.stringify({ product_id: productId, quantity: 1, size: selectedCoutureSize })
       })
       .then(res => res.json())
       .then(data => {
           if(data.success) {
-              showToast(data.message);
+              showToast(data.message + " (" + selectedCoutureSize + ")");
               const counter = document.getElementById('headerCartCount');
               if(counter) counter.innerText = data.cart_count;
           } else {
@@ -291,6 +355,7 @@
           window.location.href = "{{ route('customer.login') }}";
       });
   }
+
   function buyNow(productId) {
       const btn = event.currentTarget;
       const originalHtml = btn.innerHTML;
@@ -303,7 +368,7 @@
               "Content-Type": "application/json",
               "X-CSRF-TOKEN": csrfToken
           },
-          body: JSON.stringify({ product_id: productId, quantity: 1 })
+          body: JSON.stringify({ product_id: productId, quantity: 1, size: selectedCoutureSize })
       })
       .then(res => res.json())
       .then(data => {

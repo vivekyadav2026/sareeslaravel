@@ -391,6 +391,13 @@
   color: var(--ivory);
 }
 
+.luxury-input option,
+.auth-form-input option {
+  background-color: #1c1815 !important;
+  color: #ffffff !important;
+  padding: 8px 12px;
+}
+
 /* ── Order Status Timeline ── */
 .timeline-log {
   list-style: none;

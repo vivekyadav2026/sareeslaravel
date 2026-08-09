@@ -187,4 +187,41 @@ class ShiprocketService
             'tracking_history' => $activities
         ];
     }
+
+    public function checkPincodeServiceability($pincode)
+    {
+        // 6-digit Indian Pincode validation
+        if (!preg_match('/^[1-9][0-9]{5}$/', $pincode)) {
+            return [
+                'success' => false,
+                'message' => 'Invalid Indian Pincode. Must be exactly 6 digits.'
+            ];
+        }
+
+        // Simulating unserviced test pincodes starting with 999
+        if (str_starts_with($pincode, '999')) {
+            return [
+                'success' => false,
+                'message' => 'Delivery is currently not available to this location.'
+            ];
+        }
+
+        // Pincodes ending in 0 or 9 are simulated as non-COD (prepaid only)
+        $codAvailable = true;
+        $lastDigit = substr($pincode, -1);
+        if ($lastDigit === '0' || $lastDigit === '9') {
+            $codAvailable = false;
+        }
+
+        return [
+            'success' => true,
+            'delivery_available' => true,
+            'cod_available' => $codAvailable,
+            'estimated_days' => '3 – 5 Days',
+            'courier_name' => 'Shiprocket Express',
+            'message' => $codAvailable 
+                ? 'Delivery & COD are available at this pincode.' 
+                : 'Delivery available. COD not available for this pincode.'
+        ];
+    }
 }

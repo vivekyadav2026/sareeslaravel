@@ -109,6 +109,58 @@
                                         </div>
                                     </div>
 
+                                    <div class="row mb-3">
+                                        <div class="col-md-6">
+                                            <label for="rating" class="form-label fw-semibold">Product Star Rating (1.0 to 5.0)</label>
+                                            <input type="number" step="0.1" min="1.0" max="5.0" class="form-control" id="rating" name="rating" value="{{ old('rating', $product->rating ?? 4.9) }}" placeholder="4.9">
+                                        </div>
+                                        <div class="col-md-6">
+                                            <label for="reviews_count" class="form-label fw-semibold">Reviews Count (Number of Reviews)</label>
+                                            <input type="number" min="0" class="form-control" id="reviews_count" name="reviews_count" value="{{ old('reviews_count', $product->reviews_count ?? 12) }}" placeholder="12">
+                                        </div>
+                                    </div>
+
+                                    <!-- Available Sizes Selection Widget -->
+                                    @php
+                                      $existingSizes = $product->variants->pluck('size')->filter()->toArray();
+                                    @endphp
+                                    <div class="mb-4 p-3 bg-dark bg-opacity-50 rounded border border-warning border-opacity-25">
+                                        <label class="form-label fw-bold text-warning"><i class="fas fa-ruler-horizontal me-1"></i> Available Couture Sizes for Customers</label>
+                                        <div class="d-flex flex-wrap gap-3 mt-2">
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="checkbox" name="selected_sizes[]" value="Free Size (Unstitched)" id="sz_free" {{ in_array('Free Size (Unstitched)', $existingSizes) || empty($existingSizes) ? 'checked' : '' }}>
+                                                <label class="form-check-label fw-semibold" for="sz_free">Free Size (Unstitched)</label>
+                                            </div>
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="checkbox" name="selected_sizes[]" value="Custom Stitched" id="sz_custom" {{ in_array('Custom Stitched', $existingSizes) || empty($existingSizes) ? 'checked' : '' }}>
+                                                <label class="form-check-label fw-semibold" for="sz_custom">Custom Stitched</label>
+                                            </div>
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="checkbox" name="selected_sizes[]" value="S" id="sz_s" {{ in_array('S', $existingSizes) ? 'checked' : '' }}>
+                                                <label class="form-check-label" for="sz_s">S (Small)</label>
+                                            </div>
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="checkbox" name="selected_sizes[]" value="M" id="sz_m" {{ in_array('M', $existingSizes) ? 'checked' : '' }}>
+                                                <label class="form-check-label" for="sz_m">M (Medium)</label>
+                                            </div>
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="checkbox" name="selected_sizes[]" value="L" id="sz_l" {{ in_array('L', $existingSizes) ? 'checked' : '' }}>
+                                                <label class="form-check-label" for="sz_l">L (Large)</label>
+                                            </div>
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="checkbox" name="selected_sizes[]" value="XL" id="sz_xl" {{ in_array('XL', $existingSizes) ? 'checked' : '' }}>
+                                                <label class="form-check-label" for="sz_xl">XL (Extra Large)</label>
+                                            </div>
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="checkbox" name="selected_sizes[]" value="XXL" id="sz_xxl" {{ in_array('XXL', $existingSizes) ? 'checked' : '' }}>
+                                                <label class="form-check-label" for="sz_xxl">XXL (Double XL)</label>
+                                            </div>
+                                        </div>
+                                        <div class="mt-3">
+                                            <input type="text" class="form-control form-control-sm" name="custom_sizes_text" placeholder="Additional custom sizes (comma separated, e.g. 38, 40, 42)">
+                                        </div>
+                                    </div>
+
                                     <div class="mb-3">
                                         <label for="summary" class="form-label fw-semibold">Short Summary Description</label>
                                         <textarea class="form-control" id="summary" name="summary" rows="2">{{ old('summary', $product->summary) }}</textarea>
@@ -187,17 +239,27 @@
                                     <div class="mb-4">
                                         <label for="images" class="form-label fw-semibold">Upload Additional Media</label>
                                         <input class="form-control" type="file" id="images" name="images[]" multiple accept="image/*">
-                                        <div class="form-text">Choose premium photos. First uploaded image is set as default.</div>
+                                        <div class="form-text">Choose premium photos. Uploaded images will be appended to the product gallery.</div>
+                                    </div>
+
+                                    <div class="row g-3 mb-4 d-none" id="new-image-previews-wrap">
+                                        <div class="col-12"><h6 class="fw-bold text-warning mb-2"><i class="fas fa-upload me-1"></i> New Uploads Preview</h6></div>
+                                        <div class="col-12"><div class="row g-3" id="new-image-previews"></div></div>
                                     </div>
                                     
-                                    <h6 class="fw-bold mb-3 border-bottom pb-2">Current Media Library</h6>
-                                    <div class="row g-3">
+                                    <h6 class="fw-bold mb-3 border-bottom pb-2">Current Media Library ({{ $product->images->count() }})</h6>
+                                    <div class="row g-3" id="existing-media-grid">
                                         @forelse($product->images as $image)
-                                            <div class="col-md-3 col-sm-6">
-                                                <div class="card bg-dark border-0 h-100 shadow-sm overflow-hidden text-center position-relative">
-                                                    <img src="{{ $image->file_path }}" class="card-img-top object-fit-cover" height="150" alt="Product Image">
-                                                    <div class="card-body p-2 bg-dark bg-opacity-75 position-absolute w-100 bottom-0">
-                                                        <span class="badge bg-secondary font-monospace">Sort: {{ $image->sort_order }}</span>
+                                            <div class="col-md-3 col-sm-6" id="img-card-{{ $image->id }}">
+                                                <div class="card bg-dark border border-secondary border-opacity-25 h-100 shadow-sm overflow-hidden text-center position-relative">
+                                                    <img src="{{ asset(ltrim($image->file_path, '/')) }}" class="card-img-top object-fit-cover" style="height: 160px;" alt="Product Image" onerror="this.src='/images/cat_saree.png'">
+                                                    <div class="card-body p-2 bg-dark bg-opacity-90 d-flex justify-content-between align-items-center">
+                                                        <span class="badge {{ $image->is_primary ? 'bg-warning text-dark' : 'bg-secondary' }} font-monospace">
+                                                            {{ $image->is_primary ? 'Primary' : 'Sort: ' . $image->sort_order }}
+                                                        </span>
+                                                        <button type="button" class="btn btn-sm btn-outline-danger border-0 p-1 delete-gallery-img" data-id="{{ $image->id }}" title="Delete image">
+                                                            <i class="fas fa-trash"></i>
+                                                        </button>
                                                     </div>
                                                 </div>
                                             </div>
@@ -384,6 +446,63 @@
         $(document).on('click', '.remove-variant', function() {
             var index = $(this).data('index');
             $('#variant-row-' + index).remove();
+        });
+
+        // Live Upload Image Previews
+        $('#images').on('change', function(e) {
+            var files = e.target.files;
+            var previewWrap = $('#new-image-previews-wrap');
+            var previewContainer = $('#new-image-previews');
+            previewContainer.empty();
+
+            if (files && files.length > 0) {
+                previewWrap.removeClass('d-none');
+                $.each(files, function(index, file) {
+                    var reader = new FileReader();
+                    reader.onload = function(event) {
+                        var html = `
+                            <div class="col-md-3 col-sm-6">
+                                <div class="card bg-dark border border-warning border-opacity-25 h-100 shadow-sm overflow-hidden text-center position-relative">
+                                    <img src="${event.target.result}" class="card-img-top object-fit-cover" style="height: 160px;" alt="Image Preview">
+                                    <div class="card-body p-2 bg-dark bg-opacity-90">
+                                        <span class="badge bg-warning text-dark small fw-bold">New Upload ${index + 1}</span>
+                                        <div class="small text-truncate text-white-50 mt-1" style="font-size: 0.72rem;">${file.name}</div>
+                                    </div>
+                                </div>
+                            </div>
+                        `;
+                        previewContainer.append(html);
+                    };
+                    reader.readAsDataURL(file);
+                });
+            } else {
+                previewWrap.addClass('d-none');
+            }
+        });
+
+        // Existing Gallery Image Delete Handler
+        $(document).on('click', '.delete-gallery-img', function() {
+            var imageId = $(this).data('id');
+            var cardEl = $('#img-card-' + imageId);
+            var url = "{{ route('admin.product-images.destroy', ':id') }}".replace(':id', imageId);
+
+            if (confirm("Are you sure you want to delete this product gallery image?")) {
+                $.ajax({
+                    url: url,
+                    type: 'DELETE',
+                    data: {
+                        _token: '{{ csrf_token() }}'
+                    },
+                    success: function(response) {
+                        if (response.success) {
+                            cardEl.fadeOut(300, function() { $(this).remove(); });
+                        }
+                    },
+                    error: function() {
+                        alert("Error deleting image. Please try again.");
+                    }
+                });
+            }
         });
     });
 </script>

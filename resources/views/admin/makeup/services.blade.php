@@ -26,10 +26,20 @@
                         <input type="number" class="form-control" name="duration_minutes" id="duration_minutes" required placeholder="180">
                     </div>
                     <div class="mb-3">
-                        <label for="description" class="form-label">Description</label>
-                        <textarea class="form-control" name="description" id="description" rows="3" placeholder="Package detailed description..."></textarea>
+                        <label for="description" class="form-label">Package Short Tagline</label>
+                        <textarea class="form-control" name="description" id="description" rows="2" placeholder="e.g. Flawless 24-hour airbrush finish"></textarea>
                     </div>
-                    <button type="submit" class="btn btn-warning rounded-pill w-100">Create Service Style</button>
+                    <div class="mb-3">
+                        <label for="features" class="form-label">Package Features (One per line)</label>
+                        <textarea class="form-control" name="features" id="features" rows="4" placeholder="High-definition waterproof finish&#10;Hairstyling & Draping&#10;Premium Eyelashes & Lenses"></textarea>
+                    </div>
+                    <div class="form-check mb-3">
+                        <input class="form-check-input" type="checkbox" name="is_popular" value="1" id="is_popular">
+                        <label class="form-check-label fw-bold text-warning" for="is_popular">
+                            ⭐ Mark as Most Popular Package
+                        </label>
+                    </div>
+                    <button type="submit" class="btn btn-warning rounded-pill w-100">Create Makeup Package</button>
                 </form>
             </div>
         </div>

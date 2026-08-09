@@ -13,6 +13,7 @@ class BridalPackage extends Model
         'price',
         'features',
         'is_active',
+        'image',
     ];
 
     protected $casts = [

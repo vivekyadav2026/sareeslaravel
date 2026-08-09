@@ -242,76 +242,105 @@
   </div>
 </section>
 
-<!-- Bridal Packages Section -->
-<section id="packages" class="packages-section">
+<!-- Infinite Scroll Royal Products Collection Section -->
+<section id="home-infinite-products" class="pt-5 pb-2" style="background-color: #080706;">
   <div class="container">
-    <div class="section-title-wrapper">
+    <div class="section-title-wrapper text-center mb-4">
+      <span class="motif text-gold">❖</span>
+      <h2 class="text-gold-light font-display fs-2 text-uppercase mb-1">ROYAL EXCLUSIVE COLLECTION</h2>
+      <p class="text-white opacity-75 small font-label">Handcrafted Sarees, Lehengas &amp; Bridal Attire</p>
+      <div style="width: 60px; height: 1px; background: rgba(201,162,75,0.3); margin: 0.8rem auto 0;"></div>
+    </div>
+
+    <!-- Product Grid Container -->
+    <div class="row g-3 g-md-4" id="homeProductGrid">
+      @foreach($initialProducts as $product)
+        @include('partials.product_card', ['product' => $product])
+      @endforeach
+    </div>
+
+    <!-- Loading Spinner & Load Trigger -->
+    <div id="infiniteScrollSentinel" class="text-center py-2 my-1">
+      @if($initialProducts->hasMorePages())
+        <div id="infiniteLoader" class="d-none py-2">
+          <div class="spinner-border text-gold me-2" role="status" style="width: 1.8rem; height: 1.8rem;"></div>
+          <span class="text-gold-light small font-label ms-2" style="letter-spacing:0.1em;">LOADING MORE LUXURY CREATIONS...</span>
+        </div>
+      @else
+        <p class="text-gold font-display text-center py-2 fs-6 fw-bold m-0" style="color: #c9a24b !important; letter-spacing: 0.12em; text-shadow: 0 0 10px rgba(201,162,75,0.35);">✦ YOU HAVE EXPLORED ALL OUR ROYAL CREATIONS ✦</p>
+      @endif
+    </div>
+  </div>
+</section>
+
+<!-- Bridal Packages Section -->
+<section id="packages" class="packages-section pt-3 pb-5">
+  <div class="container">
+    <div class="section-title-wrapper text-center mb-4">
       <span class="motif text-gold">❖</span>
       <h2 class="text-gold-light">BRIDAL PACKAGES</h2>
     </div>
 
-    <div class="row g-4">
-      <!-- Silver Package -->
-      <div class="col-md-4">
-        <div class="package-card">
-          <div class="package-card-media">
-            <img src="{{ asset('images/pkg_silver.png') }}" alt="Silver Package">
-          </div>
-          <div class="package-card-body">
-            <p class="package-card-title">SILVER PACKAGE</p>
-            <p class="package-price-tag">₹24,999</p>
-            <ul class="package-feature-list">
-              <li>Bridal Lehenga</li>
-              <li>Waterproof Bridal Makeup</li>
-              <li>Luxury Gift Hamper</li>
-              <li>Exclusive Accessories</li>
-            </ul>
-            <a href="{{ route('checkout') }}" class="btn btn-gold w-100">BOOK NOW</a>
-          </div>
+    <!-- Dynamic Slider Wrapper -->
+    <div class="home-pkg-slider-container position-relative px-md-4">
+      
+      <!-- Slider Arrows -->
+      <button class="home-pkg-arrow prev-btn" id="homePkgPrevBtn" aria-label="Previous Package"><i class="fa-solid fa-chevron-left"></i></button>
+      <button class="home-pkg-arrow next-btn" id="homePkgNextBtn" aria-label="Next Package"><i class="fa-solid fa-chevron-right"></i></button>
+
+      <div class="home-pkg-track-wrapper">
+        <div class="home-pkg-track" id="homePkgTrack">
+          @foreach($packages as $package)
+            @php
+              // Map fallback images dynamically based on keywords
+              $image = 'images/pkg_silver.png';
+              if (\Illuminate\Support\Str::contains(strtolower($package->name), 'gold')) {
+                  $image = 'images/pkg_gold.png';
+              } elseif (\Illuminate\Support\Str::contains(strtolower($package->name), 'royal') || \Illuminate\Support\Str::contains(strtolower($package->name), 'ranisahab')) {
+                  $image = 'images/pkg_royal.png';
+              }
+              $imageSrc = $package->image ? asset($package->image) : asset($image);
+            @endphp
+            
+            <div class="package-card-slide">
+              <div class="package-card h-100 d-flex flex-column">
+                <div class="package-card-media" style="height:240px; overflow:hidden;">
+                  <img src="{{ $imageSrc }}" alt="{{ $package->name }}" style="width:100%; height:100%; object-fit:cover; object-position:center top;">
+                </div>
+                <div class="package-card-body d-flex flex-column flex-grow-1">
+                  <p class="package-card-title text-uppercase fw-bold text-gold mb-1">{{ $package->name }}</p>
+                  <p class="package-price-tag fw-bold">₹{{ number_format($package->price, 0) }}</p>
+                  
+                  <ul class="package-feature-list mb-4 text-start">
+                    @if($package->features && is_array($package->features))
+                      @foreach($package->features as $feat)
+                        <li><i class="fa-solid fa-check text-gold me-2"></i>{{ $feat }}</li>
+                      @endforeach
+                    @else
+                      <li><i class="fa-solid fa-check text-gold me-2"></i>Custom Bridal Wear</li>
+                      <li><i class="fa-solid fa-check text-gold me-2"></i>Makeup Session</li>
+                      <li><i class="fa-solid fa-check text-gold me-2"></i>Fittings Consultation</li>
+                    @endif
+                  </ul>
+                  
+                  <div class="mt-auto">
+                    <form action="{{ route('cart.add-package') }}" method="POST">
+                      @csrf
+                      <input type="hidden" name="package_id" value="{{ $package->id }}">
+                      <button type="submit" class="btn btn-gold w-100">BOOK NOW</button>
+                    </form>
+                  </div>
+                </div>
+              </div>
+            </div>
+          @endforeach
         </div>
       </div>
-      <!-- Gold Package -->
-      <div class="col-md-4">
-        <div class="package-card">
-          <div class="package-card-media">
-            <img src="{{ asset('images/pkg_gold.png') }}" alt="Gold Package">
-          </div>
-          <div class="package-card-body">
-            <p class="package-card-title">GOLD PACKAGE</p>
-            <p class="package-price-tag">₹39,999</p>
-            <ul class="package-feature-list">
-              <li>Bridal Lehenga</li>
-              <li>Haldi Saree</li>
-              <li>Waterproof Bridal Makeup</li>
-              <li>Luxury Gift Hamper</li>
-              <li>Exclusive Accessories</li>
-            </ul>
-            <a href="{{ route('checkout') }}" class="btn btn-gold w-100">BOOK NOW</a>
-          </div>
-        </div>
-      </div>
-      <!-- Royal Package -->
-      <div class="col-md-4">
-        <div class="package-card">
-          <div class="package-card-media">
-            <img src="{{ asset('images/pkg_royal.png') }}" alt="Royal Ranisahab Package">
-          </div>
-          <div class="package-card-body">
-            <p class="package-card-title">ROYAL RANISAHAB PACKAGE</p>
-            <p class="package-price-tag">₹59,999</p>
-            <ul class="package-feature-list">
-              <li>Custom Lehenga (Your Choice)</li>
-              <li>Bridal Suit</li>
-              <li>Haldi Saree</li>
-              <li>Waterproof Bridal Makeup</li>
-              <li>Luxury Gifts &amp; Accessories</li>
-              <li>Premium Bridal Experience</li>
-            </ul>
-            <a href="{{ route('checkout') }}" class="btn btn-gold w-100">BOOK NOW</a>
-          </div>
-        </div>
-      </div>
+
+      <!-- Slide Indicators -->
+      <div class="home-pkg-dots text-center mt-3" id="homePkgDots"></div>
     </div>
+
   </div>
 </section>
 
@@ -461,6 +490,251 @@ document.addEventListener('DOMContentLoaded', function() {
   startTimer();
 });
 </script>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  const track = document.getElementById('homePkgTrack');
+  const cards = document.querySelectorAll('.package-card-slide');
+  const prevBtn = document.getElementById('homePkgPrevBtn');
+  const nextBtn = document.getElementById('homePkgNextBtn');
+  const dotsContainer = document.getElementById('homePkgDots');
+  
+  if (!track || cards.length === 0) return;
+
+  let itemsPerPage = 3;
+  if (window.innerWidth < 768) {
+      itemsPerPage = 1;
+  } else if (window.innerWidth < 992) {
+      itemsPerPage = 2;
+  }
+
+  let currentIndex = 0;
+  let maxIndex = Math.max(0, cards.length - itemsPerPage);
+
+  function createDots() {
+      if (!dotsContainer) return;
+      dotsContainer.innerHTML = '';
+      const pagesCount = cards.length - itemsPerPage + 1;
+      if (pagesCount <= 1) return;
+      
+      for (let i = 0; i < pagesCount; i++) {
+          const dot = document.createElement('span');
+          dot.className = 'home-pkg-dot' + (i === currentIndex ? ' active' : '');
+          dot.addEventListener('click', function() {
+              goToSlide(i);
+          });
+          dotsContainer.appendChild(dot);
+      }
+  }
+
+  function updateSlider() {
+      if (cards[currentIndex]) {
+          const offset = cards[currentIndex].offsetLeft;
+          track.style.transform = `translateX(-${offset}px)`;
+      }
+
+      if (dotsContainer) {
+          const dots = dotsContainer.querySelectorAll('.home-pkg-dot');
+          dots.forEach((dot, idx) => {
+              if (idx === currentIndex) {
+                  dot.classList.add('active');
+              } else {
+                  dot.classList.remove('active');
+              }
+          });
+      }
+
+      if (prevBtn) prevBtn.style.opacity = currentIndex === 0 ? '0.3' : '1';
+      if (nextBtn) nextBtn.style.opacity = currentIndex === maxIndex ? '0.3' : '1';
+  }
+
+  function goToSlide(idx) {
+      currentIndex = Math.max(0, Math.min(idx, maxIndex));
+      updateSlider();
+  }
+
+  if (prevBtn) {
+      prevBtn.addEventListener('click', function() {
+          if (currentIndex > 0) goToSlide(currentIndex - 1);
+      });
+  }
+
+  if (nextBtn) {
+      nextBtn.addEventListener('click', function() {
+          if (currentIndex < maxIndex) goToSlide(currentIndex + 1);
+      });
+  }
+
+  window.addEventListener('resize', function() {
+      const oldItems = itemsPerPage;
+      if (window.innerWidth < 768) {
+          itemsPerPage = 1;
+      } else if (window.innerWidth < 992) {
+          itemsPerPage = 2;
+      } else {
+          itemsPerPage = 3;
+      }
+
+      if (oldItems !== itemsPerPage) {
+          currentIndex = 0;
+          maxIndex = Math.max(0, cards.length - itemsPerPage);
+          createDots();
+          updateSlider();
+      }
+  });
+
+  createDots();
+  updateSlider();
+
+  // Enhanced Infinite Scroll Logic for Home Page Products
+  let currentPage = 1;
+  let hasMorePages = {{ $initialProducts->hasMorePages() ? 'true' : 'false' }};
+  let isLoading = false;
+
+  const sentinel = document.getElementById('infiniteScrollSentinel');
+  const loader = document.getElementById('infiniteLoader');
+  const productGrid = document.getElementById('homeProductGrid');
+
+  function checkScrollAndLoad() {
+      if (isLoading || !hasMorePages || !sentinel) return;
+      const rect = sentinel.getBoundingClientRect();
+      if (rect.top <= window.innerHeight + 350) {
+          loadNextProducts();
+      }
+  }
+
+  function loadNextProducts() {
+      if (isLoading || !hasMorePages) return;
+      isLoading = true;
+      if (loader) loader.classList.remove('d-none');
+
+      currentPage++;
+      fetch(`{{ route('api.products') }}?page=${currentPage}`)
+          .then(response => response.json())
+          .then(data => {
+              if (data.html && data.html.trim() !== '') {
+                  productGrid.insertAdjacentHTML('beforeend', data.html);
+              }
+              hasMorePages = data.has_more;
+              isLoading = false;
+              if (loader) loader.classList.add('d-none');
+
+              if (!hasMorePages && sentinel) {
+                  sentinel.innerHTML = '<p class="text-gold font-display text-center py-3 fs-6 fw-bold m-0" style="color: #c9a24b !important; letter-spacing: 0.12em; text-shadow: 0 0 10px rgba(201,162,75,0.35);">✦ YOU HAVE EXPLORED ALL OUR ROYAL CREATIONS ✦</p>';
+              }
+          })
+          .catch(err => {
+              console.error('Error loading products:', err);
+              isLoading = false;
+              if (loader) loader.classList.add('d-none');
+          });
+  }
+
+  if (sentinel && hasMorePages) {
+      if ('IntersectionObserver' in window) {
+          const observer = new IntersectionObserver((entries) => {
+              if (entries[0].isIntersecting && !isLoading && hasMorePages) {
+                  loadNextProducts();
+              }
+          }, { rootMargin: '350px 0px 350px 0px', threshold: 0 });
+
+          observer.observe(sentinel);
+      }
+
+      window.addEventListener('scroll', checkScrollAndLoad, { passive: true });
+      window.addEventListener('touchmove', checkScrollAndLoad, { passive: true });
+  }
+});
+</script>
+@endpush
+
+@push('styles')
+<style>
+  /* Home Page Packages Horizontal Swiper Slider Styling */
+  .home-pkg-slider-container {
+      width: 100%;
+      overflow: hidden;
+  }
+  .home-pkg-track-wrapper {
+      overflow: hidden;
+      width: 100%;
+      padding: 1.5rem 0.5rem;
+  }
+  .home-pkg-track {
+      display: flex !important;
+      flex-direction: row !important;
+      flex-wrap: nowrap !important;
+      align-items: stretch !important;
+      justify-content: flex-start !important;
+      gap: 1.5rem !important;
+      transition: transform 0.45s cubic-bezier(0.25, 0.46, 0.45, 0.94) !important;
+  }
+  .package-card-slide {
+      width: calc(33.333% - 1rem);
+      flex-shrink: 0;
+  }
+  .home-pkg-arrow {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      background: rgba(8, 7, 6, 0.85);
+      border: 1px solid rgba(201, 162, 75, 0.4);
+      color: var(--gold);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 10;
+      cursor: pointer;
+      transition: all 0.3s ease;
+  }
+  .home-pkg-arrow:hover {
+      background: var(--gold);
+      color: #000000;
+  }
+  .home-pkg-arrow.prev-btn { left: -10px; }
+  .home-pkg-arrow.next-btn { right: -10px; }
+
+  .home-pkg-dots {
+      display: flex;
+      justify-content: center;
+      gap: 0.6rem;
+      margin-top: 1rem;
+  }
+  .home-pkg-dot {
+      display: inline-block;
+      width: 9px;
+      height: 9px;
+      border-radius: 50%;
+      background: transparent;
+      border: 1px solid rgba(255, 255, 255, 0.5);
+      cursor: pointer;
+      transition: all 0.25s ease;
+  }
+  .home-pkg-dot.active {
+      background: var(--gold);
+      border-color: var(--gold);
+      transform: scale(1.1);
+      box-shadow: 0 0 6px var(--gold);
+  }
+
+  @media (max-width: 991.98px) {
+      .package-card-slide {
+          width: calc(50% - 0.75rem);
+      }
+      .home-pkg-arrow.prev-btn { left: 5px; }
+      .home-pkg-arrow.next-btn { right: 5px; }
+  }
+  @media (max-width: 767.98px) {
+      .package-card-slide {
+          width: 100%;
+      }
+      .home-pkg-arrow.prev-btn { left: 0; }
+      .home-pkg-arrow.next-btn { right: 0; }
+  }
+</style>
 @endpush
 
 

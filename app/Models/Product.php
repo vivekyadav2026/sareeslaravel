@@ -20,6 +20,8 @@ class Product extends Model
         'price',
         'sale_price',
         'cost_price',
+        'rating',
+        'reviews_count',
         'is_active',
         'is_approved',
         'is_featured',

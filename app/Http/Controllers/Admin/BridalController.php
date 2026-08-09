@@ -82,9 +82,18 @@ class BridalController extends Controller
             'price' => 'required|numeric|min:0',
             'description' => 'nullable|string',
             'features' => 'nullable|string',
+            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
         ]);
 
         $featuresArr = $request->filled('features') ? array_map('trim', explode(',', $request->features)) : [];
+
+        $imagePath = null;
+        if ($request->hasFile('image')) {
+            $file = $request->file('image');
+            $fileName = time() . '_' . $file->getClientOriginalName();
+            $file->move(public_path('images'), $fileName);
+            $imagePath = 'images/' . $fileName;
+        }
 
         BridalPackage::create([
             'name' => $request->name,
@@ -92,10 +101,44 @@ class BridalController extends Controller
             'price' => $request->price,
             'description' => $request->description,
             'features' => $featuresArr,
+            'image' => $imagePath,
             'is_active' => true,
         ]);
 
         return back()->with('success', 'Bridal package created successfully.');
+    }
+
+    public function packagesUpdate(Request $request, BridalPackage $package)
+    {
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'price' => 'required|numeric|min:0',
+            'description' => 'nullable|string',
+            'features' => 'nullable|string',
+            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+        ]);
+
+        $featuresArr = $request->filled('features') ? array_map('trim', explode(',', $request->features)) : [];
+
+        $data = [
+            'name' => $request->name,
+            'slug' => Str::slug($request->name),
+            'price' => $request->price,
+            'description' => $request->description,
+            'features' => $featuresArr,
+            'is_active' => $request->has('is_active') ? (bool)$request->is_active : true,
+        ];
+
+        if ($request->hasFile('image')) {
+            $file = $request->file('image');
+            $fileName = time() . '_' . $file->getClientOriginalName();
+            $file->move(public_path('images'), $fileName);
+            $data['image'] = 'images/' . $fileName;
+        }
+
+        $package->update($data);
+
+        return back()->with('success', 'Bridal package updated successfully.');
     }
 
     public function packagesDestroy(BridalPackage $package)

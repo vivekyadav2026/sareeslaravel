@@ -90,6 +90,8 @@ class ProductController extends Controller
             'price' => 'required|numeric|min:0',
             'sale_price' => 'nullable|numeric|min:0',
             'cost_price' => 'nullable|numeric|min:0',
+            'rating' => 'nullable|numeric|min:1|max:5',
+            'reviews_count' => 'nullable|integer|min:0',
             'sku' => 'nullable|string|unique:products,sku',
             'barcode' => 'nullable|string',
             'material' => 'nullable|string',
@@ -137,11 +139,32 @@ class ProductController extends Controller
                 $product->tags()->sync($request->tags);
             }
 
-            // Save default variant if none provided
-            if (!$request->has('variants') || count($request->variants) === 0) {
+            // Process selected size options & variants
+            $sizesToSave = [];
+            if ($request->has('selected_sizes')) {
+                $sizesToSave = array_merge($sizesToSave, $request->selected_sizes);
+            }
+            if ($request->filled('custom_sizes_text')) {
+                $extra = array_map('trim', explode(',', $request->custom_sizes_text));
+                $sizesToSave = array_merge($sizesToSave, array_filter($extra));
+            }
+
+            if (!empty($sizesToSave)) {
+                foreach (array_unique($sizesToSave) as $sz) {
+                    ProductVariant::create([
+                        'product_id' => $product->id,
+                        'size' => $sz,
+                        'sku' => $product->sku ? ($product->sku . '-' . Str::slug($sz)) : strtoupper(Str::random(8)),
+                        'price' => $product->price,
+                        'sale_price' => $product->sale_price,
+                        'stock' => 10,
+                    ]);
+                }
+            } elseif (!$request->has('variants') || count($request->variants) === 0) {
                 ProductVariant::create([
                     'product_id' => $product->id,
                     'sku' => $product->sku ?: strtoupper(Str::random(8)),
+                    'size' => 'Free Size (Unstitched)',
                     'price' => $product->price,
                     'sale_price' => $product->sale_price,
                     'stock' => $request->stock ?? 10,
@@ -205,6 +228,8 @@ class ProductController extends Controller
             'price' => 'required|numeric|min:0',
             'sale_price' => 'nullable|numeric|min:0',
             'cost_price' => 'nullable|numeric|min:0',
+            'rating' => 'nullable|numeric|min:1|max:5',
+            'reviews_count' => 'nullable|integer|min:0',
             'sku' => 'nullable|string|unique:products,sku,' . $product->id,
             'barcode' => 'nullable|string',
             'material' => 'nullable|string',
@@ -233,11 +258,42 @@ class ProductController extends Controller
             $product->collections()->sync($request->collections ?? []);
             $product->tags()->sync($request->tags ?? []);
 
-            // Update variants
+            // Sync selected size options & variants
+            $sizesToSave = [];
+            if ($request->has('selected_sizes')) {
+                $sizesToSave = array_merge($sizesToSave, $request->selected_sizes);
+            }
+            if ($request->filled('custom_sizes_text')) {
+                $extra = array_map('trim', explode(',', $request->custom_sizes_text));
+                $sizesToSave = array_merge($sizesToSave, array_filter($extra));
+            }
+
+            $sizesToSave = array_values(array_unique(array_filter($sizesToSave)));
+
+            if ($request->has('selected_sizes') || $request->filled('custom_sizes_text')) {
+                // Delete existing size variants that were unchecked/deselected
+                $product->variants()->whereNotIn('size', $sizesToSave)->delete();
+
+                foreach ($sizesToSave as $sz) {
+                    if (!$product->variants()->where('size', $sz)->exists()) {
+                        ProductVariant::create([
+                            'product_id' => $product->id,
+                            'size' => $sz,
+                            'sku' => $product->sku ? ($product->sku . '-' . Str::slug($sz)) : strtoupper(Str::random(8)),
+                            'price' => $product->price,
+                            'sale_price' => $product->sale_price,
+                            'stock' => 10,
+                        ]);
+                    }
+                }
+            }
+
+            // Update variants table if rows passed
             if ($request->has('variants')) {
-                // Keep track of current variant IDs to delete removed ones
                 $incomingIds = collect($request->variants)->pluck('id')->filter()->toArray();
-                $product->variants()->whereNotIn('id', $incomingIds)->delete();
+                if (!empty($incomingIds)) {
+                    $product->variants()->whereNotIn('id', $incomingIds)->delete();
+                }
 
                 foreach ($request->variants as $variant) {
                     if (isset($variant['id'])) {
@@ -354,5 +410,11 @@ class ProductController extends Controller
     {
         $question->delete();
         return back()->with('success', 'Question deleted successfully.');
+    }
+
+    public function destroyImage(ProductImage $image)
+    {
+        $image->delete();
+        return response()->json(['success' => true, 'message' => 'Gallery image deleted successfully.']);
     }
 }

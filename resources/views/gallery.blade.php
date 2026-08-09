@@ -130,23 +130,62 @@
 @endsection
 
 @push('scripts')
-<script>
-// Gallery filter tabs
-const tabs = document.querySelectorAll('.gallery-tab');
-const items = document.querySelectorAll('.gallery-dark-item');
-tabs.forEach(tab => {
-  tab.addEventListener('click', function() {
-    tabs.forEach(t => t.classList.remove('active'));
-    this.classList.add('active');
-    const filter = this.dataset.filter;
+// Gallery dynamic load more and tab filters coordination
+document.addEventListener('DOMContentLoaded', function() {
+  const tabs = document.querySelectorAll('.gallery-tab');
+  const items = document.querySelectorAll('.gallery-dark-item');
+  const loadMoreBtn = document.querySelector('.plp-load-more-btn');
+  const itemsToShow = 8;
+  let activeFilter = 'all';
+  let currentVisibleCount = itemsToShow;
+
+  function applyGalleryLayout() {
+    let matchCount = 0;
+    let visibleCount = 0;
+
     items.forEach(item => {
-      if (filter === 'all' || item.dataset.cat === filter) {
-        item.style.display = 'block';
+      const matchesFilter = (activeFilter === 'all' || item.dataset.cat === activeFilter);
+      if (matchesFilter) {
+        matchCount++;
+        if (matchCount <= currentVisibleCount) {
+          item.style.display = 'block';
+          visibleCount++;
+        } else {
+          item.style.display = 'none';
+        }
       } else {
         item.style.display = 'none';
       }
     });
+
+    if (!loadMoreBtn) return;
+
+    if (matchCount <= currentVisibleCount) {
+      loadMoreBtn.parentElement.style.display = 'none';
+    } else {
+      loadMoreBtn.parentElement.style.display = 'block';
+    }
+  }
+
+  tabs.forEach(tab => {
+    tab.addEventListener('click', function() {
+      tabs.forEach(t => t.classList.remove('active'));
+      this.classList.add('active');
+      activeFilter = this.dataset.filter;
+      currentVisibleCount = itemsToShow; // reset visibility limit
+      applyGalleryLayout();
+    });
   });
+
+  if (loadMoreBtn) {
+    loadMoreBtn.addEventListener('click', function() {
+      currentVisibleCount += itemsToShow;
+      applyGalleryLayout();
+    });
+  }
+
+  // Initial execution
+  applyGalleryLayout();
 });
 </script>
 @endpush

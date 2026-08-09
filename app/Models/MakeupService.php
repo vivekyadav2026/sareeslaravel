@@ -10,9 +10,11 @@ class MakeupService extends Model
         'name',
         'slug',
         'description',
+        'features',
         'price',
         'duration_minutes',
         'is_active',
+        'is_popular',
     ];
 
     public function bookings()

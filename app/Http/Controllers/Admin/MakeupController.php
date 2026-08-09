@@ -74,6 +74,7 @@ class MakeupController extends Controller
             'price' => 'required|numeric|min:0',
             'duration_minutes' => 'required|integer|min:1',
             'description' => 'nullable|string',
+            'features' => 'nullable|string',
         ]);
 
         MakeupService::create([
@@ -82,10 +83,12 @@ class MakeupController extends Controller
             'price' => $request->price,
             'duration_minutes' => $request->duration_minutes,
             'description' => $request->description,
+            'features' => $request->features,
+            'is_popular' => $request->has('is_popular'),
             'is_active' => true,
         ]);
 
-        return back()->with('success', 'Makeup service created successfully.');
+        return back()->with('success', 'Makeup service package created successfully.');
     }
 
     public function servicesDestroy(MakeupService $service)

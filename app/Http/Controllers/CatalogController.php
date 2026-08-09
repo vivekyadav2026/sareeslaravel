@@ -139,7 +139,7 @@ class CatalogController extends Controller
 
     public function showProduct($slug)
     {
-        $product = Product::where('slug', $slug)->where('is_active', true)->with(['images', 'category'])->firstOrFail();
+        $product = Product::where('slug', $slug)->where('is_active', true)->with(['images', 'category', 'variants'])->firstOrFail();
         $relatedProducts = Product::where('category_id', $product->category_id)
             ->where('id', '!=', $product->id)
             ->where('is_active', true)
@@ -222,6 +222,12 @@ class CatalogController extends Controller
         ]);
 
         return back()->with('success', 'Your custom bridal lehenga details have been recorded! Our design consultants will contact you shortly.');
+    }
+
+    public function makeupServices()
+    {
+        $services = MakeupService::where('is_active', true)->orderBy('price', 'asc')->get();
+        return view('makeup-services', compact('services'));
     }
 
     public function submitMakeupBooking(Request $request)
@@ -315,5 +321,25 @@ class CatalogController extends Controller
         ]);
 
         return back()->with('success', 'Thank you, ' . $request->name . '! Your luxury concierge inquiry has been received. Our stylists will connect with you shortly.');
+    }
+
+    public function apiProducts(Request $request)
+    {
+        $page = $request->get('page', 1);
+        $products = Product::where('is_active', true)
+            ->with(['images'])
+            ->latest()
+            ->paginate(8, ['*'], 'page', $page);
+
+        $html = '';
+        foreach ($products as $product) {
+            $html .= view('partials.product_card', compact('product'))->render();
+        }
+
+        return response()->json([
+            'html' => $html,
+            'has_more' => $products->hasMorePages(),
+            'next_page' => $products->currentPage() + 1
+        ]);
     }
 }

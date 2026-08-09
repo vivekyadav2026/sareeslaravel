@@ -130,6 +130,17 @@ class CheckoutController extends Controller
             'payment_method' => 'required|in:cod,upi_razorpay',
         ]);
 
+        // Enforce COD eligibility check on placement
+        if ($request->payment_method === 'cod') {
+            $pincodeCheck = $this->shiprocketService->checkPincodeServiceability($request->pincode);
+            if (!$pincodeCheck['success'] || !$pincodeCheck['cod_available']) {
+                return response()->json([
+                    'success' => false,
+                    'message' => isset($pincodeCheck['message']) ? $pincodeCheck['message'] : 'Cash on Delivery (COD) is not available for this pincode. Please choose online payment.'
+                ]);
+            }
+        }
+
         $cart = session()->get('cart', []);
         if (empty($cart)) {
             return response()->json(['success' => false, 'message' => 'Your shopping bag is empty.']);
@@ -207,7 +218,7 @@ class CheckoutController extends Controller
         $shipping = $subtotal >= 5000 ? 0.00 : 150.00;
         $total = $subtotal - $discount + $tax + $shipping + $giftWrapCharge;
 
-        $orderNumber = 'ORD-' . strtoupper(Str::random(10));
+        $orderNumber = 'RS-' . strtoupper(Str::random(10));
 
         $order = DB::transaction(function () use ($customerId, $orderNumber, $subtotal, $discount, $tax, $shipping, $total, $couponCode, $request, $cart) {
             $order = Order::create([
@@ -239,7 +250,7 @@ class CheckoutController extends Controller
             OrderStatusLog::create([
                 'order_id' => $order->id,
                 'status' => 'pending',
-                'notes' => 'Order created successfully.'
+                'comment' => 'Order created successfully.'
             ]);
 
             return $order;
@@ -259,7 +270,7 @@ class CheckoutController extends Controller
                 OrderStatusLog::create([
                     'order_id' => $order->id,
                     'status' => 'confirmed',
-                    'notes' => "Logistics dispatched via {$shipment['courier_name']} (Tracking: {$shipment['tracking_number']})"
+                    'comment' => "Logistics dispatched via {$shipment['courier_name']} (Tracking: {$shipment['tracking_number']})"
                 ]);
             }
 
@@ -320,7 +331,7 @@ class CheckoutController extends Controller
                 OrderStatusLog::create([
                     'order_id' => $order->id,
                     'status' => 'confirmed',
-                    'notes' => 'Payment captured. Order is confirmed.'
+                    'comment' => 'Payment captured. Order is confirmed.'
                 ]);
             });
 
@@ -336,7 +347,7 @@ class CheckoutController extends Controller
                 OrderStatusLog::create([
                     'order_id' => $order->id,
                     'status' => 'confirmed',
-                    'notes' => "Shipment scheduled via {$shipment['courier_name']} (Tracking: {$shipment['tracking_number']})"
+                    'comment' => "Shipment scheduled via {$shipment['courier_name']} (Tracking: {$shipment['tracking_number']})"
                 ]);
             }
 
@@ -365,11 +376,22 @@ class CheckoutController extends Controller
     {
         $trackingNumber = $request->query('number');
         $trackingData = null;
+        $order = null;
 
         if ($trackingNumber) {
             $trackingData = $this->shiprocketService->trackShipment($trackingNumber);
+            $order = \App\Models\Order::where('tracking_number', $trackingNumber)->with('statusLogs')->first();
         }
 
-        return view('tracking', compact('trackingNumber', 'trackingData'));
+        return view('tracking', compact('trackingNumber', 'trackingData', 'order'));
+    }
+
+    public function checkPincode(Request $request)
+    {
+        $request->validate(['pincode' => 'required|string']);
+        $pincode = $request->pincode;
+        
+        $result = $this->shiprocketService->checkPincodeServiceability($pincode);
+        return response()->json($result);
     }
 }

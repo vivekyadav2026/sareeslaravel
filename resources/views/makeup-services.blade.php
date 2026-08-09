@@ -40,74 +40,44 @@
   </div>
 
   <div class="bp-grid makeup-pkg-grid">
-
-    <!-- HD Bridal -->
-    <div class="bp-card">
-      <div class="bp-card-body" style="padding-top:1.5rem;">
-        <div class="dark-pkg-icon"><i class="fa-solid fa-star"></i></div>
-        <div class="bp-card-header">
-          <div>
-            <p class="bp-card-name">HD Bridal Makeup</p>
-            <p class="bp-card-tagline">Flawless high-definition finish</p>
+    @forelse($services as $index => $service)
+      <div class="bp-card {{ $service->is_popular ? 'bp-card-featured' : '' }}">
+        @if($service->is_popular)
+          <div class="bp-popular-badge">⭐ MOST POPULAR</div>
+        @endif
+        <div class="bp-card-body" style="padding-top:1.5rem;">
+          <div class="dark-pkg-icon {{ $service->is_popular ? 'dark-pkg-icon-gold' : ($index % 2 === 0 ? '' : 'dark-pkg-icon-purple') }}">
+            <i class="fa-solid {{ $service->is_popular ? 'fa-crown' : ($index % 2 === 0 ? 'fa-star' : 'fa-gem') }}"></i>
           </div>
-          <p class="bp-card-price">₹11,999</p>
-        </div>
-        <ul class="bp-feature-list">
-          <li><i class="fa-solid fa-check"></i> High-definition waterproof finish</li>
-          <li><i class="fa-solid fa-check"></i> Hairstyling &amp; Saree/Lehenga Draping</li>
-          <li><i class="fa-solid fa-check"></i> Premium Eyelashes &amp; Lenses</li>
-          <li><i class="fa-solid fa-xmark bp-cross"></i> Pre-Bridal Skin Session</li>
-          <li><i class="fa-solid fa-xmark bp-cross"></i> Reception Makeup</li>
-        </ul>
-        <a href="#bookingForm" class="bp-book-btn">RESERVE DATE <i class="fa-solid fa-arrow-right ms-1"></i></a>
-      </div>
-    </div>
-
-    <!-- Airbrush Royal -->
-    <div class="bp-card bp-card-featured">
-      <div class="bp-popular-badge">⭐ MOST POPULAR</div>
-      <div class="bp-card-body" style="padding-top:1.5rem;">
-        <div class="dark-pkg-icon dark-pkg-icon-gold"><i class="fa-solid fa-crown"></i></div>
-        <div class="bp-card-header">
-          <div>
-            <p class="bp-card-name">Airbrush Royal Makeup</p>
-            <p class="bp-card-tagline">24-hour flawless airbrush finish</p>
+          <div class="bp-card-header">
+            <div>
+              <p class="bp-card-name">{{ $service->name }}</p>
+              <p class="bp-card-tagline">{{ $service->description ?? 'Expert Bridal Artistry Package' }}</p>
+            </div>
+            <p class="bp-card-price">₹{{ number_format($service->price, 0) }}</p>
           </div>
-          <p class="bp-card-price">₹17,999</p>
+          <ul class="bp-feature-list">
+            @if($service->features)
+              @foreach(explode("\n", $service->features) as $feat)
+                @if(trim($feat))
+                  <li><i class="fa-solid fa-check text-gold me-2"></i> {{ trim($feat) }}</li>
+                @endif
+              @endforeach
+            @else
+              <li><i class="fa-solid fa-check text-gold me-2"></i> High-definition 100% waterproof finish</li>
+              <li><i class="fa-solid fa-check text-gold me-2"></i> Professional Hairstyling &amp; Draping</li>
+              <li><i class="fa-solid fa-check text-gold me-2"></i> Premium Eyelashes &amp; Contact Lenses</li>
+              <li><i class="fa-solid fa-clock text-gold me-2"></i> {{ $service->duration_minutes }} Mins Dedicated Artist Session</li>
+            @endif
+          </ul>
+          <a href="#bookingForm" onclick="selectMakeupPackage('{{ $service->name }} (₹{{ number_format($service->price, 0) }})')" class="bp-book-btn {{ $service->is_popular ? 'bp-book-featured' : '' }}">RESERVE DATE <i class="fa-solid fa-arrow-right ms-1"></i></a>
         </div>
-        <ul class="bp-feature-list">
-          <li><i class="fa-solid fa-check"></i> Flawless 24-Hour Airbrush Finish</li>
-          <li><i class="fa-solid fa-check"></i> Senior Celebrity Makeup Artist</li>
-          <li><i class="fa-solid fa-check"></i> Pre-Bridal Skin Care Session</li>
-          <li><i class="fa-solid fa-check"></i> Hair Extensions &amp; Jewelry Setting</li>
-          <li><i class="fa-solid fa-xmark bp-cross"></i> Reception Makeup</li>
-        </ul>
-        <a href="#bookingForm" class="bp-book-btn bp-book-featured">RESERVE DATE <i class="fa-solid fa-arrow-right ms-1"></i></a>
       </div>
-    </div>
-
-    <!-- Signature Package -->
-    <div class="bp-card">
-      <div class="bp-card-body" style="padding-top:1.5rem;">
-        <div class="dark-pkg-icon dark-pkg-icon-purple"><i class="fa-solid fa-gem"></i></div>
-        <div class="bp-card-header">
-          <div>
-            <p class="bp-card-name">Signature RANISAHAB</p>
-            <p class="bp-card-tagline">Full wedding &amp; reception coverage</p>
-          </div>
-          <p class="bp-card-price">₹24,999</p>
-        </div>
-        <ul class="bp-feature-list">
-          <li><i class="fa-solid fa-check"></i> Full Wedding + Reception Makeup</li>
-          <li><i class="fa-solid fa-check"></i> 2 Family Member Party Makeups Free</li>
-          <li><i class="fa-solid fa-check"></i> Luxury Touch-up Kit Included</li>
-          <li><i class="fa-solid fa-check"></i> Premium Skin Care Pre-Session</li>
-          <li><i class="fa-solid fa-check"></i> Celebrity Artist Assigned</li>
-        </ul>
-        <a href="#bookingForm" class="bp-book-btn">RESERVE DATE <i class="fa-solid fa-arrow-right ms-1"></i></a>
+    @empty
+      <div class="col-12 text-center py-5 text-muted">
+        <p class="font-label">No makeup packages registered at the moment. Please contact us via WhatsApp for custom bookings.</p>
       </div>
-    </div>
-
+    @endforelse
   </div>
 
   <!-- Booking Form -->
@@ -162,10 +132,10 @@
       
       <div class="dark-form-group">
         <label class="dark-label">Select Package <span class="text-danger">*</span></label>
-        <select name="makeup_package" class="dark-input dark-select" required>
-          <option value="HD Bridal Makeup (₹11,999)">HD Bridal Makeup (₹11,999)</option>
-          <option value="Airbrush Royal Makeup (₹17,999)">Airbrush Royal Makeup (₹17,999)</option>
-          <option value="Signature RANISAHAB (₹24,999)">Signature RANISAHAB (₹24,999)</option>
+        <select name="makeup_package" id="makeup_package_select" class="dark-input dark-select" required>
+          @foreach($services as $service)
+            <option value="{{ $service->name }} (₹{{ number_format($service->price, 0) }})">{{ $service->name }} (₹{{ number_format($service->price, 0) }})</option>
+          @endforeach
         </select>
       </div>
 
@@ -182,3 +152,14 @@
 
 </div>
 @endsection
+
+@push('scripts')
+<script>
+  function selectMakeupPackage(val) {
+      const select = document.getElementById('makeup_package_select');
+      if (select) {
+          select.value = val;
+      }
+  }
+</script>
+@endpush
