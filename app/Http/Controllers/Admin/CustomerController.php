@@ -5,7 +5,6 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Customer;
-use App\Models\CustomerGroup;
 use App\Models\Address;
 use App\Models\WalletTransaction;
 use App\Models\Order;
@@ -20,21 +19,15 @@ class CustomerController extends Controller
     public function index(Request $request)
     {
         if ($request->ajax()) {
-            $query = Customer::with('customerGroup')->select('customers.*');
+            $query = Customer::select('customers.*');
             
             if ($request->filled('status')) {
                 $query->where('status', $request->status);
-            }
-            if ($request->filled('group_id')) {
-                $query->where('customer_group_id', $request->group_id);
             }
 
             return DataTables::of($query)
                 ->addColumn('name', function($row) {
                     return $row->first_name . ' ' . $row->last_name;
-                })
-                ->addColumn('group', function($row) {
-                    return $row->customerGroup->name ?? '<span class="text-muted">General</span>';
                 })
                 ->addColumn('status', function($row) {
                     $class = $row->status === 'active' ? 'bg-success' : 'bg-danger';
@@ -47,17 +40,16 @@ class CustomerController extends Controller
                     $blockBtn = '<button class="btn btn-sm btn-light rounded-circle toggle-status" data-id="' . $row->id . '" data-status="' . $row->status . '"><i class="fas ' . $blockIcon . ' ' . $blockClass . '"></i></button>';
                     return $viewBtn . $blockBtn;
                 })
-                ->rawColumns(['group', 'status', 'action'])
+                ->rawColumns(['status', 'action'])
                 ->make(true);
         }
 
-        $groups = CustomerGroup::all();
-        return view('admin.customers.index', compact('groups'));
+        return view('admin.customers.index');
     }
 
     public function show(Customer $customer)
     {
-        $customer->load(['customerGroup', 'addresses', 'walletTransactions' => function($q) {
+        $customer->load(['addresses', 'walletTransactions' => function($q) {
             $q->orderBy('created_at', 'desc');
         }]);
 
@@ -65,10 +57,8 @@ class CustomerController extends Controller
         $reviews = Review::with('product')->where('customer_id', $customer->id)->orderBy('created_at', 'desc')->get();
         $wishlist = Wishlist::with('product')->where('customer_id', $customer->id)->get();
         $referredCustomers = Customer::where('referred_by', $customer->id)->get();
-        
-        $groups = CustomerGroup::all();
 
-        return view('admin.customers.show', compact('customer', 'orders', 'reviews', 'wishlist', 'referredCustomers', 'groups'));
+        return view('admin.customers.show', compact('customer', 'orders', 'reviews', 'wishlist', 'referredCustomers'));
     }
 
     public function toggleStatus(Request $request, Customer $customer)
@@ -85,17 +75,6 @@ class CustomerController extends Controller
         ]);
 
         return response()->json(['success' => true, 'message' => "Customer is now {$newStatus}."]);
-    }
-
-    public function updateGroup(Request $request, Customer $customer)
-    {
-        $request->validate([
-            'customer_group_id' => 'nullable|exists:customer_groups,id'
-        ]);
-
-        $customer->update(['customer_group_id' => $request->customer_group_id]);
-
-        return back()->with('success', 'Customer group updated successfully.');
     }
 
     public function updateNotes(Request $request, Customer $customer)
@@ -172,33 +151,4 @@ class CustomerController extends Controller
         return back()->with('success', 'Reward points adjusted successfully.');
     }
 
-    // Customer Groups CRUD
-    public function groupsIndex()
-    {
-        $groups = CustomerGroup::withCount('customers')->get();
-        return view('admin.customers.groups', compact('groups'));
-    }
-
-    public function groupsStore(Request $request)
-    {
-        $request->validate([
-            'name' => 'required|string|max:255',
-            'discount_percent' => 'required|numeric|between:0,100',
-            'description' => 'nullable|string'
-        ]);
-
-        CustomerGroup::create($request->all());
-
-        return back()->with('success', 'Customer group created successfully.');
-    }
-
-    public function groupsDestroy(CustomerGroup $group)
-    {
-        if ($group->customers()->count() > 0) {
-            return back()->withErrors(['group' => 'Cannot delete group with active members.']);
-        }
-
-        $group->delete();
-        return back()->with('success', 'Customer group deleted successfully.');
-    }
 }

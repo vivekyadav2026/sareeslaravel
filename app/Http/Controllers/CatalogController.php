@@ -106,7 +106,30 @@ class CatalogController extends Controller
             $products = $query->get();
         }
 
-        return view('suits', compact('products'));
+        return view('product', compact('products'));
+    }
+
+    public function search(Request $request)
+    {
+        $searchQuery = $request->input('q');
+        if (!$searchQuery) {
+            return redirect()->route('home');
+        }
+
+        $query = Product::where('is_active', true)
+            ->where(function($q) use ($searchQuery) {
+                $q->where('name', 'like', '%' . $searchQuery . '%')
+                  ->orWhere('description', 'like', '%' . $searchQuery . '%')
+                  ->orWhere('sku', 'like', '%' . $searchQuery . '%')
+                  ->orWhere('material', 'like', '%' . $searchQuery . '%')
+                  ->orWhere('occasion', 'like', '%' . $searchQuery . '%');
+            })
+            ->with('images');
+            
+        $query = $this->applyFilters($query, $request);
+        $products = $query->get();
+
+        return view('product', compact('products', 'searchQuery'));
     }
 
     public function lehengas(Request $request)
@@ -206,10 +229,7 @@ class CatalogController extends Controller
 
         $imagePath = null;
         if ($request->hasFile('design_image')) {
-            $file = $request->file('design_image');
-            $filename = time() . '_' . uniqid() . '.' . $file->getClientOriginalExtension();
-            $file->move(public_path('uploads/designs'), $filename);
-            $imagePath = 'uploads/designs/' . $filename;
+            $imagePath = \App\Services\ImageOptimizerService::compressAndStore($request->file('design_image'), 'designs', 1200, 1600, 82);
         }
 
         CustomDesignRequest::create([
@@ -222,6 +242,12 @@ class CatalogController extends Controller
         ]);
 
         return back()->with('success', 'Your custom bridal lehenga details have been recorded! Our design consultants will contact you shortly.');
+    }
+
+    public function gallery()
+    {
+        $galleries = \App\Models\Gallery::where('is_active', true)->orderBy('sort_order', 'asc')->orderBy('id', 'desc')->get();
+        return view('gallery', compact('galleries'));
     }
 
     public function makeupServices()
@@ -274,6 +300,10 @@ class CatalogController extends Controller
                     'phone' => $request->guest_phone,
                     'status' => 'active'
                 ]);
+            } else {
+                if ($request->guest_phone) {
+                    $customer->update(['phone' => $request->guest_phone]);
+                }
             }
             $customerId = $customer->id;
         }
@@ -318,6 +348,15 @@ class CatalogController extends Controller
             'email' => ['required', 'email', 'max:255'],
             'subject' => ['required', 'string', 'max:255'],
             'message' => ['required', 'string', 'max:5000'],
+        ]);
+
+        \App\Models\ContactInquiry::create([
+            'name' => $request->name,
+            'phone' => $request->phone,
+            'email' => $request->email,
+            'subject' => $request->subject,
+            'message' => $request->message,
+            'status' => 'unread',
         ]);
 
         return back()->with('success', 'Thank you, ' . $request->name . '! Your luxury concierge inquiry has been received. Our stylists will connect with you shortly.');

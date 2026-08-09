@@ -80,10 +80,10 @@
     <!-- Left: Mobile Toggle & Desktop Search Bar -->
     <div class="header-col-left">
       <!-- Desktop Search Bar -->
-      <div class="header-search-bar d-none d-lg-block">
-        <input type="text" placeholder="Search sarees, suits, lehengas...">
-        <i class="fa-solid fa-magnifying-glass"></i>
-      </div>
+      <form action="{{ route('search') }}" method="GET" class="header-search-bar d-none d-lg-block m-0">
+        <input type="text" name="q" placeholder="Search sarees, suits, lehengas..." value="{{ request('q') }}" required>
+        <button type="submit" style="background:none; border:none; padding:0; color:var(--text-color); position:absolute; right:14px; top:50%; transform:translateY(-50%); z-index:10;"><i class="fa-solid fa-magnifying-glass"></i></button>
+      </form>
       <!-- Mobile Menu Toggle Button -->
       <button class="mobile-nav-toggler d-lg-none" type="button" data-bs-toggle="collapse" data-bs-target="#navMain" aria-controls="navMain" aria-expanded="false" aria-label="Toggle navigation">
         <i class="fa-solid fa-bars-staggered"></i>
@@ -125,10 +125,10 @@
   <!-- Expandable Mobile Search Bar -->
   <div class="collapse d-lg-none" id="mobileSearchBar">
     <div class="container py-2 px-3">
-      <div class="mobile-search-box">
-        <input type="text" class="form-control" placeholder="Search sarees, suits, lehengas, bridal packages...">
-        <button class="btn btn-gold-sm" type="button"><i class="fa-solid fa-magnifying-glass"></i></button>
-      </div>
+      <form action="{{ route('search') }}" method="GET" class="mobile-search-box">
+        <input type="text" name="q" class="form-control" placeholder="Search sarees, suits..." value="{{ request('q') }}" required>
+        <button class="btn btn-gold-sm" type="submit"><i class="fa-solid fa-magnifying-glass"></i></button>
+      </form>
     </div>
   </div>
 

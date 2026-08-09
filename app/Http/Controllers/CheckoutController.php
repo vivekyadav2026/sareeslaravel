@@ -67,7 +67,11 @@ class CheckoutController extends Controller
             }
         }
 
-        $tax = $subtotal * 0.18; // 18% GST
+        $tax = collect($cart)->sum(function($item) {
+            $rate = $item['gst_rate'] ?? 0;
+            return $item['price'] * $item['quantity'] * ($rate / 100);
+        });
+        
         $shipping = $subtotal >= 5000 ? 0.00 : 150.00;
         $total = $subtotal - $discount + $tax + $shipping + $giftWrapCharge;
 
@@ -214,7 +218,12 @@ class CheckoutController extends Controller
         }
 
         $giftWrapCharge = session()->get('gift_wrap', false) ? 199.00 : 0.00;
-        $tax = $subtotal * 0.18; // 18% GST
+        
+        $tax = collect($cart)->sum(function($item) {
+            $rate = $item['gst_rate'] ?? 0;
+            return $item['price'] * $item['quantity'] * ($rate / 100);
+        });
+
         $shipping = $subtotal >= 5000 ? 0.00 : 150.00;
         $total = $subtotal - $discount + $tax + $shipping + $giftWrapCharge;
 

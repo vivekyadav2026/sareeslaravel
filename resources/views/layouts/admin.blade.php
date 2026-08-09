@@ -313,11 +313,7 @@
                         <i class="fas fa-users"></i> <span class="nav-link-text">Customers List</span>
                     </a>
                 </li>
-                <li class="nav-item">
-                    <a class="nav-link {{ request()->routeIs('admin.customer-groups.*') ? 'active' : '' }}" href="{{ route('admin.customer-groups.index') }}" title="Customer Groups">
-                        <i class="fas fa-layer-group"></i> <span class="nav-link-text">Customer Groups</span>
-                    </a>
-                </li>
+
 
                 <!-- Bridal & Studio -->
                 <li class="sidebar-header">Bridal Studio Services</li>
@@ -349,6 +345,16 @@
                 <li class="nav-item">
                     <a class="nav-link {{ request()->routeIs('admin.makeup-services.*') ? 'active' : '' }}" href="{{ route('admin.makeup-services.index') }}" title="Makeup Services">
                         <i class="fas fa-palette"></i> <span class="nav-link-text">Makeup Services</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link {{ request()->routeIs('admin.gallery.*') ? 'active' : '' }}" href="{{ route('admin.gallery.index') }}" title="Real Brides Gallery">
+                        <i class="fas fa-images"></i> <span class="nav-link-text">Real Brides Gallery</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link {{ request()->routeIs('admin.contact-inquiries.*') ? 'active' : '' }}" href="{{ route('admin.contact-inquiries.index') }}" title="Contact Inquiries">
+                        <i class="fas fa-envelope-open-text"></i> <span class="nav-link-text">Contact Inquiries</span>
                     </a>
                 </li>
 

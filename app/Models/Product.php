@@ -34,6 +34,7 @@ class Product extends Model
         'related_products',
         'upsell_products',
         'cross_sell_products',
+        'gst_rate',
     ];
 
     protected $casts = [

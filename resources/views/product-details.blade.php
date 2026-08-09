@@ -55,12 +55,12 @@
     <div class="col-lg-6">
       
       <!-- Brand & Badges -->
-      <div class="mb-2">
-        <span class="text-gold-light small text-uppercase tracking-wider" style="letter-spacing: 0.15em;">{{ $product->brand->name ?? 'RANISAHAB Signature' }}</span>
+      <div class="mb-2 d-flex align-items-center gap-2">
+        <span class="text-gold font-display fw-bold text-uppercase" style="letter-spacing: 0.14em; font-size: 0.85rem; color: #c9a24b !important;">{{ $product->brand->name ?? 'RANISAHAB SIGNATURE' }}</span>
         @if ($product->is_best_seller)
-          <span class="badge bg-gold text-dark ms-2 small" style="font-size: 0.65rem;">BEST SELLER</span>
+          <span class="badge fw-bold px-2.5 py-1 text-uppercase" style="background: linear-gradient(90deg, #c5a880 0%, #b2946c 100%); color: #000000 !important; font-size: 0.68rem; letter-spacing: 0.08em; border-radius: 4px; box-shadow: 0 2px 8px rgba(197, 168, 128, 0.3);">BEST SELLER</span>
         @elseif ($product->is_new_arrival)
-          <span class="badge bg-danger text-white ms-2 small" style="font-size: 0.65rem;">NEW ARRIVAL</span>
+          <span class="badge bg-danger text-white fw-bold px-2.5 py-1 text-uppercase" style="font-size: 0.68rem; letter-spacing: 0.08em; border-radius: 4px;">NEW ARRIVAL</span>
         @endif
       </div>
 
@@ -77,45 +77,53 @@
       </div>
 
       <!-- Pricing Block -->
-      <div class="mb-4 p-4 rounded" style="background: rgba(90, 11, 22, 0.25); border: 1px solid rgba(201, 162, 75, 0.4);">
-        <div class="d-flex align-items-baseline gap-3 mb-1">
-          <span class="fs-2 fw-bold text-gold" style="color: #f3dfb2 !important;">₹{{ number_format($product->price, 0) }}</span>
+      <div class="mb-4 p-3 p-md-4 rounded-3" style="background: linear-gradient(135deg, rgba(60, 8, 15, 0.6) 0%, rgba(18, 14, 11, 0.85) 100%); border: 1px solid rgba(201, 162, 75, 0.45); box-shadow: 0 10px 25px rgba(0,0,0,0.5);">
+        <div class="d-flex align-items-baseline gap-3 mb-2">
+          <span class="fs-2 fw-bold font-display" style="color: #f3dfb2 !important; letter-spacing: 0.04em;">₹{{ number_format($product->price, 0) }}</span>
           @if ($product->sale_price)
-            <span class="text-white opacity-60 text-decoration-line-through">₹{{ number_format($product->sale_price, 0) }}</span>
+            <span class="text-white-50 text-decoration-line-through fs-5">₹{{ number_format($product->sale_price, 0) }}</span>
+            <span class="badge bg-warning text-dark font-label fw-bold px-2 py-1">SPECIAL OFFER</span>
           @endif
         </div>
-        <p class="small text-white opacity-90 mb-0"><i class="fa-solid fa-truck-fast text-gold me-1"></i> Inclusive of all local GST taxes. Free express shipping across India.</p>
+        <p class="small mb-0" style="color: #ded6c8 !important; font-size: 0.84rem; line-height: 1.5; letter-spacing: 0.02em;">
+          <i class="fa-solid fa-truck-fast text-gold me-1"></i> Inclusive of all GST taxes &bull; Free express delivery across India.
+        </p>
       </div>
 
       <!-- Description -->
       <div class="mb-4">
-        <h5 class="text-gold font-display border-bottom border-warning border-opacity-25 pb-2 mb-3" style="color: #c9a24b !important;">COUTURE DESCRIPTION</h5>
-        <p class="text-white opacity-90" style="line-height: 1.8; color: #f5f0eb !important; font-size: 0.95rem;">{{ $product->description ?: ($product->summary ?: 'Handcrafted luxury boutique ensemble with fine detailing and authentic craftsmanship.') }}</p>
+        <h6 class="text-gold font-display text-uppercase border-bottom border-warning border-opacity-25 pb-2 mb-2" style="color: #c9a24b !important; letter-spacing: 0.14em; font-size: 0.95rem;">COUTURE DESCRIPTION &amp; CRAFTSMANSHIP</h6>
+        <p style="line-height: 1.75; color: #ece3d3 !important; font-size: 0.92rem; letter-spacing: 0.015em; font-weight: 400;">
+          {{ $product->description ?: ($product->summary ?: 'Exquisite royal creation handcrafted with pure silk fabrics, intricate hand-embroidery, and traditional zari artistry by master handloom weavers.') }}
+        </p>
       </div>
 
       <!-- Sizing Options -->
       <div class="mb-4">
         <div class="d-flex justify-content-between align-items-center mb-2">
-          <label class="text-gold fw-bold" style="color: #f3dfb2 !important;">SELECT COUTURE SIZE</label>
-          <a href="{{ route('customer.measurements') }}" class="small text-gold text-decoration-underline" style="color: #c9a24b !important;"><i class="fa-solid fa-ruler me-1"></i>Sizing Spec Sheet</a>
+          <label class="text-gold fw-bold font-label text-uppercase" style="color: #f3dfb2 !important; letter-spacing: 0.1em; font-size: 0.85rem;">SELECT COUTURE SIZE</label>
+          <a href="{{ route('customer.measurements') }}" class="small text-gold text-decoration-underline font-label" style="color: #c9a24b !important; letter-spacing: 0.05em;"><i class="fa-solid fa-ruler me-1"></i>Sizing Spec Sheet</a>
         </div>
         <div class="d-flex flex-wrap gap-2" id="coutureSizeButtons">
           @if ($product->variants && $product->variants->where('size', '!=', null)->isNotEmpty())
             @foreach($product->variants->pluck('size')->unique() as $sz)
-              <button type="button" class="btn btn-outline-gold cout-size-btn {{ $loop->first ? 'active' : '' }} px-4 py-2 font-display text-uppercase" style="font-size: 0.8rem;" onclick="selectCoutureSize(this, '{{ $sz }}')">
+              <button type="button" class="btn btn-outline-gold cout-size-btn {{ $loop->first ? 'active' : '' }} px-3.5 py-2 font-display text-uppercase" style="font-size: 0.8rem; letter-spacing: 0.08em;" onclick="selectCoutureSize(this, '{{ $sz }}')">
                 {{ $sz }}
               </button>
             @endforeach
           @else
-            <button type="button" class="btn btn-outline-gold cout-size-btn active px-4 py-2 font-display text-uppercase" style="font-size: 0.8rem;" onclick="selectCoutureSize(this, 'Free Size (Unstitched)')">
+            <button type="button" class="btn btn-outline-gold cout-size-btn active px-3.5 py-2 font-display text-uppercase" style="font-size: 0.8rem; letter-spacing: 0.08em;" onclick="selectCoutureSize(this, 'Free Size (Unstitched)')">
               Free Size (Unstitched)
             </button>
-            <button type="button" class="btn btn-outline-gold cout-size-btn px-4 py-2 font-display text-uppercase" style="font-size: 0.8rem;" onclick="selectCoutureSize(this, 'Custom Stitched')">
+            <button type="button" class="btn btn-outline-gold cout-size-btn px-3.5 py-2 font-display text-uppercase" style="font-size: 0.8rem; letter-spacing: 0.08em;" onclick="selectCoutureSize(this, 'Custom Stitched')">
               <i class="fa-solid fa-scissors me-1 text-gold"></i> Custom Stitched
             </button>
           @endif
         </div>
-        <small class="text-white opacity-85 d-block mt-2" style="color: #e5cf9b !important;"><i class="fa-solid fa-scissors me-1 text-gold"></i>All sarees/lehengas include standard sizing margins for personal alterations.</small>
+        <div class="p-3 rounded-3 mt-3 d-flex align-items-center gap-2.5" style="background: rgba(201, 162, 75, 0.08); border: 1px solid rgba(201, 162, 75, 0.35) !important;">
+          <i class="fa-solid fa-scissors text-gold fs-6 flex-shrink-0" style="color: #c9a24b !important;"></i>
+          <span style="color: #ece3d3 !important; font-size: 0.82rem; line-height: 1.5; letter-spacing: 0.01em; margin: 0;">All sarees &amp; lehengas include standard internal fabric margins for personal alterations.</span>
+        </div>
       </div>
 
       <!-- Action Buttons: Buy Now / Add to Bag / Wishlist -->

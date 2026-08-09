@@ -331,7 +331,7 @@ a { text-decoration: none; color: inherit; transition: all 0.2s ease; }
   margin: 0;
   padding: 0;
   list-style: none;
-  flex-wrap: wrap;
+  flex-wrap: nowrap;
 }
 .nav-ranisahab-menu .nav-item {
   position: relative;
@@ -342,17 +342,17 @@ a { text-decoration: none; color: inherit; transition: all 0.2s ease; }
   content: '✦';
   font-size: 0.45rem;
   color: rgba(201, 162, 75, 0.4);
-  margin: 0 0.8rem;
+  margin: 0 0.5rem;
   pointer-events: none;
 }
 .nav-ranisahab-menu .nav-link {
   font-family: var(--font-label);
-  font-size: 0.7rem;
+  font-size: 0.73rem;
   font-weight: 500;
-  letter-spacing: 0.18em;
+  letter-spacing: 0.12em;
   color: #ebdcc2;
   text-transform: uppercase;
-  padding: 0.8rem 0.3rem;
+  padding: 0.6rem 0.35rem;
   white-space: nowrap;
   position: relative;
   transition: all 0.3s ease;
@@ -364,7 +364,7 @@ a { text-decoration: none; color: inherit; transition: all 0.2s ease; }
 .nav-ranisahab-menu .nav-link::after {
   content: '';
   position: absolute;
-  bottom: 4px;
+  bottom: 2px;
   left: 0;
   width: 100%;
   height: 2px;
@@ -380,6 +380,17 @@ a { text-decoration: none; color: inherit; transition: all 0.2s ease; }
   color: var(--gold-light) !important;
   font-weight: 600;
   text-shadow: 0 0 15px rgba(201, 162, 75, 0.8);
+}
+
+@media (min-width: 992px) and (max-width: 1280px) {
+  .nav-ranisahab-menu .nav-link {
+    font-size: 0.66rem !important;
+    letter-spacing: 0.08em !important;
+    padding: 0.5rem 0.2rem !important;
+  }
+  .nav-ranisahab-menu .nav-item:not(:last-child)::after {
+    margin: 0 0.22rem !important;
+  }
 }
 
 /* =========================================================
@@ -965,13 +976,13 @@ a { text-decoration: none; color: inherit; transition: all 0.2s ease; }
   }
   .nav-ranisahab-menu {
     flex-direction: column !important;
-    align-items: flex-start !important;
-    gap: 0.35rem !important;
-    padding: 1rem 0.5rem 1rem 2.5rem !important;
+    align-items: stretch !important;
+    gap: 0.4rem !important;
+    padding: 1rem 0.5rem !important;
   }
   .nav-ranisahab-menu .nav-item {
     width: 100% !important;
-    max-width: 280px !important;
+    max-width: 100% !important;
     text-align: left !important;
   }
   .nav-ranisahab-menu .nav-item:not(:last-child)::after {
@@ -981,16 +992,17 @@ a { text-decoration: none; color: inherit; transition: all 0.2s ease; }
     display: none !important;
   }
   .nav-ranisahab-menu .nav-link {
-    font-size: 0.78rem !important;
-    padding: 0.65rem 1rem !important;
-    letter-spacing: 0.14em !important;
+    font-size: 0.8rem !important;
+    padding: 0.75rem 1rem !important;
+    letter-spacing: 0.12em !important;
     text-align: left !important;
     display: flex !important;
     align-items: center !important;
     justify-content: flex-start !important;
-    border-radius: 4px !important;
-    background: rgba(255, 255, 255, 0.02) !important;
-    border: 1px solid rgba(201, 162, 75, 0.12) !important;
+    border-radius: 6px !important;
+    background: rgba(255, 255, 255, 0.03) !important;
+    border: 1px solid rgba(201, 162, 75, 0.18) !important;
+    color: #ebdcc2 !important;
     width: 100% !important;
   }
   .nav-ranisahab-menu .nav-link.active {
@@ -2015,32 +2027,42 @@ a { text-decoration: none; color: inherit; transition: all 0.2s ease; }
 
 .plp-filter-drawer {
   display: none;
-  background: #130f0c;
-  border-top: 1px solid rgba(201,162,75,0.2);
-  border-bottom: 1px solid rgba(201,162,75,0.2);
-  padding: 1.25rem 1.2rem;
-  gap: 1.5rem;
-  flex-direction: column;
+  background: linear-gradient(145deg, #181310 0%, #0d0a08 100%);
+  border: 1px solid rgba(201, 162, 75, 0.35);
+  border-radius: 12px;
+  padding: 1.25rem 1.4rem;
+  margin-bottom: 1.5rem;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6);
 }
-.plp-filter-drawer.open { display: flex; }
-.plp-filter-section { display: flex; flex-direction: column; gap: 0.5rem; }
+.plp-filter-drawer.open { display: block; }
+.plp-filter-section { display: flex; flex-direction: column; gap: 0.4rem; }
 .plp-filter-label {
-  font-family: var(--font-label);
-  font-size: 0.65rem;
-  letter-spacing: 0.15em;
-  color: var(--gold);
-  margin: 0 0 0.25rem;
+  font-family: var(--font-display);
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  color: #c9a24b !important;
+  margin: 0 0 0.4rem;
+  text-transform: uppercase;
 }
 .plp-filter-check {
   display: flex;
   align-items: center;
-  gap: 0.5rem;
-  font-size: 0.82rem;
-  color: #c5bbb1;
+  gap: 0.6rem;
+  font-size: 0.85rem;
+  color: #e6decb !important;
+  cursor: pointer;
+  padding: 0.2rem 0;
+  transition: color 0.2s ease;
+}
+.plp-filter-check:hover { color: #ffffff !important; }
+.plp-filter-check input[type="checkbox"],
+.plp-filter-check input[type="radio"] {
+  accent-color: #c9a24b;
+  width: 16px;
+  height: 16px;
   cursor: pointer;
 }
-.plp-filter-check input[type="checkbox"] { accent-color: var(--gold); width: 14px; height: 14px; }
-.plp-filter-check span { color: #6a6260; font-size: 0.75rem; }
 
 .plp-grid {
   display: grid;
@@ -2906,4 +2928,44 @@ select option:checked {
     overflow-x: auto !important;
     -webkit-overflow-scrolling: touch !important;
   }
+}
+
+/* =========================================================
+   LUXURY ACCORDION OVERRIDES FOR PRODUCT DETAILS
+   ========================================================= */
+.luxury-accordion .accordion-item {
+  background: rgba(24, 20, 18, 0.7) !important;
+  border: 1px solid rgba(201, 162, 75, 0.3) !important;
+  border-radius: 8px !important;
+  margin-bottom: 0.75rem !important;
+  overflow: hidden;
+}
+
+.luxury-accordion .accordion-button {
+  background: rgba(30, 24, 20, 0.85) !important;
+  color: #f3dfb2 !important;
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: 0.9rem;
+  letter-spacing: 0.08em;
+  padding: 1rem 1.25rem;
+  box-shadow: none !important;
+}
+
+.luxury-accordion .accordion-button:not(.collapsed) {
+  background: rgba(75, 12, 22, 0.6) !important;
+  color: #ffffff !important;
+  border-bottom: 1px solid rgba(201, 162, 75, 0.35) !important;
+}
+
+.luxury-accordion .accordion-button::after {
+  filter: invert(80%) sepia(50%) saturate(600%) hue-rotate(5deg) brightness(110%);
+}
+
+.luxury-accordion .accordion-body {
+  background: rgba(12, 10, 8, 0.95) !important;
+  color: #ece3d3 !important;
+  font-size: 0.88rem;
+  line-height: 1.75;
+  padding: 1.1rem 1.25rem;
 }

@@ -84,17 +84,27 @@
                                     </div>
 
                                     <div class="row mb-3">
-                                        <div class="col-md-4">
+                                        <div class="col-md-3">
                                             <label for="price" class="form-label fw-semibold">Base Price (INR)</label>
                                             <input type="number" step="0.01" class="form-control" id="price" name="price" value="{{ old('price', $product->price) }}" required>
                                         </div>
-                                        <div class="col-md-4">
+                                        <div class="col-md-3">
                                             <label for="sale_price" class="form-label fw-semibold">Sale Price (INR)</label>
                                             <input type="number" step="0.01" class="form-control" id="sale_price" name="sale_price" value="{{ old('sale_price', $product->sale_price) }}">
                                         </div>
-                                        <div class="col-md-4">
+                                        <div class="col-md-3">
                                             <label for="cost_price" class="form-label fw-semibold">Cost Price (INR)</label>
                                             <input type="number" step="0.01" class="form-control" id="cost_price" name="cost_price" value="{{ old('cost_price', $product->cost_price) }}">
+                                        </div>
+                                        <div class="col-md-3">
+                                            <label for="gst_rate" class="form-label fw-semibold">GST Rate (%)</label>
+                                            <select class="form-select" id="gst_rate" name="gst_rate">
+                                                <option value="0" {{ old('gst_rate', $product->gst_rate) == '0.00' ? 'selected' : '' }}>0% (No GST)</option>
+                                                <option value="5" {{ old('gst_rate', $product->gst_rate) == '5.00' ? 'selected' : '' }}>5%</option>
+                                                <option value="12" {{ old('gst_rate', $product->gst_rate) == '12.00' ? 'selected' : '' }}>12%</option>
+                                                <option value="18" {{ old('gst_rate', $product->gst_rate) == '18.00' ? 'selected' : '' }}>18%</option>
+                                                <option value="28" {{ old('gst_rate', $product->gst_rate) == '28.00' ? 'selected' : '' }}>28%</option>
+                                            </select>
                                         </div>
                                     </div>
 

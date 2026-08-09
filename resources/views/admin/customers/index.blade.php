@@ -6,11 +6,6 @@
 <div class="card shadow mb-4">
     <div class="card-header d-flex justify-content-between align-items-center">
         <h5 class="mb-0 fw-bold">Customer Directory</h5>
-        <div>
-            <a href="{{ route('admin.customer-groups.index') }}" class="btn btn-outline-warning rounded-pill px-4 me-2">
-                <i class="fas fa-layer-group me-2"></i> Manage Groups
-            </a>
-        </div>
     </div>
     <div class="card-body">
         <!-- Advanced Filters -->
@@ -23,15 +18,7 @@
                     <option value="blocked">Blocked</option>
                 </select>
             </div>
-            <div class="col-md-4">
-                <label for="filter-group" class="form-label small fw-semibold text-muted">Filter by Group</label>
-                <select id="filter-group" class="form-select">
-                    <option value="">All Groups</option>
-                    @foreach($groups as $group)
-                        <option value="{{ $group->id }}">{{ $group->name }}</option>
-                    @endforeach
-                </select>
-            </div>
+
             <div class="col-md-4 d-flex align-items-end">
                 <button id="reset-filters" class="btn btn-light w-100 rounded-pill">
                     <i class="fas fa-undo me-2"></i> Reset Filters
@@ -47,7 +34,7 @@
                         <th>Name</th>
                         <th>Email</th>
                         <th>Phone</th>
-                        <th>Group</th>
+
                         <th>Wallet</th>
                         <th>Points</th>
                         <th>Status</th>
@@ -72,7 +59,7 @@
                 url: "{{ route('admin.customers.index') }}",
                 data: function(d) {
                     d.status = $('#filter-status').val();
-                    d.group_id = $('#filter-group').val();
+
                 }
             },
             columns: [
@@ -80,7 +67,7 @@
                 { data: 'name', name: 'name', className: 'fw-semibold' },
                 { data: 'email', name: 'email' },
                 { data: 'phone', name: 'phone', defaultContent: '<span class="text-muted">N/A</span>' },
-                { data: 'group', name: 'group', orderable: false, searchable: false },
+
                 { 
                     data: 'wallet_balance', 
                     name: 'wallet_balance',
@@ -99,14 +86,13 @@
             }
         });
 
-        // Live Filters Trigger
-        $('#filter-status, #filter-group').change(function() {
+        $('#filter-status').change(function() {
             table.draw();
         });
 
         $('#reset-filters').click(function() {
             $('#filter-status').val('');
-            $('#filter-group').val('');
+
             table.draw();
         });
 

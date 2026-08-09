@@ -1,0 +1,27 @@
+<?php
+
+namespace App\Models;
+
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
+
+class Gallery extends Model
+{
+    use HasFactory;
+
+    protected $fillable = [
+        'title',
+        'category',
+        'image_path',
+        'video_url',
+        'is_video',
+        'sort_order',
+        'is_active',
+    ];
+
+    protected $casts = [
+        'is_video' => 'boolean',
+        'is_active' => 'boolean',
+        'sort_order' => 'integer',
+    ];
+}

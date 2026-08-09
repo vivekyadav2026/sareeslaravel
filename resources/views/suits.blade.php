@@ -43,25 +43,35 @@
   <!-- Filter Drawer -->
   <form id="filterDrawer" method="GET" action="{{ route('suits') }}" class="plp-filter-drawer {{ (request()->has('occasions') || request()->has('types') || request()->has('price') || request()->has('sort_by')) ? 'open' : '' }}">
     <input type="hidden" name="sort_by" id="sortByInput" value="{{ request('sort_by') }}">
-    <div class="plp-filter-section">
-      <p class="plp-filter-label">SUIT TYPE</p>
-      <label class="plp-filter-check"><input type="checkbox" name="types[]" value="Anarkali" {{ is_array(request('types')) && in_array('Anarkali', request('types')) ? 'checked' : '' }} onchange="submitFilterForm()"> Anarkali Suits</label>
-      <label class="plp-filter-check"><input type="checkbox" name="types[]" value="Straight" {{ is_array(request('types')) && in_array('Straight', request('types')) ? 'checked' : '' }} onchange="submitFilterForm()"> Straight Cut Suits</label>
-      <label class="plp-filter-check"><input type="checkbox" name="types[]" value="Sharara" {{ is_array(request('types')) && in_array('Sharara', request('types')) ? 'checked' : '' }} onchange="submitFilterForm()"> Sharara &amp; Gharara</label>
-      <label class="plp-filter-check"><input type="checkbox" name="types[]" value="Palazzo" {{ is_array(request('types')) && in_array('Palazzo', request('types')) ? 'checked' : '' }} onchange="submitFilterForm()"> Palazzo Suits</label>
+    
+    <div class="d-flex justify-content-between align-items-center w-100 pb-2 mb-3 border-bottom border-warning border-opacity-25">
+      <span class="text-gold font-display fw-bold fs-6 text-uppercase" style="letter-spacing: 0.1em; color: #c9a24b !important;"><i class="fa-solid fa-sliders me-2"></i>COUTURE FILTERS</span>
+      <a href="{{ route('suits') }}" class="small text-gold-light text-decoration-underline" style="font-size: 0.75rem;">Reset All</a>
     </div>
-    <div class="plp-filter-section">
-      <p class="plp-filter-label">FABRIC</p>
-      <label class="plp-filter-check"><input type="checkbox" name="occasions[]" value="Silk" {{ is_array(request('occasions')) && in_array('Silk', request('occasions')) ? 'checked' : '' }} onchange="submitFilterForm()"> Pure Silk &amp; Georgette</label>
-      <label class="plp-filter-check"><input type="checkbox" name="occasions[]" value="Chanderi" {{ is_array(request('occasions')) && in_array('Chanderi', request('occasions')) ? 'checked' : '' }} onchange="submitFilterForm()"> Chanderi &amp; Organza</label>
-      <label class="plp-filter-check"><input type="checkbox" name="occasions[]" value="Velvet" {{ is_array(request('occasions')) && in_array('Velvet', request('occasions')) ? 'checked' : '' }} onchange="submitFilterForm()"> Velvet Embroidery</label>
-    </div>
-    <div class="plp-filter-section">
-      <p class="plp-filter-label">PRICE RANGE</p>
-      <label class="plp-filter-check"><input type="radio" name="price" value="" {{ !request('price') ? 'checked' : '' }} onchange="submitFilterForm()"> All Prices</label>
-      <label class="plp-filter-check"><input type="radio" name="price" value="under_5000" {{ request('price') === 'under_5000' ? 'checked' : '' }} onchange="submitFilterForm()"> Under ₹5,000</label>
-      <label class="plp-filter-check"><input type="radio" name="price" value="5000_15000" {{ request('price') === '5000_15000' ? 'checked' : '' }} onchange="submitFilterForm()"> ₹5,000 – ₹15,000</label>
-      <label class="plp-filter-check"><input type="radio" name="price" value="above_15000" {{ request('price') === 'above_15000' ? 'checked' : '' }} onchange="submitFilterForm()"> ₹15,000+</label>
+
+    <div class="row g-3 w-100 m-0">
+      <div class="col-6 col-md-4 plp-filter-section">
+        <p class="plp-filter-label">SUIT TYPE</p>
+        <label class="plp-filter-check"><input type="checkbox" name="types[]" value="Anarkali" {{ is_array(request('types')) && in_array('Anarkali', request('types')) ? 'checked' : '' }} onchange="submitFilterForm()"> Anarkali Suit</label>
+        <label class="plp-filter-check"><input type="checkbox" name="types[]" value="Sharara" {{ is_array(request('types')) && in_array('Sharara', request('types')) ? 'checked' : '' }} onchange="submitFilterForm()"> Sharara Suit</label>
+        <label class="plp-filter-check"><input type="checkbox" name="types[]" value="Straight" {{ is_array(request('types')) && in_array('Straight', request('types')) ? 'checked' : '' }} onchange="submitFilterForm()"> Straight Cut</label>
+        <label class="plp-filter-check"><input type="checkbox" name="types[]" value="Palazzo" {{ is_array(request('types')) && in_array('Palazzo', request('types')) ? 'checked' : '' }} onchange="submitFilterForm()"> Palazzo Set</label>
+      </div>
+
+      <div class="col-6 col-md-4 plp-filter-section">
+        <p class="plp-filter-label">OCCASION</p>
+        <label class="plp-filter-check"><input type="checkbox" name="occasions[]" value="Wedding" {{ is_array(request('occasions')) && in_array('Wedding', request('occasions')) ? 'checked' : '' }} onchange="submitFilterForm()"> Wedding &amp; Festive</label>
+        <label class="plp-filter-check"><input type="checkbox" name="occasions[]" value="Party" {{ is_array(request('occasions')) && in_array('Party', request('occasions')) ? 'checked' : '' }} onchange="submitFilterForm()"> Party &amp; Reception</label>
+        <label class="plp-filter-check"><input type="checkbox" name="occasions[]" value="Casual" {{ is_array(request('occasions')) && in_array('Casual', request('occasions')) ? 'checked' : '' }} onchange="submitFilterForm()"> Casual Wear</label>
+      </div>
+
+      <div class="col-12 col-md-4 plp-filter-section mt-3 mt-md-0">
+        <p class="plp-filter-label">PRICE RANGE</p>
+        <label class="plp-filter-check"><input type="radio" name="price" value="" {{ !request('price') ? 'checked' : '' }} onchange="submitFilterForm()"> All Prices</label>
+        <label class="plp-filter-check"><input type="radio" name="price" value="under_5000" {{ request('price') === 'under_5000' ? 'checked' : '' }} onchange="submitFilterForm()"> Under ₹5,000</label>
+        <label class="plp-filter-check"><input type="radio" name="price" value="5000_10000" {{ request('price') === '5000_10000' ? 'checked' : '' }} onchange="submitFilterForm()"> ₹5,000 – ₹10,000</label>
+        <label class="plp-filter-check"><input type="radio" name="price" value="above_10000" {{ request('price') === 'above_10000' ? 'checked' : '' }} onchange="submitFilterForm()"> ₹10,000+</label>
+      </div>
     </div>
   </form>
 

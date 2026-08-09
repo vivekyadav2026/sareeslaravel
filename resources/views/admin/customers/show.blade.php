@@ -43,21 +43,6 @@
                 <h6 class="mb-0 fw-bold">CRM Settings</h6>
             </div>
             <div class="card-body">
-                <!-- Group assignment -->
-                <form action="{{ route('admin.customers.update-group', $customer->id) }}" method="POST" class="mb-4">
-                    @csrf
-                    <label for="customer_group_id" class="form-label small fw-semibold text-muted">Customer Group</label>
-                    <div class="input-group">
-                        <select name="customer_group_id" id="customer_group_id" class="form-select">
-                            <option value="">General (No group)</option>
-                            @foreach($groups as $group)
-                                <option value="{{ $group->id }}" {{ $customer->customer_group_id == $group->id ? 'selected' : '' }}>{{ $group->name }} ({{ $group->discount_percent }}% off)</option>
-                            @endforeach
-                        </select>
-                        <button type="submit" class="btn btn-primary">Update</button>
-                    </div>
-                </form>
-
                 <!-- Notes editor -->
                 <form action="{{ route('admin.customers.update-notes', $customer->id) }}" method="POST">
                     @csrf

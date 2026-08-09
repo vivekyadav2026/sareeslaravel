@@ -35,6 +35,7 @@ class CartController extends Controller
                 'id' => $product->id,
                 'name' => $product->name,
                 'price' => (float)($product->sale_price ?: $product->price),
+                'gst_rate' => (float)$product->gst_rate,
                 'image' => $imagePath,
                 'quantity' => $qty,
                 'color' => $request->input('color', 'Maroon'),
@@ -129,6 +130,7 @@ class CartController extends Controller
                 'id' => $cartId,
                 'name' => $package->name,
                 'price' => (float)$package->price,
+                'gst_rate' => 18, // Default 18% for services like bridal packages
                 'image' => $imagePath,
                 'quantity' => 1,
                 'color' => 'Custom Gold Coordination',

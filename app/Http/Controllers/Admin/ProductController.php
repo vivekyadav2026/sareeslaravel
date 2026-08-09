@@ -92,6 +92,7 @@ class ProductController extends Controller
             'cost_price' => 'nullable|numeric|min:0',
             'rating' => 'nullable|numeric|min:1|max:5',
             'reviews_count' => 'nullable|integer|min:0',
+            'gst_rate' => 'nullable|numeric|min:0|max:100',
             'sku' => 'nullable|string|unique:products,sku',
             'barcode' => 'nullable|string',
             'material' => 'nullable|string',
@@ -129,6 +130,7 @@ class ProductController extends Controller
                 'is_trending' => $request->has('is_trending'),
                 'is_new_arrival' => $request->has('is_new_arrival'),
                 'is_best_seller' => $request->has('is_best_seller'),
+                'gst_rate' => $request->input('gst_rate', 0),
             ]));
 
             // Sync tags/collections
@@ -181,11 +183,10 @@ class ProductController extends Controller
             // Handle images upload
             if ($request->hasFile('images')) {
                 foreach ($request->file('images') as $index => $file) {
-                    // Optimized/simple local storage path
-                    $path = $file->store('products', 'public');
+                    $filePath = \App\Services\ImageOptimizerService::compressAndStore($file, 'products', 1200, 1600, 82);
                     ProductImage::create([
                         'product_id' => $product->id,
-                        'file_path' => '/storage/' . $path,
+                        'file_path' => $filePath,
                         'type' => 'image',
                         'is_primary' => $index === 0,
                         'sort_order' => $index,
@@ -230,6 +231,7 @@ class ProductController extends Controller
             'cost_price' => 'nullable|numeric|min:0',
             'rating' => 'nullable|numeric|min:1|max:5',
             'reviews_count' => 'nullable|integer|min:0',
+            'gst_rate' => 'nullable|numeric|min:0|max:100',
             'sku' => 'nullable|string|unique:products,sku,' . $product->id,
             'barcode' => 'nullable|string',
             'material' => 'nullable|string',
@@ -252,6 +254,7 @@ class ProductController extends Controller
                 'is_trending' => $request->has('is_trending'),
                 'is_new_arrival' => $request->has('is_new_arrival'),
                 'is_best_seller' => $request->has('is_best_seller'),
+                'gst_rate' => $request->input('gst_rate', 0),
             ]));
 
             // Sync tags/collections
@@ -311,10 +314,10 @@ class ProductController extends Controller
             if ($request->hasFile('images')) {
                 $lastOrder = $product->images()->max('sort_order') ?? 0;
                 foreach ($request->file('images') as $file) {
-                    $path = $file->store('products', 'public');
+                    $filePath = \App\Services\ImageOptimizerService::compressAndStore($file, 'products', 1200, 1600, 82);
                     ProductImage::create([
                         'product_id' => $product->id,
-                        'file_path' => '/storage/' . $path,
+                        'file_path' => $filePath,
                         'type' => 'image',
                         'is_primary' => false,
                         'sort_order' => ++$lastOrder,

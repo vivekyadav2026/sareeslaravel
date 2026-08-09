@@ -13,6 +13,9 @@ Route::get('/', function () {
 
 Route::get('/api/products', [CatalogController::class, 'apiProducts'])->name('api.products');
 
+// Search Route
+Route::get('/search', [CatalogController::class, 'search'])->name('search');
+
 // Catalog Routes (Dynamic)
 Route::get('/sarees', [CatalogController::class, 'sarees'])->name('sarees');
 Route::get('/suits', [CatalogController::class, 'suits'])->name('suits');
@@ -28,7 +31,7 @@ Route::get('/product/{slug}', [CatalogController::class, 'showProduct'])->name('
 Route::get('/custom-lehenga', [CatalogController::class, 'customLehenga'])->name('custom-lehenga');
 Route::post('/custom-lehenga', [CatalogController::class, 'submitCustomLehenga'])->name('custom-lehenga.submit');
 
-Route::get('/gallery', function () { return view('gallery'); })->name('gallery');
+Route::get('/gallery', [CatalogController::class, 'gallery'])->name('gallery');
 Route::get('/about', function () { return view('about'); })->name('about');
 Route::get('/contact', function () { return view('contact'); })->name('contact');
 Route::post('/contact', [CatalogController::class, 'submitContact'])->name('contact.submit');
@@ -137,15 +140,9 @@ Route::prefix('admin')->name('admin.')->group(function () {
         // Admin Users
         Route::resource('users', \App\Http\Controllers\Admin\AdminUserController::class);
 
-        // Customer Groups CRUD
-        Route::get('customer-groups', [\App\Http\Controllers\Admin\CustomerController::class, 'groupsIndex'])->name('customer-groups.index');
-        Route::post('customer-groups', [\App\Http\Controllers\Admin\CustomerController::class, 'groupsStore'])->name('customer-groups.store');
-        Route::delete('customer-groups/{group}', [\App\Http\Controllers\Admin\CustomerController::class, 'groupsDestroy'])->name('customer-groups.destroy');
-
         // Customer Management
         Route::resource('customers', \App\Http\Controllers\Admin\CustomerController::class);
         Route::post('customers/{customer}/toggle-status', [\App\Http\Controllers\Admin\CustomerController::class, 'toggleStatus'])->name('customers.toggle-status');
-        Route::post('customers/{customer}/update-group', [\App\Http\Controllers\Admin\CustomerController::class, 'updateGroup'])->name('customers.update-group');
         Route::post('customers/{customer}/update-notes', [\App\Http\Controllers\Admin\CustomerController::class, 'updateNotes'])->name('customers.update-notes');
         Route::post('customers/{customer}/adjust-wallet', [\App\Http\Controllers\Admin\CustomerController::class, 'adjustWallet'])->name('customers.adjust-wallet');
         Route::post('customers/{customer}/adjust-points', [\App\Http\Controllers\Admin\CustomerController::class, 'adjustPoints'])->name('customers.adjust-points');
@@ -196,5 +193,16 @@ Route::prefix('admin')->name('admin.')->group(function () {
 
         // Fitting Measurement Sheets Resource
         Route::resource('measurements', \App\Http\Controllers\Admin\MeasurementController::class);
+
+        // Real Brides Gallery Module
+        Route::get('gallery', [\App\Http\Controllers\Admin\GalleryController::class, 'index'])->name('gallery.index');
+        Route::post('gallery', [\App\Http\Controllers\Admin\GalleryController::class, 'store'])->name('gallery.store');
+        Route::post('gallery/{gallery}/toggle', [\App\Http\Controllers\Admin\GalleryController::class, 'toggleStatus'])->name('gallery.toggle-status');
+        Route::delete('gallery/{gallery}', [\App\Http\Controllers\Admin\GalleryController::class, 'destroy'])->name('gallery.destroy');
+
+        // Contact Inquiries & Concierge Messages
+        Route::get('contact-inquiries', [\App\Http\Controllers\Admin\ContactInquiryController::class, 'index'])->name('contact-inquiries.index');
+        Route::post('contact-inquiries/{inquiry}/status', [\App\Http\Controllers\Admin\ContactInquiryController::class, 'updateStatus'])->name('contact-inquiries.update-status');
+        Route::delete('contact-inquiries/{inquiry}', [\App\Http\Controllers\Admin\ContactInquiryController::class, 'destroy'])->name('contact-inquiries.destroy');
     });
 });

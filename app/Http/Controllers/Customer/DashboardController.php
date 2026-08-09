@@ -344,11 +344,7 @@ class DashboardController extends Controller
 
         $imagePath = null;
         if ($request->hasFile('design_image')) {
-            // Store file in public/uploads/designs (public disk folder)
-            $file = $request->file('design_image');
-            $filename = time() . '_' . uniqid() . '.' . $file->getClientOriginalExtension();
-            $file->move(public_path('uploads/designs'), $filename);
-            $imagePath = 'uploads/designs/' . $filename;
+            $imagePath = \App\Services\ImageOptimizerService::compressAndStore($request->file('design_image'), 'designs', 1200, 1600, 82);
         }
 
         CustomDesignRequest::create([

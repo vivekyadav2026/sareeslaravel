@@ -8,7 +8,6 @@ class Customer extends Model
 {
     protected $fillable = [
         'user_id',
-        'customer_group_id',
         'first_name',
         'last_name',
         'email',
@@ -24,11 +23,6 @@ class Customer extends Model
     public function orders()
     {
         return $this->hasMany(Order::class);
-    }
-
-    public function customerGroup()
-    {
-        return $this->belongsTo(CustomerGroup::class);
     }
 
     public function reviews()
