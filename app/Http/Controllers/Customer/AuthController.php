@@ -7,8 +7,10 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 use App\Models\User;
 use App\Models\Customer;
+use Laravel\Socialite\Facades\Socialite;
 
 class AuthController extends Controller
 {
@@ -127,6 +129,100 @@ class AuthController extends Controller
         $request->session()->regenerateToken();
 
         return redirect()->route('customer.login')->with('success', 'Logged out successfully.');
+    }
+
+    // -----------------------------------------------------------------------
+    // Google OAuth
+    // -----------------------------------------------------------------------
+
+    public function redirectToGoogle()
+    {
+        return Socialite::driver('google')->redirect();
+    }
+
+    public function handleGoogleCallback(Request $request)
+    {
+        try {
+            $googleUser = Socialite::driver('google')->user();
+        } catch (\Exception $e) {
+            Log::error('Google OAuth error: ' . $e->getMessage());
+            return redirect()->route('customer.login')->withErrors([
+                'email' => 'Google login failed. Please try again.',
+            ]);
+        }
+
+        // Find by google_id first, then fall back to email
+        $user = User::where('google_id', $googleUser->getId())->first()
+            ?? User::where('email', $googleUser->getEmail())->first();
+
+        if ($user) {
+            // Link google_id if not already set
+            if (!$user->google_id) {
+                $user->update([
+                    'google_id'     => $googleUser->getId(),
+                    'google_avatar' => $googleUser->getAvatar(),
+                ]);
+            }
+
+            // Block inactive accounts
+            if ($user->status !== 'active') {
+                return redirect()->route('customer.login')->withErrors([
+                    'email' => 'Your account is currently inactive/blocked. Please contact support.',
+                ]);
+            }
+        } else {
+            // Create brand-new user + customer record
+            $user = DB::transaction(function () use ($googleUser) {
+                $nameParts = explode(' ', $googleUser->getName(), 2);
+
+                $newUser = User::create([
+                    'name'          => $googleUser->getName(),
+                    'email'         => $googleUser->getEmail(),
+                    'password'      => Hash::make(str()->random(32)),
+                    'google_id'     => $googleUser->getId(),
+                    'google_avatar' => $googleUser->getAvatar(),
+                    'is_admin'      => false,
+                    'status'        => 'active',
+                ]);
+
+                Customer::create([
+                    'user_id'        => $newUser->id,
+                    'first_name'     => $nameParts[0] ?? 'Google',
+                    'last_name'      => $nameParts[1] ?? 'User',
+                    'email'          => $googleUser->getEmail(),
+                    'wallet_balance' => 0.00,
+                    'reward_points'  => 0,
+                    'status'         => 'active',
+                ]);
+
+                return $newUser;
+            });
+        }
+
+        // Ensure customer record exists for older accounts
+        if (!$user->is_admin && !$user->customer) {
+            $names = explode(' ', $user->name, 2);
+            Customer::create([
+                'user_id'        => $user->id,
+                'first_name'     => $names[0] ?? 'Google',
+                'last_name'      => $names[1] ?? 'User',
+                'email'          => $user->email,
+                'wallet_balance'  => 0.00,
+                'reward_points'   => 0,
+                'status'          => 'active',
+            ]);
+        }
+
+        Auth::login($user, true);
+
+        $user->update([
+            'last_login_at' => now(),
+            'last_login_ip' => $request->ip(),
+        ]);
+
+        $request->session()->regenerate();
+
+        return redirect()->intended(route('customer.dashboard'));
     }
 
     public function showForgotPasswordForm()

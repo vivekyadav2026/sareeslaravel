@@ -80,6 +80,10 @@ Route::prefix('customer')->name('customer.')->group(function () {
         Route::post('register', [\App\Http\Controllers\Customer\AuthController::class, 'register'])->name('register.submit');
         Route::get('forgot-password', [\App\Http\Controllers\Customer\AuthController::class, 'showForgotPasswordForm'])->name('password.request');
         Route::post('forgot-password', [\App\Http\Controllers\Customer\AuthController::class, 'sendResetLinkEmail'])->name('password.email');
+
+        // Google OAuth
+        Route::get('auth/google', [\App\Http\Controllers\Customer\AuthController::class, 'redirectToGoogle'])->name('google.redirect');
+        Route::get('auth/google/callback', [\App\Http\Controllers\Customer\AuthController::class, 'handleGoogleCallback'])->name('google.callback');
     });
 
     // Authenticated customer routes
