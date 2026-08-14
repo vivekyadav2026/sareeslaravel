@@ -3,137 +3,84 @@
 @section('title', 'RANISAHAB — Luxury Fashion for Every Woman | Sarees, Lehengas & Bridal Wear')
 
 @section('content')
-<!-- Hero Section with Interactive Luxury Carousel -->
-<section class="hero-slider-section py-4 py-lg-5 position-relative">
-  <!-- Slider Controls -->
-  <button class="slider-arrow prev d-none d-lg-flex" id="heroPrevBtn" aria-label="Previous Slide"><i class="fa-solid fa-chevron-left"></i></button>
-  <button class="slider-arrow next d-none d-lg-flex" id="heroNextBtn" aria-label="Next Slide"><i class="fa-solid fa-chevron-right"></i></button>
-  <div class="hero-bg-overlay"></div>
-  
-  <div class="container position-relative z-2">
-    <div class="hero-slides-container">
-      
-      <!-- Slide 1: Royal Elegance -->
-      <div class="hero-slide active" data-slide="1">
-        <div class="row align-items-center g-3 g-lg-4">
-          <div class="col-lg-6 hero-content text-center text-lg-start">
-            <div class="hero-content-box">
-              <div class="hero-royal-motif mb-2">
-                <span class="motif-line"></span>
-                <i class="fa-solid fa-crown text-gold px-2"></i>
-                <span class="motif-line"></span>
-              </div>
-              <p class="hero-eyebrow mb-1">Where Tradition Meets</p>
-              <h1 class="hero-main-title mb-2">ROYAL ELEGANCE</h1>
-              <div class="mb-3">
-                <span class="hero-sub-pill">SAREES &nbsp;•&nbsp; SUITS &nbsp;•&nbsp; LEHENGAS &nbsp;•&nbsp; BRIDAL</span>
-              </div>
-              
-              <div class="d-flex justify-content-center justify-content-lg-start gap-2 flex-wrap mb-3">
-                <a href="{{ route('sarees') }}" class="btn btn-gold px-4 py-2"><i class="fa-solid fa-bag-shopping me-2"></i>EXPLORE COLLECTION</a>
-                <a href="{{ route('bridal-collection') }}" class="btn btn-outline-gold px-4 py-2"><i class="fa-solid fa-crown me-2"></i>BRIDAL WEAR</a>
-              </div>
-              
-              <div class="hero-feature-row justify-content-center justify-content-lg-start">
-                <span><i class="fa-solid fa-gem text-gold me-1"></i>100% PURE SILK</span>
-                <span><i class="fa-solid fa-crown text-gold me-1"></i>EXCLUSIVE DESIGNS</span>
-                <span><i class="fa-solid fa-truck-fast text-gold me-1"></i>PAN-INDIA SHIPPING</span>
-              </div>
-            </div>
-          </div>
-          <div class="col-lg-6 hero-image-wrapper text-center text-lg-end mt-3 mt-lg-0">
-            <div class="hero-img-box">
-              <div class="royal-stamp-badge"><i class="fa-solid fa-crown"></i><span>ROYAL<br>COUTURE</span></div>
-              <img src="{{ asset('images/hero_bride.png') }}" alt="RANISAHAB Royal Bridal Wear" class="img-fluid hero-main-img">
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <!-- Slide 2: Banarasi Heritage -->
-      <div class="hero-slide d-none" data-slide="2">
-        <div class="row align-items-center g-3 g-lg-4">
-          <div class="col-lg-6 hero-content text-center text-lg-start">
-            <div class="hero-content-box">
-              <div class="hero-royal-motif mb-2">
-                <span class="motif-line"></span>
-                <i class="fa-solid fa-gem text-gold px-2"></i>
-                <span class="motif-line"></span>
-              </div>
-              <p class="hero-eyebrow mb-1">Handcrafted Pure Silk</p>
-              <h1 class="hero-main-title mb-2">BANARASI HERITAGE</h1>
-              <div class="mb-3">
-                <span class="hero-sub-pill">ROYAL SAREES &nbsp;•&nbsp; KANJEEVARAM &nbsp;•&nbsp; CHANDERI</span>
-              </div>
-              
-              <div class="d-flex justify-content-center justify-content-lg-start gap-2 flex-wrap mb-3">
-                <a href="{{ route('sarees') }}" class="btn btn-gold px-4 py-2"><i class="fa-solid fa-gem me-2"></i>SHOP SAREES</a>
-                <a href="{{ route('suits') }}" class="btn btn-outline-gold px-4 py-2"><i class="fa-solid fa-shirt me-2"></i>DESIGNER SUITS</a>
-              </div>
-              
-              <div class="hero-feature-row justify-content-center justify-content-lg-start">
-                <span><i class="fa-solid fa-award text-gold me-1"></i>ARTISAN CERTIFIED</span>
-                <span><i class="fa-solid fa-hand-sparkles text-gold me-1"></i>HANDLOOM WEAVE</span>
-                <span><i class="fa-solid fa-shield-halved text-gold me-1"></i>100% QUALITY GUARANTEE</span>
-              </div>
-            </div>
-          </div>
-          <div class="col-lg-6 hero-image-wrapper text-center text-lg-end mt-3 mt-lg-0">
-            <div class="hero-img-box">
-              <div class="royal-stamp-badge"><i class="fa-solid fa-gem"></i><span>PURE<br>SILK</span></div>
-              <img src="{{ asset('images/promise_bride.png') }}" alt="RANISAHAB Pure Silk Sarees" class="img-fluid hero-main-img">
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <!-- Slide 3: Exclusive Lehengas -->
-      <div class="hero-slide d-none" data-slide="3">
-        <div class="row align-items-center g-3 g-lg-4">
-          <div class="col-lg-6 hero-content text-center text-lg-start">
-            <div class="hero-content-box">
-              <div class="hero-royal-motif mb-2">
-                <span class="motif-line"></span>
-                <i class="fa-solid fa-wand-magic-sparkles text-gold px-2"></i>
-                <span class="motif-line"></span>
-              </div>
-              <p class="hero-eyebrow mb-1">Designed Only For You</p>
-              <h1 class="hero-main-title mb-2">EXCLUSIVE LEHENGAS</h1>
-              <div class="mb-3">
-                <span class="hero-sub-pill">CUSTOM BRIDAL COUTURE &nbsp;•&nbsp; ONE DESIGN ONE BRIDE</span>
-              </div>
-              
-              <div class="d-flex justify-content-center justify-content-lg-start gap-2 flex-wrap mb-3">
-                <a href="{{ route('custom-lehenga') }}" class="btn btn-gold px-4 py-2"><i class="fa-solid fa-scissors me-2"></i>CUSTOM LEHENGA</a>
-                <a href="{{ route('bridal-packages') }}" class="btn btn-outline-gold px-4 py-2"><i class="fa-solid fa-box-open me-2"></i>BRIDAL PACKAGES</a>
-              </div>
-              
-              <div class="hero-feature-row justify-content-center justify-content-lg-start">
-                <span><i class="fa-solid fa-certificate text-gold me-1"></i>DESIGN CERTIFICATE</span>
-                <span><i class="fa-solid fa-ban text-gold me-1"></i>NEVER REPEATED</span>
-                <span><i class="fa-solid fa-heart text-gold me-1"></i>10,000+ HAPPY BRIDES</span>
-              </div>
-            </div>
-          </div>
-          <div class="col-lg-6 hero-image-wrapper text-center text-lg-end mt-3 mt-lg-0">
-            <div class="hero-img-box">
-              <div class="royal-stamp-badge"><i class="fa-solid fa-star"></i><span>1 OF 1<br>DESIGN</span></div>
-              <img src="{{ asset('images/cat_bridal.png') }}" alt="RANISAHAB Exclusive Bridal Lehenga" class="img-fluid hero-main-img">
-            </div>
-          </div>
-        </div>
-      </div>
-
+<!-- Hero Banner Slider -->
+<section class="hero-banner-slider">
+  <div class="hero-banner-track" id="heroBannerTrack">
+    <!-- Slide 1 -->
+    <div class="hero-banner-slide active">
+      <img src="{{ asset('images/slider_banner_1.png') }}" alt="Royal Sarees Collection">
     </div>
-
-    <!-- Carousel Pagination Indicators -->
-    <div class="hero-slider-pagination text-center mt-3 mt-lg-4">
-      <button class="slider-dot active" data-slide-target="1" aria-label="Go to slide 1"></button>
-      <button class="slider-dot" data-slide-target="2" aria-label="Go to slide 2"></button>
-      <button class="slider-dot" data-slide-target="3" aria-label="Go to slide 3"></button>
+    <!-- Slide 2 -->
+    <div class="hero-banner-slide">
+      <img src="{{ asset('images/slider_banner_2.png') }}" alt="Bridal Lehenga Collection">
+    </div>
+    <!-- Slide 3 -->
+    <div class="hero-banner-slide">
+      <img src="{{ asset('images/slider_banner_3.png') }}" alt="Exclusive Collection">
     </div>
   </div>
+
+  <!-- Prev / Next Controls -->
+  <button class="hero-banner-arrow hero-banner-prev" id="heroBannerPrev" aria-label="Previous"><i class="fa-solid fa-chevron-left"></i></button>
+  <button class="hero-banner-arrow hero-banner-next" id="heroBannerNext" aria-label="Next"><i class="fa-solid fa-chevron-right"></i></button>
+
+  <!-- Dots -->
+  <div class="hero-banner-dots">
+    <span class="hero-banner-dot active" data-idx="0"></span>
+    <span class="hero-banner-dot" data-idx="1"></span>
+    <span class="hero-banner-dot" data-idx="2"></span>
+  </div>
 </section>
+
+@push('scripts')
+<script>
+(function(){
+  const slides = document.querySelectorAll('.hero-banner-slide');
+  const dots   = document.querySelectorAll('.hero-banner-dot');
+  const track  = document.getElementById('heroBannerTrack');
+  let current  = 0;
+  let timer;
+
+  function goTo(idx) {
+    const prev = current;
+    current = (idx + slides.length) % slides.length;
+    if (prev === current) return;
+
+    // Fix the track height to the current active slide before transition
+    track.style.height = slides[prev].offsetHeight + 'px';
+
+    // Remove active from previous — it goes to absolute
+    slides[prev].classList.remove('active');
+    dots[prev].classList.remove('active');
+
+    // Add active to new slide — it becomes relative and sets new height
+    slides[current].classList.add('active');
+    dots[current].classList.add('active');
+
+    // After transition ends, release fixed height
+    setTimeout(() => {
+      track.style.height = '';
+    }, 900);
+  }
+
+  function autoPlay() {
+    timer = setInterval(() => goTo(current + 1), 5000);
+  }
+
+  function resetTimer() {
+    clearInterval(timer);
+    autoPlay();
+  }
+
+  document.getElementById('heroBannerNext').addEventListener('click', () => { goTo(current + 1); resetTimer(); });
+  document.getElementById('heroBannerPrev').addEventListener('click', () => { goTo(current - 1); resetTimer(); });
+  dots.forEach(d => d.addEventListener('click', () => { goTo(+d.dataset.idx); resetTimer(); }));
+
+  autoPlay();
+})();
+</script>
+@endpush
+
 
 
 <!-- Shop by Category — Premium Dark 2x2 Grid -->
