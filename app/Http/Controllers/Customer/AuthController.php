@@ -22,6 +22,13 @@ class AuthController extends Controller
             }
             return redirect()->route('customer.dashboard');
         }
+
+        // Save referrer as intended redirect url if it comes from our site and is not a login/register page
+        $previousUrl = url()->previous();
+        if ($previousUrl && $previousUrl !== route('customer.login') && $previousUrl !== route('customer.register') && !str_contains($previousUrl, 'logout')) {
+            session(['url.intended' => $previousUrl]);
+        }
+
         return view('customer.auth.login');
     }
 
@@ -80,6 +87,13 @@ class AuthController extends Controller
         if (Auth::check()) {
             return redirect()->route('customer.dashboard');
         }
+
+        // Save referrer as intended redirect url if it comes from our site and is not a login/register page
+        $previousUrl = url()->previous();
+        if ($previousUrl && $previousUrl !== route('customer.login') && $previousUrl !== route('customer.register') && !str_contains($previousUrl, 'logout')) {
+            session(['url.intended' => $previousUrl]);
+        }
+
         return view('customer.auth.register');
     }
 
@@ -118,7 +132,7 @@ class AuthController extends Controller
 
         Auth::login($user);
 
-        return redirect()->route('customer.dashboard')->with('success', 'Welcome to RANISAHAB! Your account has been successfully created.');
+        return redirect()->intended(route('customer.dashboard'))->with('success', 'Welcome to RANISAHAB! Your account has been successfully created.');
     }
 
     public function logout(Request $request)
@@ -137,6 +151,12 @@ class AuthController extends Controller
 
     public function redirectToGoogle()
     {
+        // Save referrer as intended redirect url if it comes from our site and is not a login/register/auth page
+        $previousUrl = url()->previous();
+        if ($previousUrl && $previousUrl !== route('customer.login') && $previousUrl !== route('customer.register') && !str_contains($previousUrl, 'auth/google')) {
+            session(['url.intended' => $previousUrl]);
+        }
+
         $clientId = \App\Models\Setting::getVal('google_client_id', env('GOOGLE_CLIENT_ID'));
         $clientSecret = \App\Models\Setting::getVal('google_client_secret', env('GOOGLE_CLIENT_SECRET'));
         $redirectUrl = \App\Models\Setting::getVal('google_redirect_uri', env('GOOGLE_REDIRECT_URI', route('customer.google.callback')));
