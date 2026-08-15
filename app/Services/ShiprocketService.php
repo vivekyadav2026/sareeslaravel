@@ -136,54 +136,104 @@ class ShiprocketService
 
     public function trackShipment($trackingNumber)
     {
-        // Check tracking prefix or simulate status timeline log based on tracking number
-        // This simulates actual logistics checkpoints for local development
-        $createdAt = now()->subDays(3);
+        $order = \App\Models\Order::where('tracking_number', $trackingNumber)->with('statusLogs')->first();
+
+        if (!$order) {
+            // Fallback for nonexistent tracking number
+            return [
+                'success' => true,
+                'tracking_number' => $trackingNumber,
+                'status' => 'Pending',
+                'courier_name' => 'Shiprocket Express',
+                'tracking_history' => []
+            ];
+        }
+
+        $statusSequenceList = ['pending', 'confirmed', 'processing', 'quality_check', 'packed', 'shipped', 'out_for_delivery', 'delivered'];
+        $currentOrderState = $order->status;
+        if ($currentOrderState === 'new') $currentOrderState = 'pending';
         
-        $activities = [
-            [
-                'date' => $createdAt->format('Y-m-d H:i:s'),
+        $currentSequenceIndex = array_search($currentOrderState, $statusSequenceList);
+        if ($currentSequenceIndex === false) $currentSequenceIndex = 0;
+
+        // Fetch actual log times
+        $logTimes = [];
+        foreach ($statusSequenceList as $statusKey) {
+            $logMatch = $order->statusLogs->where('status', $statusKey)->first();
+            $logTimes[$statusKey] = $logMatch ? $logMatch->created_at : null;
+        }
+
+        $activities = [];
+
+        // 1. Order Booked & Packed (corresponds to pending / order placement)
+        if ($currentSequenceIndex >= 0) {
+            $date = $logTimes['pending'] ?? $order->created_at;
+            $activities[] = [
+                'date' => $date->format('Y-m-d H:i:s'),
                 'activity' => 'Order Booked & Packed',
                 'location' => 'RANISAHAB Head Office, Jaipur',
                 'details' => 'Shipment package details validated by merchant.',
-            ],
-            [
-                'date' => $createdAt->addHours(4)->format('Y-m-d H:i:s'),
+            ];
+        }
+
+        // 2. Shipment Picked Up (corresponds to confirmed)
+        if ($currentSequenceIndex >= 1) {
+            $date = $logTimes['confirmed'] ?? $order->updated_at;
+            $activities[] = [
+                'date' => $date->format('Y-m-d H:i:s'),
                 'activity' => 'Shipment Picked Up',
                 'location' => 'Shiprocket Sorting Facility, Jaipur',
                 'details' => 'Package handed over to delivery executive.',
-            ],
-            [
-                'date' => $createdAt->addDays(1)->format('Y-m-d H:i:s'),
+            ];
+        }
+
+        // 3. In Transit (corresponds to shipped)
+        if ($currentSequenceIndex >= 5) {
+            $date = $logTimes['shipped'] ?? $order->updated_at;
+            $activities[] = [
+                'date' => $date->format('Y-m-d H:i:s'),
                 'activity' => 'In Transit',
                 'location' => 'Main Hub, Delhi NCR',
                 'details' => 'Shipment packet forwarded to regional delivery hub.',
-            ],
-            [
-                'date' => $createdAt->addHours(12)->format('Y-m-d H:i:s'),
+            ];
+            
+            // 4. Near Hub Arrival (also after shipped)
+            $nearHubDate = ($logTimes['shipped'] ? $logTimes['shipped']->copy()->addHours(6) : $order->updated_at);
+            $activities[] = [
+                'date' => $nearHubDate->format('Y-m-d H:i:s'),
                 'activity' => 'Near Hub Arrival',
                 'location' => 'Local Delivery Station, Jaipur',
                 'details' => 'Received at local delivery depot.',
-            ],
-            [
-                'date' => $createdAt->addHours(10)->format('Y-m-d H:i:s'),
+            ];
+        }
+
+        // 5. Out For Delivery (corresponds to out_for_delivery)
+        if ($currentSequenceIndex >= 6) {
+            $date = $logTimes['out_for_delivery'] ?? $order->updated_at;
+            $activities[] = [
+                'date' => $date->format('Y-m-d H:i:s'),
                 'activity' => 'Out For Delivery',
                 'location' => 'Jaipur Hub',
                 'details' => 'Courier agent has left the hub for delivery.',
-            ],
-            [
-                'date' => $createdAt->addHours(3)->format('Y-m-d H:i:s'),
+            ];
+        }
+
+        // 6. Delivered (corresponds to delivered)
+        if ($currentSequenceIndex >= 7) {
+            $date = $logTimes['delivered'] ?? $order->updated_at;
+            $activities[] = [
+                'date' => $date->format('Y-m-d H:i:s'),
                 'activity' => 'Delivered',
                 'location' => 'Customer Destination',
                 'details' => 'Shipment delivered successfully. Signature received.',
-            ]
-        ];
+            ];
+        }
 
         return [
             'success' => true,
             'tracking_number' => $trackingNumber,
-            'status' => 'Delivered',
-            'courier_name' => 'Shiprocket Express',
+            'status' => ucfirst($order->status),
+            'courier_name' => $order->courier_name ?: 'Shiprocket Express',
             'tracking_history' => $activities
         ];
     }

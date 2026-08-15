@@ -45,4 +45,14 @@ class Order extends Model
     {
         return $this->hasMany(OrderStatusLog::class)->orderBy('created_at', 'desc');
     }
+
+    public function shippingAddress()
+    {
+        return $this->belongsTo(Address::class, 'shipping_address_id');
+    }
+
+    public function billingAddress()
+    {
+        return $this->belongsTo(Address::class, 'billing_address_id');
+    }
 }

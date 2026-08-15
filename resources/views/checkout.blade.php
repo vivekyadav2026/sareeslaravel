@@ -847,7 +847,8 @@ function submitSecureOrder() {
                     }
                 })
                 .catch(err => {
-                    showToast("Payment verification failed.");
+                    console.error("Payment verification catch error:", err);
+                    showToast("Payment verification failed: " + (err.message || "Network error."));
                     btn.disabled = false;
                     btn.innerHTML = originalContent;
                 });
@@ -876,7 +877,8 @@ function submitSecureOrder() {
         }
     })
     .catch(err => {
-        showToast("An error occurred during order submission.");
+        console.error("Order submission error:", err);
+        showToast("An error occurred: " + (err.message || "Order submission failed."));
         btn.disabled = false;
         btn.innerHTML = originalContent;
     });

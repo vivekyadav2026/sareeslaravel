@@ -15,6 +15,8 @@ use App\Models\OrderStatusLog;
 use App\Services\RazorpayService;
 use App\Services\ShiprocketService;
 use App\Models\Setting;
+use Illuminate\Support\Facades\Mail;
+use App\Mail\OrderConfirmed;
 
 class CheckoutController extends Controller
 {
@@ -296,6 +298,15 @@ class CheckoutController extends Controller
             session()->forget(['cart', 'coupon_code', 'gift_wrap']);
             session()->put('last_order_number', $order->order_number);
 
+            // Send Order Confirmation Email
+            try {
+                if ($order->customer && $order->customer->email) {
+                    Mail::to($order->customer->email)->send(new OrderConfirmed($order));
+                }
+            } catch (\Throwable $e) {
+                \Illuminate\Support\Facades\Log::error('Order Confirmation Email failed: ' . $e->getMessage());
+            }
+
             return response()->json([
                 'success' => true,
                 'payment_required' => false,
@@ -372,6 +383,15 @@ class CheckoutController extends Controller
 
             session()->forget(['cart', 'coupon_code', 'gift_wrap']);
             session()->put('last_order_number', $order->order_number);
+
+            // Send Order Confirmation Email
+            try {
+                if ($order->customer && $order->customer->email) {
+                    Mail::to($order->customer->email)->send(new OrderConfirmed($order));
+                }
+            } catch (\Throwable $e) {
+                \Illuminate\Support\Facades\Log::error('Order Confirmation Email failed: ' . $e->getMessage());
+            }
 
             return response()->json(['success' => true]);
         }

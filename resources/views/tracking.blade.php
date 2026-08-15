@@ -136,8 +136,8 @@
                           <!-- Alert Logs -->
                           @if ($isCompleted)
                               <div class="d-flex align-items-center gap-2 mt-2 pt-2 border-top border-secondary border-opacity-10" style="font-size:0.68rem; color:rgba(201,162,75,0.65);">
-                                  <i class="fa-solid fa-bell text-gold"></i>
-                                  <span>Mock Alert Dispatch: Email, WhatsApp &amp; SMS Dispatched</span>
+                                  <i class="fa-solid fa-envelope text-gold"></i>
+                                  <span>Order update notification sent to Email</span>
                               </div>
                           @endif
                       </div>

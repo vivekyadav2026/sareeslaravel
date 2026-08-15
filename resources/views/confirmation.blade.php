@@ -50,34 +50,17 @@
       </div>
     </div>
 
-    <!-- Notification dispatch mockup box -->
+    <!-- Notification dispatch log box -->
     <div class="p-4 rounded text-start mb-4" style="background: rgba(201, 162, 75, 0.03); border: 1px dashed rgba(201, 162, 75, 0.25);">
       <h6 class="text-gold font-display mb-3 text-center" style="font-size:0.85rem; letter-spacing:0.1em;"><i class="fa-solid fa-bell me-2"></i>NOTIFICATIONS LOG</h6>
       
       <div class="d-flex flex-column gap-3 small">
-        <!-- WhatsApp Notification -->
-        <div class="d-flex align-items-start gap-2">
-          <span class="badge bg-success bg-opacity-20 text-success border border-success" style="font-size:0.6rem; padding: 0.25rem 0.5rem;">WHATSAPP</span>
-          <div class="text-muted">
-            <strong class="text-ivory" style="font-size:0.75rem;">👑 RANISAHAB Order Confirmed</strong><br>
-            Your order #{{ $order->order_number }} has been confirmed.
-          </div>
-        </div>
-
         <!-- Email Notification -->
-        <div class="d-flex align-items-start gap-2 border-top border-secondary border-opacity-15 pt-2">
+        <div class="d-flex align-items-start gap-2">
           <span class="badge bg-success bg-opacity-20 text-success border border-success" style="font-size:0.6rem; padding: 0.25rem 0.5rem;">EMAIL</span>
           <div class="text-muted">
             <strong class="text-ivory" style="font-size:0.75rem;">RANISAHAB Order Confirmation</strong><br>
             Order details dispatched to <span class="text-gold-light">{{ $order->customer->email ?? 'customer' }}</span>.
-          </div>
-        </div>
-
-        <!-- SMS Notification -->
-        <div class="d-flex align-items-start gap-2 border-top border-secondary border-opacity-15 pt-2">
-          <span class="badge bg-success bg-opacity-20 text-success border border-success" style="font-size:0.6rem; padding: 0.25rem 0.5rem;">SMS</span>
-          <div class="text-muted">
-            Your order {{ $order->order_number }} is being processed.
           </div>
         </div>
       </div>
