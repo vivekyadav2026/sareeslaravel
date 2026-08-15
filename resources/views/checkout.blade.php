@@ -485,14 +485,16 @@
   }
 
   .bp-page-wrap .btn-outline-secondary {
-      border-color: rgba(201, 162, 75, 0.35) !important;
-      color: #f3dfb2 !important;
-      background: rgba(255, 255, 255, 0.03) !important;
+      border: 1px solid rgba(197, 168, 128, 0.6) !important;
+      color: #ffffff !important;
+      background: rgba(255, 255, 255, 0.06) !important;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4) !important;
   }
   .bp-page-wrap .btn-outline-secondary:hover {
-      background: rgba(201, 162, 75, 0.18) !important;
-      border-color: var(--gold) !important;
+      background: rgba(197, 168, 128, 0.18) !important;
+      border-color: #ffffff !important;
       color: #ffffff !important;
+      box-shadow: 0 4px 15px rgba(197, 168, 128, 0.25) !important;
   }
 
   /* Payment Method Row */
@@ -511,7 +513,7 @@
 
   /* Checkout Main action gold gradient CTA button */
   .btn-checkout-action {
-      background: linear-gradient(90deg, #c5a880 0%, #b2946c 100%) !important;
+      background: linear-gradient(90deg, #e3cfa8 0%, #c5a880 100%) !important;
       color: #000000 !important;
       font-family: var(--font-label) !important;
       font-weight: 700 !important;
@@ -519,11 +521,12 @@
       border: none !important;
       border-radius: 4px !important;
       transition: all 0.3s ease !important;
-      box-shadow: 0 4px 15px rgba(0,0,0,0.3) !important;
+      box-shadow: 0 4px 15px rgba(197, 168, 128, 0.3) !important;
   }
   .btn-checkout-action:hover {
-      background: linear-gradient(90deg, #dcc29b 0%, #c5a880 100%) !important;
+      background: linear-gradient(90deg, #f5e3c3 0%, #dcc29b 100%) !important;
       transform: translateY(-1px);
+      box-shadow: 0 6px 20px rgba(197, 168, 128, 0.5) !important;
   }
   
   /* Premium Detect Location Card Styles */
