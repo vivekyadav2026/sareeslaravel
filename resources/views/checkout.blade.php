@@ -298,11 +298,37 @@
                 <button class="btn btn-gold font-label px-3" type="button" onclick="applyCoupon()">APPLY</button>
               @endif
             </div>
-            <div id="couponMessage" class="small">
+            <div id="couponMessage" class="small mb-3">
               @if(session('coupon_code'))
                 <span class="text-success"><i class="fa-solid fa-circle-check me-1"></i>Coupon '{{ session('coupon_code') }}' applied successfully!</span>
               @endif
             </div>
+
+            @if(isset($availableCoupons) && $availableCoupons->count() > 0)
+              <div class="available-coupons-section mt-3 p-3 rounded" style="background: rgba(201, 162, 75, 0.03); border: 1px dashed rgba(201, 162, 75, 0.25);">
+                <p class="small fw-bold text-gold-light mb-2" style="font-size:0.7rem; letter-spacing:0.05em;"><i class="fa-solid fa-tags me-1 text-gold"></i> AVAILABLE COUPONS</p>
+                <div class="d-flex flex-column gap-2" style="max-height: 180px; overflow-y: auto; padding-right: 4px;">
+                  @foreach($availableCoupons as $availCoupon)
+                    <div class="p-2 rounded bg-black-soft d-flex justify-content-between align-items-center border border-secondary border-opacity-10">
+                      <div>
+                        <span class="badge bg-gold text-black font-label px-2 py-1 text-uppercase" style="font-size:0.6rem; letter-spacing:0.02em;">{{ $availCoupon->code }}</span>
+                        <small class="d-block text-white-50 mt-1" style="font-size:0.68rem; line-height: 1.2;">
+                          @if($availCoupon->type === 'percentage')
+                            {{ $availCoupon->value }}% discount
+                          @else
+                            ₹{{ number_format($availCoupon->value, 0) }} off
+                          @endif
+                          @if($availCoupon->min_order_value > 0)
+                            on orders above ₹{{ number_format($availCoupon->min_order_value, 0) }}
+                          @endif
+                        </small>
+                      </div>
+                      <button class="btn btn-sm btn-outline-gold py-1 px-2 font-label text-uppercase" style="font-size:0.6rem; border-radius: 4px;" type="button" onclick="selectCoupon('{{ $availCoupon->code }}')">APPLY</button>
+                    </div>
+                  @endforeach
+                </div>
+              </div>
+            @endif
           </div>
 
         </div>
@@ -1115,6 +1141,11 @@ function removeCoupon() {
             window.location.reload();
         }
     });
+}
+
+function selectCoupon(code) {
+    document.getElementById('couponInput').value = code;
+    applyCoupon();
 }
 </script>
 

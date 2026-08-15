@@ -94,7 +94,20 @@ class CheckoutController extends Controller
         $shipping = $subtotal >= $limit ? 0.00 : $charge;
         $total = $subtotal - $discount + $tax + $shipping + $giftWrapCharge;
 
-        return view('checkout', compact('cart', 'subtotal', 'discount', 'tax', 'shipping', 'total', 'customer', 'defaultAddress', 'giftWrapCharge'));
+        $now = now();
+        $availableCoupons = Coupon::where('is_active', true)
+            ->where(function($query) use ($now) {
+                $query->whereNull('start_date')->orWhere('start_date', '<=', $now);
+            })
+            ->where(function($query) use ($now) {
+                $query->whereNull('end_date')->orWhere('end_date', '>=', $now);
+            })
+            ->where(function($query) {
+                $query->whereNull('limit')->orWhereColumn('used_count', '<', 'limit');
+            })
+            ->get();
+
+        return view('checkout', compact('cart', 'subtotal', 'discount', 'tax', 'shipping', 'total', 'customer', 'defaultAddress', 'giftWrapCharge', 'availableCoupons'));
     }
 
     public function updateGiftWrap(Request $request)
