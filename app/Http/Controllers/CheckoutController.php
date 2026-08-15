@@ -60,13 +60,26 @@ class CheckoutController extends Controller
         $discount = 0;
         $couponCode = session()->get('coupon_code');
         if ($couponCode) {
-            $coupon = Coupon::where('code', $couponCode)->where('is_active', true)->first();
-            if ($coupon) {
+            $now = now();
+            $coupon = Coupon::where('code', $couponCode)
+                ->where('is_active', true)
+                ->where(function($query) use ($now) {
+                    $query->whereNull('start_date')->orWhere('start_date', '<=', $now);
+                })
+                ->where(function($query) use ($now) {
+                    $query->whereNull('end_date')->orWhere('end_date', '>=', $now);
+                })
+                ->first();
+
+            if ($coupon && ($coupon->limit === null || $coupon->used_count < $coupon->limit)) {
                 if ($coupon->type === 'percentage') {
                     $discount = ($subtotal * $coupon->value) / 100;
                 } else {
                     $discount = $coupon->value;
                 }
+            } else {
+                session()->forget('coupon_code');
+                $couponCode = null;
             }
         }
 
@@ -95,9 +108,23 @@ class CheckoutController extends Controller
     {
         $request->validate(['code' => 'required|string']);
 
-        $coupon = Coupon::where('code', $request->code)->where('is_active', true)->first();
+        $now = now();
+        $coupon = Coupon::where('code', $request->code)
+            ->where('is_active', true)
+            ->where(function($query) use ($now) {
+                $query->whereNull('start_date')->orWhere('start_date', '<=', $now);
+            })
+            ->where(function($query) use ($now) {
+                $query->whereNull('end_date')->orWhere('end_date', '>=', $now);
+            })
+            ->first();
+
         if (!$coupon) {
             return response()->json(['success' => false, 'message' => 'Invalid or expired coupon code.']);
+        }
+
+        if ($coupon->limit !== null && $coupon->used_count >= $coupon->limit) {
+            return response()->json(['success' => false, 'message' => 'This coupon usage limit has been reached.']);
         }
 
         $cart = session()->get('cart', []);
@@ -295,6 +322,11 @@ class CheckoutController extends Controller
                 ]);
             }
 
+            // Increment coupon usage
+            if ($order->coupon_code) {
+                Coupon::where('code', $order->coupon_code)->increment('used_count');
+            }
+
             session()->forget(['cart', 'coupon_code', 'gift_wrap']);
             session()->put('last_order_number', $order->order_number);
 
@@ -363,6 +395,11 @@ class CheckoutController extends Controller
                     'status' => 'confirmed',
                     'comment' => 'Payment captured. Order is confirmed.'
                 ]);
+
+                // Increment coupon usage
+                if ($order->coupon_code) {
+                    Coupon::where('code', $order->coupon_code)->increment('used_count');
+                }
             });
 
             // Dispatch Shiprocket shipment allocation
