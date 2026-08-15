@@ -124,19 +124,21 @@
     <div class="header-col-right">
       <div class="nav-actions d-flex align-items-center">
         <!-- Search Trigger for Mobile/Tablet -->
-        <button class="mobile-search-btn d-lg-none me-2" type="button" data-bs-toggle="collapse" data-bs-target="#mobileSearchBar" aria-expanded="false">
+        <button class="mobile-search-btn d-lg-none me-2" type="button" data-bs-toggle="collapse" data-bs-target="#mobileSearchBar" aria-expanded="false" style="background:none; border:none; color:var(--ivory-dark); font-size:1.05rem; padding:0;">
           <i class="fa-solid fa-magnifying-glass"></i>
         </button>
 
-        @auth
-          <a href="{{ route('customer.dashboard') }}" class="action-icon d-none d-lg-inline-flex"><i class="fa-regular fa-user"></i><span>ACCOUNT</span></a>
+        @if(auth()->check())
+          <a href="{{ auth()->user()->is_admin ? route('admin.dashboard') : route('customer.dashboard') }}" class="action-icon ms-2 ms-lg-3"><i class="fa-regular fa-user"></i><span class="d-none d-lg-inline-flex ms-1">ACCOUNT</span></a>
         @else
-          <a href="{{ route('customer.login') }}" class="action-icon d-none d-lg-inline-flex"><i class="fa-regular fa-user"></i><span>ACCOUNT</span></a>
-        @endauth
-        <a href="{{ route('customer.wishlist') }}" class="action-icon d-none d-lg-inline-flex"><i class="fa-regular fa-heart"></i><span>WISHLIST</span></a>
-        <a href="{{ route('checkout') }}" class="action-icon ms-1 ms-lg-3">
+          <a href="{{ route('customer.login') }}" class="action-icon ms-2 ms-lg-3"><i class="fa-regular fa-user"></i><span class="d-none d-lg-inline-flex ms-1">ACCOUNT</span></a>
+        @endif
+        
+        <a href="{{ route('customer.wishlist') }}" class="action-icon ms-2 ms-lg-3"><i class="fa-regular fa-heart"></i><span class="d-none d-lg-inline-flex ms-1">WISHLIST</span></a>
+        
+        <a href="{{ route('checkout') }}" class="action-icon ms-2 ms-lg-3">
           <i class="fa-solid fa-bag-shopping"></i>
-          <span class="d-none d-lg-inline">BAG</span>
+          <span class="d-none d-lg-inline-flex ms-1">BAG</span>
           <span class="badge-cart" id="headerCartCount">{{ collect(session('cart', []))->sum('quantity') }}</span>
         </a>
       </div>
@@ -159,7 +161,31 @@
     <div class="container px-md-0">
       <div class="collapse navbar-collapse justify-content-center" id="navMain">
         <ul class="navbar-nav nav-ranisahab-menu text-center py-2 py-lg-0">
+          {{-- Mobile Menu Account Welcome Card --}}
+          @if(auth()->check())
+            <li class="nav-item d-lg-none w-100 py-2 px-3 mb-2" style="background: rgba(201,162,75,0.06); border-radius: 6px; border: 1px solid rgba(201,162,75,0.15);">
+                <div class="d-flex align-items-center justify-content-between">
+                    <span class="text-gold-light fw-bold" style="font-size: 0.78rem;"><i class="fa-solid fa-crown text-gold me-2"></i>HELLO, {{ strtoupper(auth()->user()->first_name) }}!</span>
+                    <a href="{{ auth()->user()->is_admin ? route('admin.dashboard') : route('customer.dashboard') }}" class="btn btn-sm py-1 px-3" style="background:var(--gold); color:#000; font-family:var(--font-label); font-weight:700; font-size: 0.62rem; letter-spacing:0.05em; border-radius:4px;">DASHBOARD</a>
+                </div>
+            </li>
+          @else
+            <li class="nav-item d-lg-none w-100 py-2 px-3 mb-2" style="background: rgba(255,255,255,0.03); border-radius: 6px; border: 1px solid rgba(255,255,255,0.05);">
+                <div class="d-flex align-items-center justify-content-between">
+                    <span style="font-size: 0.72rem; color:rgba(255,255,255,0.5);">Welcome, Boutique Guest</span>
+                    <a href="{{ route('customer.login') }}" class="btn btn-sm py-1 px-3" style="background:var(--gold); color:#000; font-family:var(--font-label); font-weight:700; font-size: 0.62rem; letter-spacing:0.05em; border-radius:4px;">SIGN IN / JOIN</a>
+                </div>
+            </li>
+          @endif
+
           <li class="nav-item"><a class="nav-link {{ request()->routeIs('home') ? 'active' : '' }}" href="{{ route('home') }}"><i class="fa-solid fa-house me-2 d-lg-none"></i>HOME</a></li>
+          
+          {{-- Wishlist for mobile --}}
+          <li class="nav-item d-lg-none">
+            <a class="nav-link {{ request()->routeIs('customer.wishlist') ? 'active' : '' }}" href="{{ route('customer.wishlist') }}">
+              <i class="fa-solid fa-heart me-2 d-lg-none"></i>MY WISHLIST
+            </a>
+          </li>
           
           {{-- Dynamic Category Menu Links --}}
           @php
