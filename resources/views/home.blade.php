@@ -83,8 +83,9 @@
 
 
 
-<!-- Shop by Category — Premium Dark 2x2 Grid -->
+<!-- Shop by Category — Premium 4-Column Horizontal -->
 <section class="shop-by-category-section">
+
   <!-- Section Heading -->
   <div class="sbc-heading-wrapper">
     <span class="sbc-deco-line"></span>
@@ -93,52 +94,72 @@
     <span class="sbc-crown-icon"><i class="fa-solid fa-diamond"></i></span>
     <span class="sbc-deco-line"></span>
   </div>
+  <p class="sbc-subheading">Curated collections crafted for every occasion</p>
 
-  <!-- 2x2 Grid -->
+  <!-- 4-Column Grid -->
   <div class="sbc-grid">
+
     <!-- Sarees -->
     <a href="{{ route('sarees') }}" class="sbc-card">
       <img src="{{ asset('images/cat_saree.png') }}" alt="Sarees Collection">
-      <div class="sbc-card-overlay">
+      <div class="sbc-card-overlay"></div>
+      <div class="sbc-card-content">
+        <span class="sbc-card-number">01</span>
         <div class="sbc-card-text">
           <h3 class="sbc-card-title">SAREES</h3>
-          <span class="sbc-shop-now">SHOP NOW <i class="fa-solid fa-chevron-right ms-1"></i></span>
+          <p class="sbc-card-desc">Silks · Georgettes · Banarasi</p>
+          <span class="sbc-shop-now">EXPLORE <i class="fa-solid fa-arrow-right ms-1"></i></span>
         </div>
       </div>
+      <div class="sbc-gold-border"></div>
     </a>
 
     <!-- Suits -->
     <a href="{{ route('suits') }}" class="sbc-card">
       <img src="{{ asset('images/cat_suit.png') }}" alt="Suits Collection">
-      <div class="sbc-card-overlay">
+      <div class="sbc-card-overlay"></div>
+      <div class="sbc-card-content">
+        <span class="sbc-card-number">02</span>
         <div class="sbc-card-text">
           <h3 class="sbc-card-title">SUITS</h3>
-          <span class="sbc-shop-now">SHOP NOW <i class="fa-solid fa-chevron-right ms-1"></i></span>
+          <p class="sbc-card-desc">Anarkalis · Salwar · Palazzo</p>
+          <span class="sbc-shop-now">EXPLORE <i class="fa-solid fa-arrow-right ms-1"></i></span>
         </div>
       </div>
+      <div class="sbc-gold-border"></div>
     </a>
 
     <!-- Lehengas -->
     <a href="{{ route('lehengas') }}" class="sbc-card">
       <img src="{{ asset('images/cat_lehenga.png') }}" alt="Lehengas Collection">
-      <div class="sbc-card-overlay">
+      <div class="sbc-card-overlay"></div>
+      <div class="sbc-card-content">
+        <span class="sbc-card-number">03</span>
         <div class="sbc-card-text">
           <h3 class="sbc-card-title">LEHENGAS</h3>
-          <span class="sbc-shop-now">SHOP NOW <i class="fa-solid fa-chevron-right ms-1"></i></span>
+          <p class="sbc-card-desc">Bridal · Party · Festive</p>
+          <span class="sbc-shop-now">EXPLORE <i class="fa-solid fa-arrow-right ms-1"></i></span>
         </div>
       </div>
+      <div class="sbc-gold-border"></div>
     </a>
 
     <!-- Bridal Collection -->
-    <a href="{{ route('bridal-collection') }}" class="sbc-card">
+    <a href="{{ route('bridal-collection') }}" class="sbc-card sbc-card-featured">
       <img src="{{ asset('images/cat_bridal.png') }}" alt="Bridal Collection">
-      <div class="sbc-card-overlay">
+      <div class="sbc-card-overlay"></div>
+      <div class="sbc-card-content">
+        <span class="sbc-card-number">04</span>
         <div class="sbc-card-text">
+          <span class="sbc-featured-tag"><i class="fa-solid fa-crown me-1"></i>EXCLUSIVE</span>
           <h3 class="sbc-card-title">BRIDAL<br>COLLECTION</h3>
-          <span class="sbc-shop-now">SHOP NOW <i class="fa-solid fa-chevron-right ms-1"></i></span>
+          <p class="sbc-card-desc">One Design · One Bride · Forever</p>
+          <span class="sbc-shop-now">EXPLORE <i class="fa-solid fa-arrow-right ms-1"></i></span>
         </div>
       </div>
+      <div class="sbc-gold-border"></div>
     </a>
+
   </div>
 </section>
 

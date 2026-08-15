@@ -226,7 +226,7 @@ a { text-decoration: none; color: inherit; transition: all 0.2s ease; }
   object-fit: contain;
   display: block;
   margin: 0 auto;
-  filter: drop-shadow(0 4px 18px rgba(201, 162, 75, 0.5));
+  /* filter: drop-shadow(0 4px 18px rgba(201, 162, 75, 0.5)); */
   transition: transform 0.35s ease;
 }
 .brand-logo-img:hover {
