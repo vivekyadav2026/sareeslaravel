@@ -496,6 +496,30 @@ a { text-decoration: none; color: inherit; transition: all 0.2s ease; }
 }
 .hero-banner-prev { left: 20px; }
 .hero-banner-next { right: 20px; }
+
+@media (max-width: 767.98px) {
+  .hero-banner-slider,
+  .hero-banner-track,
+  .hero-banner-slide {
+    height: auto !important;
+  }
+  .hero-banner-slide img {
+    height: auto !important;
+    width: 100% !important;
+    object-fit: contain !important;
+  }
+
+  .hero-banner-arrow {
+    background: transparent !important;
+    border-color: transparent !important;
+    backdrop-filter: none !important;
+    box-shadow: none !important;
+    color: rgba(255, 255, 255, 0.75) !important;
+    font-size: 0.95rem !important;
+  }
+  .hero-banner-prev { left: 8px; }
+  .hero-banner-next { right: 8px; }
+}
 /* Dots */
 .hero-banner-dots {
   position: absolute;
