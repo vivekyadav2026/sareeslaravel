@@ -749,6 +749,43 @@
   .customer-sidebar {
     position: static;
     margin-bottom: 1.5rem;
+    border-color: rgba(201, 162, 75, 0.2) !important;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.25) !important;
+  }
+
+  /* Custom menu button for mobile toggle */
+  .btn-outline-gold-menu {
+    background: transparent !important;
+    border: 1px solid rgba(201, 162, 75, 0.4) !important;
+    color: var(--gold-light) !important;
+    transition: all 0.3s ease !important;
+    border-radius: 4px !important;
+    font-family: var(--font-label) !important;
+    font-size: 0.72rem !important;
+    letter-spacing: 0.1em !important;
+    padding: 0.6rem 1rem !important;
+  }
+  .btn-outline-gold-menu:hover,
+  .btn-outline-gold-menu:focus,
+  .btn-outline-gold-menu[aria-expanded="true"] {
+    background: rgba(201, 162, 75, 0.1) !important;
+    border-color: var(--gold) !important;
+    color: #ffffff !important;
+  }
+
+  /* Responsive collapsible nav list styles */
+  .customer-nav-list {
+    padding: 0 !important;
+    background: rgba(0, 0, 0, 0.2) !important;
+    border-top: 1px solid rgba(201, 162, 75, 0.15) !important;
+  }
+  .customer-nav-item a {
+    padding: 0.85rem 1.5rem !important;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.02) !important;
+    font-size: 0.72rem !important;
+  }
+  .customer-nav-item:last-child a {
+    border-bottom: none !important;
   }
 
   .customer-dashboard-wrapper {

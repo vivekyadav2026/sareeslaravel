@@ -23,6 +23,7 @@ class SettingController extends Controller
             'gst_rate_default'    => 'required|numeric|min:0|max:100',
             'shiprocket_email'    => 'nullable|email',
             'shiprocket_password' => 'nullable|string|min:4',
+            'shiprocket_pickup_location' => 'nullable|string',
             'google_client_id'    => 'nullable|string',
             'google_client_secret'=> 'nullable|string',
             'google_redirect_uri' => 'nullable|url',
@@ -37,6 +38,7 @@ class SettingController extends Controller
         Setting::setVal('gst_rate_default', $request->gst_rate_default);
         Setting::setVal('shiprocket_email', $request->shiprocket_email);
         Setting::setVal('shiprocket_password', $request->shiprocket_password);
+        Setting::setVal('shiprocket_pickup_location', $request->shiprocket_pickup_location);
         Setting::setVal('google_client_id', $request->google_client_id);
         Setting::setVal('google_client_secret', $request->google_client_secret);
         Setting::setVal('google_redirect_uri', $request->google_redirect_uri);
@@ -51,6 +53,7 @@ class SettingController extends Controller
                 'shipping_charge' => $request->shipping_charge,
                 'gst_rate_default' => $request->gst_rate_default,
                 'shiprocket_email' => $request->shiprocket_email,
+                'shiprocket_pickup_location' => $request->shiprocket_pickup_location,
                 'google_client_id' => $request->google_client_id ? 'Configured' : null,
                 'google_maps_api_key' => $request->google_maps_api_key ? 'Configured' : null,
             ]),

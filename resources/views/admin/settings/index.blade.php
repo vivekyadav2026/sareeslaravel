@@ -118,6 +118,19 @@
                             <small class="text-muted">Secure password of your Shiprocket account (used to obtain authorization tokens).</small>
                         </div>
 
+                        <!-- Shiprocket Pickup Location -->
+                        <div class="mb-4">
+                            <label for="shiprocket_pickup_location" class="form-label text-gold-light fw-bold">Shiprocket Pickup Location Nickname</label>
+                            <div class="input-group">
+                                <span class="input-group-text bg-secondary text-white border-0"><i class="fas fa-location-dot"></i></span>
+                                <input type="text" name="shiprocket_pickup_location" id="shiprocket_pickup_location" 
+                                    class="form-control bg-dark text-white border-secondary" 
+                                    value="{{ old('shiprocket_pickup_location', \App\Models\Setting::getVal('shiprocket_pickup_location', 'Primary')) }}" 
+                                    placeholder="e.g. Primary, Naveen K">
+                            </div>
+                            <small class="text-muted">Must exactly match the <strong>Pickup Location Nickname</strong> configured in your Shiprocket account settings (e.g. <code>Primary</code> or <code>Naveen K</code>).</small>
+                        </div>
+
                     </div>
                 </div>
 

@@ -82,7 +82,7 @@ class ShiprocketService
                 ->post('https://apiv2.shiprocket.in/v1/external/orders/create/adhoc', [
                     'order_id' => $order->order_number,
                     'order_date' => $order->created_at->format('Y-m-d H:i'),
-                    'pickup_location' => 'Boutique Head Office',
+                    'pickup_location' => \App\Models\Setting::getVal('shiprocket_pickup_location', 'Primary'),
                     'billing_customer_name' => $customer->first_name ?? 'Boutique',
                     'billing_last_name' => $customer->last_name ?? 'Customer',
                     'billing_address' => '123 Boutique Main Road',
