@@ -13,6 +13,9 @@ use App\Models\OrderNote;
 use Yajra\DataTables\Facades\DataTables;
 use App\Models\AdminActivityLog;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Mail;
+use App\Mail\OrderShipped;
+use App\Mail\OrderDelivered;
 
 class OrderController extends Controller
 {
@@ -134,6 +137,19 @@ class OrderController extends Controller
                 'changed_by' => auth()->id(),
                 'comment' => $request->status_comment ?: "Status updated from {$oldStatus} to {$newStatus}.",
             ]);
+
+            // Dispatch status transition emails
+            try {
+                if ($order->customer && $order->customer->email) {
+                    if ($newStatus === 'shipped') {
+                        Mail::to($order->customer->email)->send(new OrderShipped($order));
+                    } elseif ($newStatus === 'delivered') {
+                        Mail::to($order->customer->email)->send(new OrderDelivered($order));
+                    }
+                }
+            } catch (\Throwable $e) {
+                \Illuminate\Support\Facades\Log::error("Order status mail dispatch failed for order {$order->order_number}: " . $e->getMessage());
+            }
         }
 
         AdminActivityLog::create([
@@ -235,6 +251,15 @@ class OrderController extends Controller
                 'changed_by' => auth()->id(),
                 'comment' => "Order dispatched via Shiprocket. Courier: {$shipment['courier_name']}, AWB: {$shipment['tracking_number']}.",
             ]);
+
+            // Send Order Shipped Email
+            try {
+                if ($order->customer && $order->customer->email) {
+                    Mail::to($order->customer->email)->send(new OrderShipped($order));
+                }
+            } catch (\Throwable $e) {
+                \Illuminate\Support\Facades\Log::error("Order shipped mail dispatch failed for order {$order->order_number}: " . $e->getMessage());
+            }
 
             return back()->with('success', 'Order dispatched and details sent to Shiprocket successfully!');
         }
