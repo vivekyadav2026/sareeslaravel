@@ -1438,16 +1438,16 @@ a { text-decoration: none; color: inherit; transition: all 0.2s ease; }
     grid-template-columns: repeat(2, 1fr);
   }
   .sbc-card {
-    height: 260px;
+    height: 130px;
     border-right: none;
     border-bottom: 1px solid rgba(201, 162, 75, 0.08);
   }
   .sbc-card:nth-child(even) { border-right: none; }
-  .sbc-card-content { padding: 1.2rem 1rem; }
-  .sbc-card-title { font-size: 1.1rem; }
-  .sbc-card-desc { font-size: 0.6rem; }
-  .sbc-shop-now { font-size: 0.6rem; opacity: 1; transform: translateY(0); }
-  .sbc-card-number { font-size: 0.6rem; top: 0.8rem; left: 0.9rem; }
+  .sbc-card-content { padding: 0.75rem 0.65rem; }
+  .sbc-card-title { font-size: 0.95rem; }
+  .sbc-card-desc { display: none !important; }
+  .sbc-shop-now { font-size: 0.55rem; opacity: 1; transform: translateY(0); }
+  .sbc-card-number { font-size: 0.55rem; top: 0.5rem; left: 0.6rem; padding: 0.15rem 0.4rem !important; }
 
 
   .promise-section {

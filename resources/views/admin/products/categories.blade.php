@@ -31,6 +31,7 @@
                     <table class="table table-hover align-middle">
                         <thead class="table-dark">
                             <tr>
+                                <th>Image</th>
                                 <th>Name</th>
                                 <th>Slug</th>
                                 <th>Description</th>
@@ -41,6 +42,13 @@
                         <tbody>
                             @forelse($categories as $category)
                                 <tr>
+                                    <td>
+                                        @if($category->image)
+                                            <img src="{{ asset($category->image) }}" alt="{{ $category->name }}" style="width: 50px; height: 50px; object-fit: cover; border-radius: 4px; border: 1px solid rgba(201,162,75,0.25);">
+                                        @else
+                                            <span class="text-muted small">No Image</span>
+                                        @endif
+                                    </td>
                                     <td class="fw-semibold">
                                         {{ $category->name }}
                                     </td>
@@ -52,7 +60,8 @@
                                             class="btn btn-sm btn-light rounded-circle me-1 edit-category-btn"
                                             data-id="{{ $category->id }}"
                                             data-name="{{ $category->name }}"
-                                            data-desc="{{ $category->description }}">
+                                            data-desc="{{ $category->description }}"
+                                            data-image="{{ $category->image ? asset($category->image) : '' }}">
                                             <i class="fas fa-edit text-warning"></i>
                                         </button>
                                         <form action="{{ route('admin.categories.destroy', $category->id) }}" method="POST" class="d-inline delete-form">
@@ -83,7 +92,7 @@
                 <h5 class="mb-0 fw-bold">Create Category</h5>
             </div>
             <div class="card-body">
-                <form action="{{ route('admin.categories.store') }}" method="POST">
+                <form action="{{ route('admin.categories.store') }}" method="POST" enctype="multipart/form-data">
                     @csrf
                     <div class="mb-3">
                         <label for="name" class="form-label fw-semibold">Category Name</label>
@@ -93,6 +102,16 @@
                     <div class="mb-3">
                         <label for="description" class="form-label fw-semibold">Description</label>
                         <textarea class="form-control" id="description" name="description" rows="3" placeholder="Category summary..."></textarea>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="image" class="form-label fw-semibold">Category Image</label>
+                        <input type="file" class="form-control" id="image" name="image" accept="image/*">
+                        <small class="text-muted d-block mt-1">Will be displayed on the homepage categories layout.</small>
+                        <div id="create_image_preview_container" class="mt-2 d-none">
+                            <label class="d-block small text-muted mb-1">Selected Image Preview:</label>
+                            <img id="create_image_preview" src="" alt="Selected Preview" style="width: 80px; height: 80px; object-fit: cover; border-radius: 4px; border: 1px solid rgba(201,162,75,0.25);">
+                        </div>
                     </div>
 
                     <div class="d-grid mt-4">
@@ -112,7 +131,7 @@
                 <h5 class="modal-title text-gold fw-bold"><i class="fas fa-edit me-2"></i>Edit Category</h5>
                 <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
-            <form id="editCategoryForm" method="POST">
+            <form id="editCategoryForm" method="POST" enctype="multipart/form-data">
                 @csrf
                 @method('PUT')
                 <div class="modal-body">
@@ -124,6 +143,25 @@
                     <div class="mb-3">
                         <label for="edit_description" class="form-label fw-semibold">Description</label>
                         <textarea class="form-control bg-secondary text-white border-0" id="edit_description" name="description" rows="3"></textarea>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="edit_image" class="form-label fw-semibold">Category Image</label>
+                        <input type="file" class="form-control bg-secondary text-white border-0" id="edit_image" name="image" accept="image/*">
+                        
+                        <div class="d-flex gap-3 mt-3">
+                            <!-- Current Image -->
+                            <div id="edit_image_preview_container" class="d-none">
+                                <label class="d-block small text-muted mb-1">Current Image:</label>
+                                <img id="edit_image_preview" src="" alt="Preview" style="width: 80px; height: 80px; object-fit: cover; border-radius: 4px; border: 1px solid rgba(201,162,75,0.25);">
+                            </div>
+
+                            <!-- New Selected Image Preview -->
+                            <div id="edit_new_image_preview_container" class="d-none">
+                                <label class="d-block small text-warning mb-1">New Selection:</label>
+                                <img id="edit_new_image_preview" src="" alt="New Preview" style="width: 80px; height: 80px; object-fit: cover; border-radius: 4px; border: 1px solid var(--gold);">
+                            </div>
+                        </div>
                     </div>
                 </div>
                 <div class="modal-footer border-top border-secondary">
@@ -160,6 +198,7 @@
             var id = $(this).data('id');
             var name = $(this).data('name');
             var desc = $(this).data('desc');
+            var image = $(this).data('image');
 
             // Set Form action url dynamically
             var actionUrl = "{{ route('admin.categories.update', ':id') }}".replace(':id', id);
@@ -169,9 +208,52 @@
             $('#edit_name').val(name);
             $('#edit_description').val(desc);
 
+            // Reset new selection preview
+            $('#edit_image').val('');
+            $('#edit_new_image_preview').attr('src', '');
+            $('#edit_new_image_preview_container').addClass('d-none');
+
+            // Handle current image preview
+            if (image) {
+                $('#edit_image_preview').attr('src', image);
+                $('#edit_image_preview_container').removeClass('d-none');
+            } else {
+                $('#edit_image_preview_container').addClass('d-none');
+            }
+
             // Open Modal
             var editModal = new bootstrap.Modal(document.getElementById('editCategoryModal'));
             editModal.show();
+        });
+
+        // Create Form: Live Image Preview
+        $('#image').change(function() {
+            var file = this.files[0];
+            if (file) {
+                var reader = new FileReader();
+                reader.onload = function(e) {
+                    $('#create_image_preview').attr('src', e.target.result);
+                    $('#create_image_preview_container').removeClass('d-none');
+                }
+                reader.readAsDataURL(file);
+            } else {
+                $('#create_image_preview_container').addClass('d-none');
+            }
+        });
+
+        // Edit Form: Live Image Preview
+        $('#edit_image').change(function() {
+            var file = this.files[0];
+            if (file) {
+                var reader = new FileReader();
+                reader.onload = function(e) {
+                    $('#edit_new_image_preview').attr('src', e.target.result);
+                    $('#edit_new_image_preview_container').removeClass('d-none');
+                }
+                reader.readAsDataURL(file);
+            } else {
+                $('#edit_new_image_preview_container').addClass('d-none');
+            }
         });
     });
 </script>

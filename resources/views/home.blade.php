@@ -98,12 +98,24 @@
   </div>
   <p class="sbc-subheading">Curated collections crafted for every occasion</p>
 
+  @php
+    $catSaree = isset($categories) ? $categories->get('sarees') : null;
+    $catSuit = isset($categories) ? $categories->get('suits') : null;
+    $catLehenga = isset($categories) ? $categories->get('lehengas') : null;
+    $catBridal = isset($categories) ? $categories->get('bridal-wear') : null;
+
+    $imgSaree = ($catSaree && $catSaree->image) ? asset($catSaree->image) : asset('images/cat_saree.png');
+    $imgSuit = ($catSuit && $catSuit->image) ? asset($catSuit->image) : asset('images/cat_suit.png');
+    $imgLehenga = ($catLehenga && $catLehenga->image) ? asset($catLehenga->image) : asset('images/cat_lehenga.png');
+    $imgBridal = ($catBridal && $catBridal->image) ? asset($catBridal->image) : asset('images/cat_bridal.png');
+  @endphp
+
   <!-- 4-Column Grid -->
   <div class="sbc-grid">
 
     <!-- Sarees -->
     <a href="{{ route('sarees') }}" class="sbc-card">
-      <img src="{{ asset('images/cat_saree.png') }}" alt="Sarees Collection">
+      <img src="{{ $imgSaree }}" alt="Sarees Collection">
       <div class="sbc-card-overlay"></div>
       <div class="sbc-card-content">
         <span class="sbc-card-number">01</span>
@@ -118,7 +130,7 @@
 
     <!-- Suits -->
     <a href="{{ route('suits') }}" class="sbc-card">
-      <img src="{{ asset('images/cat_suit.png') }}" alt="Suits Collection">
+      <img src="{{ $imgSuit }}" alt="Suits Collection">
       <div class="sbc-card-overlay"></div>
       <div class="sbc-card-content">
         <span class="sbc-card-number">02</span>
@@ -133,7 +145,7 @@
 
     <!-- Lehengas -->
     <a href="{{ route('lehengas') }}" class="sbc-card">
-      <img src="{{ asset('images/cat_lehenga.png') }}" alt="Lehengas Collection">
+      <img src="{{ $imgLehenga }}" alt="Lehengas Collection">
       <div class="sbc-card-overlay"></div>
       <div class="sbc-card-content">
         <span class="sbc-card-number">03</span>
@@ -148,7 +160,7 @@
 
     <!-- Bridal Collection -->
     <a href="{{ route('bridal-collection') }}" class="sbc-card sbc-card-featured">
-      <img src="{{ asset('images/cat_bridal.png') }}" alt="Bridal Collection">
+      <img src="{{ $imgBridal }}" alt="Bridal Collection">
       <div class="sbc-card-overlay"></div>
       <div class="sbc-card-content">
         <span class="sbc-card-number">04</span>

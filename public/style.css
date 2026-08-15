@@ -1145,16 +1145,19 @@ a { text-decoration: none; color: inherit; transition: all 0.2s ease; }
     gap: 2px;
   }
   .sbc-card {
-    height: 210px;
+    height: 130px;
   }
   .sbc-card-overlay {
-    padding: 1rem;
+    padding: 0.75rem 0.65rem;
   }
   .sbc-card-title {
-    font-size: 1.05rem;
+    font-size: 0.95rem;
+  }
+  .sbc-card-desc {
+    display: none !important;
   }
   .sbc-shop-now {
-    font-size: 0.62rem;
+    font-size: 0.55rem;
   }
 
   .promise-section {
@@ -1327,7 +1330,7 @@ a { text-decoration: none; color: inherit; transition: all 0.2s ease; }
   }
 
   .sbc-card {
-    height: 185px;
+    height: 130px;
   }
 
   .gallery-grid-6 {

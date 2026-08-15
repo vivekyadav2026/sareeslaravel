@@ -8,7 +8,8 @@ use App\Http\Controllers\CheckoutController;
 Route::get('/', function () {
     $packages = \App\Models\BridalPackage::where('is_active', true)->orderBy('id', 'asc')->get();
     $initialProducts = \App\Models\Product::where('is_active', true)->with(['images'])->latest()->paginate(8);
-    return view('home', compact('packages', 'initialProducts'));
+    $categories = \App\Models\Category::all()->keyBy('slug');
+    return view('home', compact('packages', 'initialProducts', 'categories'));
 })->name('home');
 
 Route::get('/api/products', [CatalogController::class, 'apiProducts'])->name('api.products');

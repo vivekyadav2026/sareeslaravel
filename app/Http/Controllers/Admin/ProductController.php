@@ -365,13 +365,20 @@ class ProductController extends Controller
             'name' => 'required|string|max:255',
             'parent_id' => 'nullable|exists:categories,id',
             'description' => 'nullable|string',
+            'image' => 'nullable|image|mimes:jpeg,png,jpg,webp,gif|max:4096',
         ]);
+
+        $imagePath = null;
+        if ($request->hasFile('image')) {
+            $imagePath = \App\Services\ImageOptimizerService::compressAndStore($request->file('image'), 'categories', 800, 800, 85);
+        }
 
         Category::create([
             'name' => $request->name,
             'slug' => Str::slug($request->name),
             'parent_id' => $request->parent_id,
             'description' => $request->description,
+            'image' => $imagePath,
         ]);
 
         return back()->with('success', 'Category created successfully.');
@@ -383,18 +390,28 @@ class ProductController extends Controller
             'name' => 'required|string|max:255',
             'parent_id' => 'nullable|exists:categories,id',
             'description' => 'nullable|string',
+            'image' => 'nullable|image|mimes:jpeg,png,jpg,webp,gif|max:4096',
         ]);
 
         if ($request->parent_id == $category->id) {
             return back()->withErrors(['parent' => 'A category cannot be its own parent.']);
         }
 
-        $category->update([
+        $data = [
             'name' => $request->name,
             'slug' => \Illuminate\Support\Str::slug($request->name),
             'parent_id' => $request->parent_id,
             'description' => $request->description,
-        ]);
+        ];
+
+        if ($request->hasFile('image')) {
+            if ($category->image && file_exists(public_path($category->image))) {
+                @unlink(public_path($category->image));
+            }
+            $data['image'] = \App\Services\ImageOptimizerService::compressAndStore($request->file('image'), 'categories', 800, 800, 85);
+        }
+
+        $category->update($data);
 
         return back()->with('success', 'Category updated successfully.');
     }
