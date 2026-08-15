@@ -72,6 +72,11 @@ Route::get('login', function () {
 | Customer Authentication & Panel Routes
 |--------------------------------------------------------------------------
 */
+Route::middleware('guest')->group(function () {
+    Route::get('auth/google', [\App\Http\Controllers\Customer\AuthController::class, 'redirectToGoogle'])->name('customer.google.redirect');
+    Route::get('auth/google/callback', [\App\Http\Controllers\Customer\AuthController::class, 'handleGoogleCallback'])->name('customer.google.callback');
+});
+
 Route::prefix('customer')->name('customer.')->group(function () {
     // Guest routes
     Route::middleware('guest')->group(function () {
@@ -83,10 +88,6 @@ Route::prefix('customer')->name('customer.')->group(function () {
         Route::post('forgot-password', [\App\Http\Controllers\Customer\AuthController::class, 'sendResetLinkEmail'])->name('password.email');
         Route::get('reset-password', [\App\Http\Controllers\Customer\AuthController::class, 'showResetPasswordForm'])->name('password.reset');
         Route::post('reset-password', [\App\Http\Controllers\Customer\AuthController::class, 'resetPassword'])->name('password.update');
-
-        // Google OAuth
-        Route::get('auth/google', [\App\Http\Controllers\Customer\AuthController::class, 'redirectToGoogle'])->name('google.redirect');
-        Route::get('auth/google/callback', [\App\Http\Controllers\Customer\AuthController::class, 'handleGoogleCallback'])->name('google.callback');
     });
 
     // Authenticated customer routes

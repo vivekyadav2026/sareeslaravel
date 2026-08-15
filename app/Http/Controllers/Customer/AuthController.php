@@ -139,7 +139,7 @@ class AuthController extends Controller
     {
         $clientId = \App\Models\Setting::getVal('google_client_id', env('GOOGLE_CLIENT_ID'));
         $clientSecret = \App\Models\Setting::getVal('google_client_secret', env('GOOGLE_CLIENT_SECRET'));
-        $redirectUrl = \App\Models\Setting::getVal('google_redirect_uri', env('GOOGLE_REDIRECT_URI', url('/customer/auth/google/callback')));
+        $redirectUrl = \App\Models\Setting::getVal('google_redirect_uri', env('GOOGLE_REDIRECT_URI', route('customer.google.callback')));
 
         if (empty($clientId) || empty($clientSecret)) {
             return redirect()->route('customer.login')->withErrors([
@@ -160,7 +160,7 @@ class AuthController extends Controller
     {
         $clientId = \App\Models\Setting::getVal('google_client_id', env('GOOGLE_CLIENT_ID'));
         $clientSecret = \App\Models\Setting::getVal('google_client_secret', env('GOOGLE_CLIENT_SECRET'));
-        $redirectUrl = \App\Models\Setting::getVal('google_redirect_uri', env('GOOGLE_REDIRECT_URI', url('/customer/auth/google/callback')));
+        $redirectUrl = \App\Models\Setting::getVal('google_redirect_uri', env('GOOGLE_REDIRECT_URI', route('customer.google.callback')));
 
         config([
             'services.google.client_id' => $clientId,
