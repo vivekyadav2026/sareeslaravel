@@ -1,6 +1,8 @@
 @extends('layouts.app')
 
 @section('title', 'Track Your Order — RANISAHAB Luxury')
+@section('meta_description', 'Track your RANISAHAB couture logistics in real-time. Enter your tracking number to view real-time delivery checkpoints, courier logs, and shipping status.')
+@section('meta_keywords', 'track order, courier tracking, track shipment, shiprocket tracking, ranisahab logistics')
 
 @section('content')
 <div class="tracking-wrap py-5 text-ivory" style="background-color: #080706; min-height: 80vh;">

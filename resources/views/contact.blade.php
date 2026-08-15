@@ -1,6 +1,8 @@
 @extends('layouts.app')
 
 @section('title', 'Contact Us — RANISAHAB Luxury Support & Boutiques')
+@section('meta_description', 'Get in touch with RANISAHAB’s luxury bridal concierge. Contact us for custom bridal lehengas, saree collection inquiries, appointments, and tracking.')
+@section('meta_keywords', 'contact ranisahab, boutique address delhi, boutique address jaipur, customer support, custom bridal wear inquiry')
 
 @section('content')
 <div class="plp-page">

@@ -1,6 +1,8 @@
 @extends('layouts.app')
 
 @section('title', 'One Design, One Bride — Custom Lehenga Studio | RANISAHAB Luxury')
+@section('meta_description', 'Design your dream wedding lehenga at RANISAHAB’s Custom Lehenga Studio. Master hand-crafting with a certified design exclusivity guaranteed never to be repeated.')
+@section('meta_keywords', 'custom lehenga design, custom wedding lehenga, raw silk lehenga design, velvet bridal lehenga, bespoke bridal couture, unique wedding wear')
 
 @section('content')
 <div class="plp-page">

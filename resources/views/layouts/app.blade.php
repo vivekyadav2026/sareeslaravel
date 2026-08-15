@@ -4,6 +4,28 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>@yield('title', 'RANISAHAB — Luxury Fashion for Every Woman | Sarees, Lehengas & Bridal Wear')</title>
+    
+    <!-- SEO Meta Tags -->
+    <meta name="description" content="@yield('meta_description', 'RANISAHAB is India’s premium luxury bridal house offering 100% certified pure silk sarees, designer lehengas, and custom bridal wear directly from master weavers.')">
+    <meta name="keywords" content="@yield('meta_keywords', 'sarees, lehengas, designer suits, bridal wear, banarasi silk saree, wedding outfits, customized lehenga, Kanjeevaram sarees, luxury fashion')">
+    <meta name="author" content="RANISAHAB">
+    <meta name="robots" content="@yield('meta_robots', 'index, follow')">
+    <link rel="canonical" href="{{ request()->url() }}">
+
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="{{ request()->url() }}">
+    <meta property="og:title" content="@yield('title', 'RANISAHAB — Luxury Fashion for Every Woman')">
+    <meta property="og:description" content="@yield('meta_description', 'Discover premium luxury sarees, designer lehengas, and custom bridal couture at RANISAHAB. Direct from master weavers with certified exclusivity.')">
+    <meta property="og:image" content="@yield('meta_og_image', asset('images/logo.png'))">
+
+    <!-- Twitter Cards -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:url" content="{{ request()->url() }}">
+    <meta name="twitter:title" content="@yield('title', 'RANISAHAB — Luxury Fashion for Every Woman')">
+    <meta name="twitter:description" content="@yield('meta_description', 'Discover premium luxury sarees, designer lehengas, and custom bridal couture at RANISAHAB.')">
+    <meta name="twitter:image" content="@yield('meta_og_image', asset('images/logo.png'))">
+
     <link rel="shortcut icon" href="{{ asset('favicon.ico') }}" type="image/x-icon">
     <link rel="icon" href="{{ asset('favicon.png') }}" type="image/png">
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -226,8 +248,8 @@
         <div class="feature-pill-item justify-content-center justify-content-md-start">
           <i class="fa-solid fa-truck"></i>
           <div>
-            <h6>06-7 TIME DELIVERY</h6>
-            <p>Your Happiness, Our Priority</p>
+            <h6>ON TIME DELIVERY</h6>
+            <p>5-7 Days Express Delivery</p>
           </div>
         </div>
       </div>

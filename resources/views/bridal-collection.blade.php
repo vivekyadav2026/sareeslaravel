@@ -1,6 +1,8 @@
 @extends('layouts.app')
 
 @section('title', 'Royal Bridal Collection — RANISAHAB Luxury')
+@section('meta_description', 'Discover luxury bridal lehengas, certified wedding sarees, and customized royal bridal wear sets at RANISAHAB. Complete your dream wedding look.')
+@section('meta_keywords', 'bridal collection, wedding lehengas, bridal sarees, royal bride wear, custom couture, zari wedding attire')
 
 @section('content')
 <div class="plp-page">

@@ -1,6 +1,8 @@
 @extends('layouts.app')
 
 @section('title', 'RANISAHAB Royal Banarasi Silk Saree — Luxury Sarees Collection')
+@section('meta_description', 'Discover luxury Banarasi silk sarees, Kanjivaram sarees, Chanderi, and Organza sarees at RANISAHAB. Handcrafted with traditional gold and silver zari borders.')
+@section('meta_keywords', 'banarasi saree, kanjivaram saree, chanderi silk, organza saree, pure silk sarees, handloom sarees online')
 
 @section('content')
 <div class="plp-page">

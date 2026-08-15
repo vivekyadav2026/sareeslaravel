@@ -1,6 +1,7 @@
 @extends('layouts.app')
 
 @section('title', 'Order Confirmed — RANISAHAB Luxury')
+@section('meta_robots', 'noindex, nofollow')
 
 @section('content')
 <div class="confirm-wrap d-flex align-items-center py-5 text-ivory" style="background-color: #080706; min-height: 80vh;">

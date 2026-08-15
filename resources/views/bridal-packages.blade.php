@@ -1,6 +1,8 @@
 @extends('layouts.app')
 
 @section('title', 'Curated Bridal Packages — RANISAHAB Luxury')
+@section('meta_description', 'Book luxury curated bridal packages at RANISAHAB. Get premium wedding outfits, jewelry coordination, celebrity makeup artists, and draping sessions.')
+@section('meta_keywords', 'bridal packages, wedding packages, ranisahab package, makeup and outfit package, wedding luxury box')
 
 @section('content')
 <div class="bp-page-wrap">

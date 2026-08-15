@@ -1,6 +1,8 @@
 @extends('layouts.app')
 
 @section('title', 'Designer Lehengas Collection — RANISAHAB Luxury')
+@section('meta_description', 'Explore designer lehengas, royal bridal lehengas, raw silks, and velvet lehengas at RANISAHAB. Handcrafted with heavy Kundan, Zari, and Gota Patti work.')
+@section('meta_keywords', 'designer lehengas, bridal lehenga, sangeet lehenga, velvet lehenga, raw silk lehenga, kundan work lehenga')
 
 @section('content')
 

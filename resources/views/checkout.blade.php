@@ -1,6 +1,7 @@
 @extends('layouts.app')
 
 @section('title', 'Secure Checkout — RANISAHAB Luxury')
+@section('meta_robots', 'noindex, nofollow')
 
 @section('content')
 <div class="bp-page-wrap py-4 py-md-5">

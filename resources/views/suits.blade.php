@@ -1,6 +1,8 @@
 @extends('layouts.app')
 
 @section('title', 'Designer Suits & Anarkalis — RANISAHAB Luxury')
+@section('meta_description', 'Discover luxurious designer suits, Anarkali suits, shararas, and straight cuts at RANISAHAB. Handcrafted outfits for weddings, parties, and festive occasions.')
+@section('meta_keywords', 'designer suits, Anarkali suit, sharara suit, palazzo set, straight cut suit, wedding suits')
 
 @section('content')
 <div class="plp-page">

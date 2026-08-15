@@ -1,6 +1,9 @@
 @extends('layouts.app')
 
 @section('title', $product->name . ' — RANISAHAB Luxury Collection')
+@section('meta_description', strip_tags(str_replace('"', "'", $product->description ?: 'Exquisite royal ' . $product->name . ' handcrafted by heritage weavers.')))
+@section('meta_keywords', $product->name . ', ' . $product->category->name . ', ranisahab collection, royal apparel, wedding wear')
+@section('meta_og_image', $product->images && $product->images->isNotEmpty() ? asset($product->images->first()->file_path) : asset('images/logo.png'))
 
 @section('content')
 <div class="plp-page">

@@ -1,6 +1,8 @@
 @extends('layouts.app')
 
 @section('title', 'RANISAHAB — Luxury Fashion for Every Woman | Sarees, Lehengas & Bridal Wear')
+@section('meta_description', 'Explore RANISAHAB’s exclusive collection of pure Banarasi silk sarees, customized bridal lehengas, and royal wedding outfits. Handcrafted by master weavers.')
+@section('meta_keywords', 'RANISAHAB, bridal sarees, wedding lehenga, Banarasi silk sarees, designer suits, luxury bridal wear, Indian bridal house, boutique clothing')
 
 @section('content')
 <!-- Hero Banner Slider -->
@@ -175,9 +177,9 @@
       </div>
       <!-- Center Info -->
       <div class="col-lg-4">
-        <p class="promise-header-eyebrow">OUR EXCLUSIVE PROMISE</p>
-        <h2 class="promise-main-title">ONE DESIGN, ONE BRIDE</h2>
-        <p class="promise-body-text">A custom bridal lehenga designed just for you. Once it's yours, it will never be created again for anyone else. Because you are one of a kind.</p>
+        <p class="promise-header-eyebrow" style="text-align: center;">OUR EXCLUSIVE PROMISE</p>
+        <h2 class="promise-main-title" style="text-align: center;">ONE DESIGN, ONE BRIDE</h2>
+        <p class="promise-body-text" style="text-align: center;">A custom bridal lehenga designed just for you. Once it's yours, it will never be created again for anyone else. Because you are one of a kind.</p>
         
         <div class="promise-icon-grid">
           <div>

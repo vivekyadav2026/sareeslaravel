@@ -242,6 +242,61 @@ class AuthController extends Controller
             return back()->withErrors(['email' => 'We could not find a user with that email address.']);
         }
         
-        return back()->with('success', 'We have emailed your password reset link (logged in standard logs)!');
+        $token = \Illuminate\Support\Str::random(64);
+        
+        DB::table('password_reset_tokens')->updateOrInsert(
+            ['email' => $request->email],
+            [
+                'token' => Hash::make($token),
+                'created_at' => now()
+            ]
+        );
+        
+        $resetLink = route('customer.password.reset', ['token' => $token, 'email' => $request->email]);
+        
+        Log::info("Password Reset Link for {$request->email}: {$resetLink}");
+        
+        return back()->with('success', 'Password reset link generated successfully! Link: ' . $resetLink);
+    }
+
+    public function showResetPasswordForm(Request $request)
+    {
+        $token = $request->token;
+        $email = $request->email;
+        return view('customer.auth.reset-password', compact('token', 'email'));
+    }
+
+    public function resetPassword(Request $request)
+    {
+        $request->validate([
+            'token' => 'required',
+            'email' => 'required|email',
+            'password' => 'required|string|min:8|confirmed',
+        ]);
+        
+        $record = DB::table('password_reset_tokens')->where('email', $request->email)->first();
+        
+        if (!$record || !Hash::check($request->token, $record->token)) {
+            return back()->withErrors(['email' => 'This password reset token is invalid or expired.']);
+        }
+        
+        // Expiry check (60 minutes)
+        if (now()->subMinutes(60)->gt($record->created_at)) {
+            DB::table('password_reset_tokens')->where('email', $request->email)->delete();
+            return back()->withErrors(['email' => 'This password reset token has expired.']);
+        }
+        
+        $user = User::where('email', $request->email)->first();
+        if ($user) {
+            $user->update([
+                'password' => Hash::make($request->password)
+            ]);
+            
+            DB::table('password_reset_tokens')->where('email', $request->email)->delete();
+            
+            return redirect()->route('customer.login')->with('success', 'Your password has been successfully reset! You can now log in.');
+        }
+        
+        return back()->withErrors(['email' => 'We could not find a user with that email address.']);
     }
 }

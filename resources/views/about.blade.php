@@ -1,6 +1,8 @@
 @extends('layouts.app')
 
 @section('title', 'About Us — RANISAHAB Heritage & Craftsmanship')
+@section('meta_description', 'Learn about RANISAHAB, a premium bridal house bringing certified pure silks and handloom zari directly from master weavers of Varanasi and Kanchipuram to modern brides.')
+@section('meta_keywords', 'about ranisahab, handloom artisans, pure silk heritage, wedding wear origin, bridal craftsmanship')
 
 @section('content')
 <div class="plp-page">

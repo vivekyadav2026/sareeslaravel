@@ -1,6 +1,8 @@
 @extends('layouts.app')
 
 @section('title', 'Waterproof Bridal Makeup Services — RANISAHAB Luxury')
+@section('meta_description', 'Book high-definition airbrush and waterproof bridal makeup services by senior celebrity artists at RANISAHAB. Perfect draping, styling, and premium lenses.')
+@section('meta_keywords', 'bridal makeup, waterproof makeup, airbrush makeup, HD makeup artist, wedding draping, hairstyle booking')
 
 @section('content')
 <div class="plp-page">

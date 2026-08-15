@@ -1,6 +1,8 @@
 @extends('layouts.app')
 
 @section('title', 'Real Brides Gallery — RANISAHAB Luxury')
+@section('meta_description', 'View real stories and beautiful moments of RANISAHAB brides in our luxury sarees, suits, designer lehengas, and custom bridal wear.')
+@section('meta_keywords', 'real brides, bridal gallery, ranisahab wedding look, customer stories, bridal couture gallery')
 
 @section('content')
 <div class="plp-page">

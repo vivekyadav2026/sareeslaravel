@@ -2923,10 +2923,50 @@ select option:checked {
     padding: 1rem !important;
   }
 
-  /* DataTables & Admin Tables Horizontal Touch Scroll */
-  .table-responsive {
-    overflow-x: auto !important;
-    -webkit-overflow-scrolling: touch !important;
+  /* Shop By Category & Spacing overrides for mobile */
+  .shop-by-category-section {
+    padding: 2rem 0 0 !important;
+  }
+  .sbc-heading-wrapper {
+    padding: 0 1rem 0.5rem !important;
+    justify-content: center !important;
+    gap: 0.5rem !important;
+  }
+  .sbc-heading-wrapper .sbc-deco-line,
+  .sbc-heading-wrapper .sbc-crown-icon {
+    display: none !important;
+  }
+  .sbc-heading {
+    text-align: center !important;
+    font-size: 1.1rem !important;
+    letter-spacing: 0.15em !important;
+    white-space: normal !important;
+    width: 100% !important;
+  }
+  .sbc-subheading {
+    text-align: center !important;
+    font-size: 0.65rem !important;
+    margin-bottom: 1.5rem !important;
+    width: 100% !important;
+  }
+
+  .promise-section {
+    padding: 3rem 0 1rem !important;
+  }
+  .promise-section .row {
+    --bs-gutter-y: 2rem !important;
+  }
+  .promise-main-title {
+    font-size: 1.8rem !important;
+  }
+  .promise-media-frame img {
+    height: 260px !important;
+  }
+  .promise-icon-grid {
+    grid-template-columns: repeat(2, 1fr) !important;
+  }
+  #home-infinite-products {
+    padding-top: 1.5rem !important;
   }
 }
 
