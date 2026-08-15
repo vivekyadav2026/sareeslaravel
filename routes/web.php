@@ -27,6 +27,7 @@ Route::get('/makeup-services', [CatalogController::class, 'makeupServices'])->na
 Route::post('/makeup-services', [CatalogController::class, 'submitMakeupBooking'])->name('makeup-services.submit');
 
 Route::get('/product/{slug}', [CatalogController::class, 'showProduct'])->name('product.show');
+Route::post('/product/{id}/question', [CatalogController::class, 'submitQuestion'])->name('product.question.submit');
 
 Route::get('/custom-lehenga', [CatalogController::class, 'customLehenga'])->name('custom-lehenga');
 Route::post('/custom-lehenga', [CatalogController::class, 'submitCustomLehenga'])->name('custom-lehenga.submit');
@@ -140,9 +141,6 @@ Route::prefix('admin')->name('admin.')->group(function () {
         
         Route::get('/', [\App\Http\Controllers\Admin\DashboardController::class, 'index'])->name('dashboard');
         
-        // Roles & Permissions
-        Route::resource('roles', \App\Http\Controllers\Admin\RoleController::class);
-        
         // Admin Users
         Route::resource('users', \App\Http\Controllers\Admin\AdminUserController::class);
 
@@ -156,6 +154,7 @@ Route::prefix('admin')->name('admin.')->group(function () {
         // Product Categories CRUD
         Route::get('categories', [\App\Http\Controllers\Admin\ProductController::class, 'categoriesIndex'])->name('categories.index');
         Route::post('categories', [\App\Http\Controllers\Admin\ProductController::class, 'categoriesStore'])->name('categories.store');
+        Route::put('categories/{category}', [\App\Http\Controllers\Admin\ProductController::class, 'categoriesUpdate'])->name('categories.update');
         Route::delete('categories/{category}', [\App\Http\Controllers\Admin\ProductController::class, 'categoriesDestroy'])->name('categories.destroy');
 
         // Product Questions CRUD
@@ -173,6 +172,7 @@ Route::prefix('admin')->name('admin.')->group(function () {
         Route::get('orders/{order}/packing-slip', [\App\Http\Controllers\Admin\OrderController::class, 'packingSlip'])->name('orders.packing-slip');
         Route::get('orders/{order}/shipping-label', [\App\Http\Controllers\Admin\OrderController::class, 'shippingLabel'])->name('orders.shipping-label');
         Route::post('orders/{order}/add-note', [\App\Http\Controllers\Admin\OrderController::class, 'addNote'])->name('orders.add-note');
+        Route::post('orders/{order}/dispatch-shiprocket', [\App\Http\Controllers\Admin\OrderController::class, 'dispatchShiprocket'])->name('orders.dispatch-shiprocket');
 
         // Coupons Management
         Route::resource('coupons', \App\Http\Controllers\Admin\CouponController::class);
@@ -210,5 +210,9 @@ Route::prefix('admin')->name('admin.')->group(function () {
         Route::get('contact-inquiries', [\App\Http\Controllers\Admin\ContactInquiryController::class, 'index'])->name('contact-inquiries.index');
         Route::post('contact-inquiries/{inquiry}/status', [\App\Http\Controllers\Admin\ContactInquiryController::class, 'updateStatus'])->name('contact-inquiries.update-status');
         Route::delete('contact-inquiries/{inquiry}', [\App\Http\Controllers\Admin\ContactInquiryController::class, 'destroy'])->name('contact-inquiries.destroy');
+
+        // Store Configuration Settings
+        Route::get('settings', [\App\Http\Controllers\Admin\SettingController::class, 'index'])->name('settings.index');
+        Route::post('settings', [\App\Http\Controllers\Admin\SettingController::class, 'update'])->name('settings.update');
     });
 });

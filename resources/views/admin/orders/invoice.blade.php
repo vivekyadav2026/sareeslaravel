@@ -229,7 +229,7 @@
             <span>₹{{ number_format($order->shipping_charge, 2) }}</span>
         </div>
         <div class="totals-row">
-            <span>Taxes (GST 18%)</span>
+            <span>Taxes (GST {{ \App\Models\Setting::getVal('gst_rate_default', '18') }}%)</span>
             <span>₹{{ number_format($order->tax, 2) }}</span>
         </div>
         <div class="totals-row grand">

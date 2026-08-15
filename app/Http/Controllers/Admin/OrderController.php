@@ -92,6 +92,15 @@ class OrderController extends Controller
         
         $billingAddress = Address::find($order->billing_address_id);
         $shippingAddress = Address::find($order->shipping_address_id);
+
+        // Fallback for older orders that had NULL address links
+        if (!$shippingAddress && $order->customer_id) {
+            $shippingAddress = Address::where('customer_id', $order->customer_id)->first();
+        }
+        if (!$billingAddress && $order->customer_id) {
+            $billingAddress = Address::where('customer_id', $order->customer_id)->first();
+        }
+
         $transaction = Transaction::where('order_id', $order->id)->first();
 
         return view('admin.orders.show', compact('order', 'billingAddress', 'shippingAddress', 'transaction'));
@@ -169,6 +178,13 @@ class OrderController extends Controller
         $billingAddress = Address::find($order->billing_address_id);
         $shippingAddress = Address::find($order->shipping_address_id);
 
+        if (!$shippingAddress && $order->customer_id) {
+            $shippingAddress = Address::where('customer_id', $order->customer_id)->first();
+        }
+        if (!$billingAddress && $order->customer_id) {
+            $billingAddress = Address::where('customer_id', $order->customer_id)->first();
+        }
+
         return view('admin.orders.invoice', compact('order', 'billingAddress', 'shippingAddress'));
     }
 
@@ -176,6 +192,10 @@ class OrderController extends Controller
     {
         $order->load(['customer', 'items']);
         $shippingAddress = Address::find($order->shipping_address_id);
+
+        if (!$shippingAddress && $order->customer_id) {
+            $shippingAddress = Address::where('customer_id', $order->customer_id)->first();
+        }
 
         return view('admin.orders.packing_slip', compact('order', 'shippingAddress'));
     }
@@ -185,6 +205,40 @@ class OrderController extends Controller
         $order->load(['customer']);
         $shippingAddress = Address::find($order->shipping_address_id);
 
+        if (!$shippingAddress && $order->customer_id) {
+            $shippingAddress = Address::where('customer_id', $order->customer_id)->first();
+        }
+
         return view('admin.orders.shipping_label', compact('order', 'shippingAddress'));
+    }
+
+    public function dispatchShiprocket(Order $order)
+    {
+        if ($order->tracking_number) {
+            return back()->withErrors(['tracking_number' => 'Order is already dispatched.']);
+        }
+
+        $shiprocketService = new \App\Services\ShiprocketService();
+        $shipment = $shiprocketService->createShipment($order);
+
+        if ($shipment['success']) {
+            $order->update([
+                'tracking_number' => $shipment['tracking_number'],
+                'courier_name' => $shipment['courier_name'],
+                'shipping_status' => 'scheduled',
+                'status' => 'shipped'
+            ]);
+
+            \App\Models\OrderStatusLog::create([
+                'order_id' => $order->id,
+                'status' => 'shipped',
+                'changed_by' => auth()->id(),
+                'comment' => "Order dispatched via Shiprocket. Courier: {$shipment['courier_name']}, AWB: {$shipment['tracking_number']}.",
+            ]);
+
+            return back()->with('success', 'Order dispatched and details sent to Shiprocket successfully!');
+        }
+
+        return back()->withErrors(['shiprocket' => 'Shiprocket dispatch API failed. Please check Shiprocket credentials in Store Settings.']);
     }
 }

@@ -65,31 +65,38 @@
         <!-- Filter Row -->
         <div class="row g-3 mb-4 p-3 bg-dark bg-opacity-25 rounded-3 border">
             <div class="col-md-3">
+                <label class="form-label small fw-semibold text-muted">Search Product</label>
+                <div class="input-group">
+                    <span class="input-group-text bg-secondary border-0 text-white"><i class="fas fa-search"></i></span>
+                    <input type="text" id="filter-search" class="form-control bg-dark text-white border-secondary" placeholder="Search by name, SKU...">
+                </div>
+            </div>
+            <div class="col-md-3">
                 <label class="form-label small fw-semibold text-muted">Category</label>
-                <select id="filter-category" class="form-select">
+                <select id="filter-category" class="form-select bg-dark text-white border-secondary">
                     <option value="">All Categories</option>
                     @foreach($categories as $category)
                         <option value="{{ $category->id }}">{{ $category->name }}</option>
                     @endforeach
                 </select>
             </div>
-            <div class="col-md-3">
+            <div class="col-md-2">
                 <label class="form-label small fw-semibold text-muted">Status</label>
-                <select id="filter-status" class="form-select">
+                <select id="filter-status" class="form-select bg-dark text-white border-secondary">
                     <option value="">All Statuses</option>
                     <option value="active">Active</option>
                     <option value="inactive">Inactive</option>
                 </select>
             </div>
-            <div class="col-md-3">
-                <label class="form-label small fw-semibold text-muted">Approval Status</label>
-                <select id="filter-approval" class="form-select">
+            <div class="col-md-2">
+                <label class="form-label small fw-semibold text-muted">Approval</label>
+                <select id="filter-approval" class="form-select bg-dark text-white border-secondary">
                     <option value="">All Approvals</option>
                     <option value="approved">Approved</option>
                     <option value="pending">Pending</option>
                 </select>
             </div>
-            <div class="col-md-3 d-flex align-items-end">
+            <div class="col-md-2 d-flex align-items-end">
                 <button id="reset-filters" class="btn btn-light w-100 rounded-pill"><i class="fas fa-undo me-2"></i> Reset</button>
             </div>
         </div>
@@ -123,6 +130,7 @@
         var table = $('#products-table').DataTable({
             processing: true,
             serverSide: true,
+            dom: 'lrtip', // Hide default duplicate search bar ('f')
             ajax: {
                 url: "{{ route('admin.products.index') }}",
                 data: function(d) {
@@ -143,10 +151,13 @@
                 { data: 'action', name: 'action', orderable: false, searchable: false, className: 'text-end' }
             ],
             language: {
-                search: "_INPUT_",
-                searchPlaceholder: "Search catalog...",
                 lengthMenu: "Show _MENU_ entries"
             }
+        });
+
+        // Trigger search on typing in the custom filter-search box
+        $('#filter-search').on('keyup change clear', function() {
+            table.search(this.value).draw();
         });
 
         $('#filter-category, #filter-status, #filter-approval').change(function() {
@@ -154,10 +165,11 @@
         });
 
         $('#reset-filters').click(function() {
+            $('#filter-search').val('');
             $('#filter-category').val('');
             $('#filter-status').val('');
             $('#filter-approval').val('');
-            table.draw();
+            table.search('').draw();
         });
 
         // Delete Product Handler

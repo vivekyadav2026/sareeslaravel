@@ -14,8 +14,8 @@ class ShiprocketService
 
     public function __construct()
     {
-        $this->email = env('SHIPROCKET_EMAIL');
-        $this->password = env('SHIPROCKET_PASSWORD');
+        $this->email = \App\Models\Setting::getVal('shiprocket_email', env('SHIPROCKET_EMAIL'));
+        $this->password = \App\Models\Setting::getVal('shiprocket_password', env('SHIPROCKET_PASSWORD'));
 
         if ($this->email && $this->password) {
             $this->isMock = false;

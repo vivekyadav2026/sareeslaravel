@@ -14,6 +14,7 @@ use App\Models\Coupon;
 use App\Models\OrderStatusLog;
 use App\Services\RazorpayService;
 use App\Services\ShiprocketService;
+use App\Models\Setting;
 
 class CheckoutController extends Controller
 {
@@ -67,12 +68,15 @@ class CheckoutController extends Controller
             }
         }
 
-        $tax = collect($cart)->sum(function($item) {
-            $rate = $item['gst_rate'] ?? 0;
+        $defaultGst = (float) Setting::getVal('gst_rate_default', 18.00);
+        $tax = collect($cart)->sum(function($item) use ($defaultGst) {
+            $rate = $item['gst_rate'] ?? $defaultGst;
             return $item['price'] * $item['quantity'] * ($rate / 100);
         });
         
-        $shipping = $subtotal >= 5000 ? 0.00 : 150.00;
+        $limit = (float) Setting::getVal('shipping_rate_limit', 5000.00);
+        $charge = (float) Setting::getVal('shipping_charge', 150.00);
+        $shipping = $subtotal >= $limit ? 0.00 : $charge;
         $total = $subtotal - $discount + $tax + $shipping + $giftWrapCharge;
 
         return view('checkout', compact('cart', 'subtotal', 'discount', 'tax', 'shipping', 'total', 'customer', 'defaultAddress', 'giftWrapCharge'));
@@ -186,13 +190,13 @@ class CheckoutController extends Controller
         }
 
         // Save shipping address inside Address table if it doesn't exist
-        $addressExists = Address::where('customer_id', $customerId)
+        $address = Address::where('customer_id', $customerId)
             ->where('address_line_1', $request->address)
             ->where('postal_code', $request->pincode)
             ->first();
 
-        if (!$addressExists) {
-            Address::create([
+        if (!$address) {
+            $address = Address::create([
                 'customer_id' => $customerId,
                 'address_line_1' => $request->address,
                 'city' => $request->city,
@@ -202,6 +206,7 @@ class CheckoutController extends Controller
                 'is_default' => Address::where('customer_id', $customerId)->count() === 0
             ]);
         }
+        $addressId = $address->id;
 
         // Discount calculations
         $discount = 0;
@@ -219,20 +224,25 @@ class CheckoutController extends Controller
 
         $giftWrapCharge = session()->get('gift_wrap', false) ? 199.00 : 0.00;
         
-        $tax = collect($cart)->sum(function($item) {
-            $rate = $item['gst_rate'] ?? 0;
+        $defaultGst = (float) Setting::getVal('gst_rate_default', 18.00);
+        $tax = collect($cart)->sum(function($item) use ($defaultGst) {
+            $rate = $item['gst_rate'] ?? $defaultGst;
             return $item['price'] * $item['quantity'] * ($rate / 100);
         });
 
-        $shipping = $subtotal >= 5000 ? 0.00 : 150.00;
+        $limit = (float) Setting::getVal('shipping_rate_limit', 5000.00);
+        $charge = (float) Setting::getVal('shipping_charge', 150.00);
+        $shipping = $subtotal >= $limit ? 0.00 : $charge;
         $total = $subtotal - $discount + $tax + $shipping + $giftWrapCharge;
 
         $orderNumber = 'RS-' . strtoupper(Str::random(10));
 
-        $order = DB::transaction(function () use ($customerId, $orderNumber, $subtotal, $discount, $tax, $shipping, $total, $couponCode, $request, $cart) {
+        $order = DB::transaction(function () use ($customerId, $addressId, $orderNumber, $subtotal, $discount, $tax, $shipping, $total, $couponCode, $request, $cart) {
             $order = Order::create([
                 'order_number' => $orderNumber,
                 'customer_id' => $customerId,
+                'billing_address_id' => $addressId,
+                'shipping_address_id' => $addressId,
                 'status' => 'pending',
                 'payment_status' => 'unpaid',
                 'payment_method' => $request->payment_method === 'cod' ? 'cod' : 'razorpay',

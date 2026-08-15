@@ -8,8 +8,18 @@
         <h4 class="fw-bold mb-0">Order: {{ $order->order_number }}</h4>
         <small class="text-muted">Placed on: {{ $order->created_at->format('d M Y H:i') }}</small>
     </div>
-    <div class="d-flex gap-2">
+    <div class="d-flex gap-2 align-items-center">
         <a href="{{ route('admin.orders.index') }}" class="btn btn-outline-secondary rounded-pill px-4">Back</a>
+        
+        @if(!$order->tracking_number)
+            <form action="{{ route('admin.orders.dispatch-shiprocket', $order->id) }}" method="POST" class="d-inline mb-0">
+                @csrf
+                <button type="submit" class="btn btn-success rounded-pill px-3 fw-bold">
+                    <i class="fas fa-paper-plane me-1 text-white"></i> Send to Shiprocket
+                </button>
+            </form>
+        @endif
+
         <a href="{{ route('admin.orders.invoice', $order->id) }}" target="_blank" class="btn btn-primary rounded-pill px-3">
             <i class="fas fa-print me-1"></i> Invoice
         </a>
@@ -25,6 +35,16 @@
 @if(session('success'))
     <div class="alert alert-success border-0 bg-success bg-opacity-25 text-success rounded-3 mb-4">
         {{ session('success') }}
+    </div>
+@endif
+
+@if($errors->any())
+    <div class="alert alert-danger border-0 bg-danger bg-opacity-25 text-white rounded-3 mb-4">
+        <ul class="mb-0 ps-3">
+            @foreach($errors->all() as $error)
+                <li>{{ $error }}</li>
+            @endforeach
+        </ul>
     </div>
 @endif
 
@@ -239,7 +259,7 @@
                     <span>₹{{ number_format($order->shipping_charge, 2) }}</span>
                 </div>
                 <div class="d-flex justify-content-between mb-2">
-                    <span class="text-white-50">Taxes (GST 18%)</span>
+                    <span class="text-white-50">Taxes (GST {{ \App\Models\Setting::getVal('gst_rate_default', '18') }}%)</span>
                     <span>₹{{ number_format($order->tax, 2) }}</span>
                 </div>
                 <hr>

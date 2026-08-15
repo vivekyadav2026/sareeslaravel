@@ -137,11 +137,37 @@ class AuthController extends Controller
 
     public function redirectToGoogle()
     {
+        $clientId = \App\Models\Setting::getVal('google_client_id', env('GOOGLE_CLIENT_ID'));
+        $clientSecret = \App\Models\Setting::getVal('google_client_secret', env('GOOGLE_CLIENT_SECRET'));
+        $redirectUrl = \App\Models\Setting::getVal('google_redirect_uri', env('GOOGLE_REDIRECT_URI', url('/customer/auth/google/callback')));
+
+        if (empty($clientId) || empty($clientSecret)) {
+            return redirect()->route('customer.login')->withErrors([
+                'email' => 'Google Login is not configured yet. Please enter Client ID and Client Secret in Admin Store Settings.',
+            ]);
+        }
+
+        config([
+            'services.google.client_id' => $clientId,
+            'services.google.client_secret' => $clientSecret,
+            'services.google.redirect' => $redirectUrl,
+        ]);
+
         return Socialite::driver('google')->redirect();
     }
 
     public function handleGoogleCallback(Request $request)
     {
+        $clientId = \App\Models\Setting::getVal('google_client_id', env('GOOGLE_CLIENT_ID'));
+        $clientSecret = \App\Models\Setting::getVal('google_client_secret', env('GOOGLE_CLIENT_SECRET'));
+        $redirectUrl = \App\Models\Setting::getVal('google_redirect_uri', env('GOOGLE_REDIRECT_URI', url('/customer/auth/google/callback')));
+
+        config([
+            'services.google.client_id' => $clientId,
+            'services.google.client_secret' => $clientSecret,
+            'services.google.redirect' => $redirectUrl,
+        ]);
+
         try {
             $googleUser = Socialite::driver('google')->user();
         } catch (\Exception $e) {

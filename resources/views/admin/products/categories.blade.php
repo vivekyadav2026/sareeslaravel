@@ -33,7 +33,6 @@
                             <tr>
                                 <th>Name</th>
                                 <th>Slug</th>
-                                <th>Parent Category</th>
                                 <th>Description</th>
                                 <th class="text-center">Products</th>
                                 <th class="text-end">Actions</th>
@@ -43,16 +42,19 @@
                             @forelse($categories as $category)
                                 <tr>
                                     <td class="fw-semibold">
-                                        @if($category->parent_id)
-                                            <span class="text-muted ms-3">—</span> 
-                                        @endif
                                         {{ $category->name }}
                                     </td>
                                     <td class="font-monospace text-warning">{{ $category->slug }}</td>
-                                    <td>{{ $category->parent->name ?? 'None (Root)' }}</td>
                                     <td>{{ $category->description ?: 'N/A' }}</td>
                                     <td class="text-center"><span class="badge bg-secondary rounded-pill">{{ $category->products_count }}</span></td>
                                     <td class="text-end">
+                                        <button type="button" 
+                                            class="btn btn-sm btn-light rounded-circle me-1 edit-category-btn"
+                                            data-id="{{ $category->id }}"
+                                            data-name="{{ $category->name }}"
+                                            data-desc="{{ $category->description }}">
+                                            <i class="fas fa-edit text-warning"></i>
+                                        </button>
                                         <form action="{{ route('admin.categories.destroy', $category->id) }}" method="POST" class="d-inline delete-form">
                                             @csrf
                                             @method('DELETE')
@@ -89,16 +91,6 @@
                     </div>
 
                     <div class="mb-3">
-                        <label for="parent_id" class="form-label fw-semibold">Parent Category</label>
-                        <select name="parent_id" id="parent_id" class="form-select">
-                            <option value="">None (Root Category)</option>
-                            @foreach($categories->whereNull('parent_id') as $rootCat)
-                                <option value="{{ $rootCat->id }}">{{ $rootCat->name }}</option>
-                            @endforeach
-                        </select>
-                    </div>
-
-                    <div class="mb-3">
                         <label for="description" class="form-label fw-semibold">Description</label>
                         <textarea class="form-control" id="description" name="description" rows="3" placeholder="Category summary..."></textarea>
                     </div>
@@ -108,6 +100,37 @@
                     </div>
                 </form>
             </div>
+        </div>
+    </div>
+</div>
+
+<!-- Edit Category Modal -->
+<div class="modal fade" id="editCategoryModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content bg-dark text-white border border-warning border-opacity-25 shadow-lg">
+            <div class="modal-header border-bottom border-secondary">
+                <h5 class="modal-title text-gold fw-bold"><i class="fas fa-edit me-2"></i>Edit Category</h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <form id="editCategoryForm" method="POST">
+                @csrf
+                @method('PUT')
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <label for="edit_name" class="form-label fw-semibold">Category Name</label>
+                        <input type="text" class="form-control bg-secondary text-white border-0" id="edit_name" name="name" required>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="edit_description" class="form-label fw-semibold">Description</label>
+                        <textarea class="form-control bg-secondary text-white border-0" id="edit_description" name="description" rows="3"></textarea>
+                    </div>
+                </div>
+                <div class="modal-footer border-top border-secondary">
+                    <button type="button" class="btn btn-outline-secondary text-white" data-bs-dismiss="modal">Cancel</button>
+                    <button type="submit" class="btn btn-warning rounded-pill px-4">Save Changes</button>
+                </div>
+            </form>
         </div>
     </div>
 </div>
@@ -131,6 +154,24 @@
                     this.submit();
                 }
             });
+        });
+
+        $('.edit-category-btn').click(function() {
+            var id = $(this).data('id');
+            var name = $(this).data('name');
+            var desc = $(this).data('desc');
+
+            // Set Form action url dynamically
+            var actionUrl = "{{ route('admin.categories.update', ':id') }}".replace(':id', id);
+            $('#editCategoryForm').attr('action', actionUrl);
+
+            // Populate form values
+            $('#edit_name').val(name);
+            $('#edit_description').val(desc);
+
+            // Open Modal
+            var editModal = new bootstrap.Modal(document.getElementById('editCategoryModal'));
+            editModal.show();
         });
     });
 </script>

@@ -360,14 +360,14 @@
 
                 <!-- System & Access -->
                 <li class="sidebar-header">System Access</li>
-                <li class="nav-item">
-                    <a class="nav-link {{ request()->routeIs('admin.roles.*') ? 'active' : '' }}" href="{{ route('admin.roles.index') }}" title="Roles & Permissions">
-                        <i class="fas fa-shield-halved"></i> <span class="nav-link-text">Roles & Permissions</span>
+                 <li class="nav-item">
+                    <a class="nav-link {{ request()->routeIs('admin.users.*') ? 'active' : '' }}" href="{{ route('admin.users.index') }}" title="Admin Users">
+                        <i class="fas fa-user-gear"></i> <span class="nav-link-text">Admin Users</span>
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link {{ request()->routeIs('admin.users.*') ? 'active' : '' }}" href="{{ route('admin.users.index') }}" title="Admin Users">
-                        <i class="fas fa-user-gear"></i> <span class="nav-link-text">Admin Users</span>
+                    <a class="nav-link {{ request()->routeIs('admin.settings.*') ? 'active' : '' }}" href="{{ route('admin.settings.index') }}" title="Store Settings">
+                        <i class="fas fa-sliders"></i> <span class="nav-link-text">Store Settings</span>
                     </a>
                 </li>
             </ul>

@@ -1,8 +1,8 @@
 @extends('layouts.app')
 
-@section('title', $product->name . ' — RANISAHAB Luxury Collection')
-@section('meta_description', strip_tags(str_replace('"', "'", $product->description ?: 'Exquisite royal ' . $product->name . ' handcrafted by heritage weavers.')))
-@section('meta_keywords', $product->name . ', ' . $product->category->name . ', ranisahab collection, royal apparel, wedding wear')
+@section('title', $product->meta_title ?: ($product->name . ' — RANISAHAB Luxury Collection'))
+@section('meta_description', $product->meta_description ?: strip_tags(str_replace('"', "'", $product->description ?: 'Exquisite royal ' . $product->name . ' handcrafted by heritage weavers.')))
+@section('meta_keywords', $product->meta_keywords ?: ($product->name . ', ' . $product->category->name . ', ranisahab collection, royal apparel, wedding wear'))
 @section('meta_og_image', $product->images && $product->images->isNotEmpty() ? asset($product->images->first()->file_path) : asset('images/logo.png'))
 
 @section('content')
@@ -190,6 +190,84 @@
           <div id="collapseTwo" class="accordion-collapse collapse" data-bs-parent="#detailsAccordion">
             <div class="accordion-body text-white opacity-90 small" style="color: #e5cf9b !important; line-height: 1.7;">
               Handled via <strong>Shiprocket logistics</strong>. We provide free express delivery across India within 3-5 business days. Return requested within 7 days is supported with zero reverse logistics pickup fees.
+            </div>
+          </div>
+        </div>
+
+        <div class="accordion-item bg-transparent border-secondary border-opacity-25 text-white">
+          <h2 class="accordion-header">
+            <button class="accordion-button collapsed bg-transparent text-gold border-0 fw-bold" style="color: #f3dfb2 !important;" type="button" data-bs-toggle="collapse" data-bs-target="#collapseThree">
+              ❖ PRODUCT Q&amp;A ({{ $product->questions->count() }})
+            </button>
+          </h2>
+          <div id="collapseThree" class="accordion-collapse collapse" data-bs-parent="#detailsAccordion">
+            <div class="accordion-body text-white opacity-90 small" style="color: #e5cf9b !important; line-height: 1.7;">
+              
+              <!-- Session Success / Errors -->
+              @if (session('success'))
+                  <div class="alert alert-success alert-dismissible fade show bg-transparent border-success text-success mb-3 p-2 small" role="alert">
+                      <i class="fa-solid fa-circle-check me-2"></i> {{ session('success') }}
+                      <button type="button" class="btn-close btn-close-white" data-bs-dismiss="alert" aria-label="Close" style="padding: 0.5rem 0.5rem;"></button>
+                  </div>
+              @endif
+
+              @if ($errors->any())
+                  <div class="alert alert-danger alert-dismissible fade show bg-transparent border-danger text-danger mb-3 p-2 small" role="alert">
+                      <ul class="mb-0 list-unstyled">
+                          @foreach ($errors->all() as $error)
+                              <li><i class="fa-solid fa-triangle-exclamation me-2"></i> {{ $error }}</li>
+                          @endforeach
+                      </ul>
+                      <button type="button" class="btn-close btn-close-white" data-bs-dismiss="alert" aria-label="Close" style="padding: 0.5rem 0.5rem;"></button>
+                  </div>
+              @endif
+
+              <!-- Questions List -->
+              <div class="d-flex flex-column gap-3 mb-4">
+                  @forelse($product->questions as $q)
+                      <div class="p-3 rounded-3" style="background: rgba(255, 255, 255, 0.02); border: 1px solid rgba(201, 162, 75, 0.15);">
+                          <div class="d-flex justify-content-between align-items-center mb-1">
+                              <span class="text-gold fw-bold" style="font-size: 0.8rem;"><i class="fa-solid fa-circle-question me-1 text-gold"></i> Q: {{ $q->question_text }}</span>
+                              <span class="text-white-50" style="font-size: 0.65rem;">{{ $q->created_at ? $q->created_at->format('M d, Y') : 'N/A' }}</span>
+                          </div>
+                          <div class="text-muted ps-3" style="font-size: 0.78rem;">
+                              Asked by <strong class="text-ivory">{{ $q->customer->first_name ?? 'Valued Customer' }}</strong>
+                          </div>
+                          @if($q->answer_text)
+                              <div class="mt-2 pt-2 border-top border-secondary border-opacity-15 ps-3" style="font-size: 0.78rem;">
+                                  <span class="text-gold-light fw-semibold d-block mb-1"><i class="fa-solid fa-reply me-1 text-gold-light"></i> Answer from Designer:</span>
+                                  <p class="mb-0 text-ivory opacity-85" style="line-height: 1.5;">{{ $q->answer_text }}</p>
+                              </div>
+                          @else
+                              <div class="mt-2 pt-2 border-top border-secondary border-opacity-15 ps-3 text-muted" style="font-size: 0.75rem; font-style: italic;">
+                                  Answer is pending from design atelier.
+                              </div>
+                          @endif
+                      </div>
+                  @empty
+                      <p class="text-muted text-center py-2 mb-0" style="font-size: 0.78rem;">No questions have been asked about this product yet.</p>
+                  @endforelse
+              </div>
+
+              <!-- Ask a Question Form -->
+              <div class="pt-3 border-top border-secondary border-opacity-15">
+                  <h6 class="text-gold font-display text-uppercase mb-2" style="font-size: 0.8rem; letter-spacing: 0.08em;">Have a question about this couture item?</h6>
+                  @auth
+                      <form action="{{ route('product.question.submit', $product->id) }}" method="POST">
+                          @csrf
+                          <div class="mb-3">
+                              <textarea name="question_text" class="form-control bg-dark border-secondary text-white small" rows="2" placeholder="Ask about fabric weight, customizations, measurements adjustment options..." required style="font-size: 0.78rem;"></textarea>
+                          </div>
+                          <button type="submit" class="btn btn-sm btn-gold text-dark fw-bold font-label px-4" style="background: linear-gradient(90deg, #c5a880 0%, #b2946c 100%); border: none;">SUBMIT QUESTION</button>
+                      </form>
+                  @else
+                      <div class="p-3 text-center rounded-3" style="background: rgba(201, 162, 75, 0.05); border: 1px solid rgba(201, 162, 75, 0.25);">
+                          <p class="text-gold-light mb-2" style="font-size: 0.78rem;">You must be logged in to submit a question to our designers.</p>
+                          <a href="{{ route('customer.login') }}" class="btn btn-sm btn-outline-gold fw-bold px-4" style="font-size: 0.75rem;">LOG IN TO ASK <i class="fa-solid fa-right-to-bracket ms-1"></i></a>
+                      </div>
+                  @endauth
+              </div>
+
             </div>
           </div>
         </div>

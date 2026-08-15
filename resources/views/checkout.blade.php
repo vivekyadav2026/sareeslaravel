@@ -303,6 +303,20 @@
           <a href="{{ route('customer.login') }}" class="btn btn-gold py-3 fw-bold font-label text-dark" style="letter-spacing: 0.1em; background: linear-gradient(90deg, #c5a880 0%, #b2946c 100%); border: none;">
             <i class="fa-solid fa-right-to-bracket me-2"></i> LOGIN WITH EMAIL
           </a>
+          
+          <a href="{{ route('customer.google.redirect') }}" class="d-flex align-items-center justify-content-center gap-2 w-100 py-3 rounded-2 text-decoration-none"
+             style="background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.15); color: #e2d9c8; font-size: 0.88rem; letter-spacing: 0.08em; text-transform: uppercase; font-weight: 600; transition: background 0.2s, border-color 0.2s;"
+             onmouseover="this.style.background='rgba(255,255,255,0.1)'; this.style.borderColor='rgba(203,166,110,0.5)'"
+             onmouseout="this.style.background='rgba(255,255,255,0.05)'; this.style.borderColor='rgba(255,255,255,0.15)'">
+             <svg width="20" height="20" viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg" class="me-1">
+                 <path fill="#EA4335" d="M24 9.5c3.2 0 5.9 1.1 8.1 2.9l6-6C34.5 3.1 29.6 1 24 1 14.9 1 7.1 6.6 3.6 14.5l7 5.4C12.4 13.7 17.7 9.5 24 9.5z"/>
+                 <path fill="#4285F4" d="M46.5 24.5c0-1.6-.1-3.1-.4-4.5H24v8.5h12.7c-.5 2.8-2.2 5.2-4.7 6.8l7.3 5.7C43.6 37 46.5 31.2 46.5 24.5z"/>
+                 <path fill="#FBBC05" d="M10.6 28.1A14.6 14.6 0 0 1 9.5 24c0-1.4.2-2.8.6-4.1l-7-5.4A23.9 23.9 0 0 0 0 24c0 3.9.9 7.5 2.6 10.8l7.3-5.7c-.2-.6-.3-1.3-.3-1z"/>
+                 <path fill="#34A853" d="M24 47c5.6 0 10.3-1.8 13.7-5l-7.3-5.7c-1.9 1.3-4.3 2.1-6.4 2.1-6.3 0-11.6-4.2-13.5-9.9l-7.3 5.7C7.1 41.4 14.9 47 24 47z"/>
+             </svg>
+             Continue with Google
+          </a>
+
           <a href="{{ route('customer.register') }}" class="btn btn-outline-gold py-3 fw-bold font-label" style="letter-spacing: 0.1em; border-color: #c9a24b; color: #f3dfb2;">
             <i class="fa-solid fa-user-plus me-2"></i> CREATE NEW ACCOUNT
           </a>

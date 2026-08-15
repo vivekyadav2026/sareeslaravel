@@ -377,6 +377,28 @@ class ProductController extends Controller
         return back()->with('success', 'Category created successfully.');
     }
 
+    public function categoriesUpdate(Request $request, Category $category)
+    {
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'parent_id' => 'nullable|exists:categories,id',
+            'description' => 'nullable|string',
+        ]);
+
+        if ($request->parent_id == $category->id) {
+            return back()->withErrors(['parent' => 'A category cannot be its own parent.']);
+        }
+
+        $category->update([
+            'name' => $request->name,
+            'slug' => \Illuminate\Support\Str::slug($request->name),
+            'parent_id' => $request->parent_id,
+            'description' => $request->description,
+        ]);
+
+        return back()->with('success', 'Category updated successfully.');
+    }
+
     public function categoriesDestroy(Category $category)
     {
         if ($category->products()->count() > 0) {

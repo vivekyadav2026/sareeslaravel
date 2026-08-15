@@ -162,7 +162,13 @@ class CatalogController extends Controller
 
     public function showProduct($slug)
     {
-        $product = Product::where('slug', $slug)->where('is_active', true)->with(['images', 'category', 'variants'])->firstOrFail();
+        $product = Product::where('slug', $slug)
+            ->where('is_active', true)
+            ->with(['images', 'category', 'variants', 'questions' => function($q) {
+                $q->where('is_approved', true)->with('customer')->orderBy('created_at', 'desc');
+            }])
+            ->firstOrFail();
+
         $relatedProducts = Product::where('category_id', $product->category_id)
             ->where('id', '!=', $product->id)
             ->where('is_active', true)
@@ -171,6 +177,38 @@ class CatalogController extends Controller
             ->get();
 
         return view('product-details', compact('product', 'relatedProducts'));
+    }
+
+    public function submitQuestion(Request $request, $id)
+    {
+        $request->validate([
+            'question_text' => 'required|string|max:1000',
+        ]);
+
+        if (!Auth::check()) {
+            return back()->withErrors(['question_text' => 'Please log in to ask a question.']);
+        }
+
+        $customer = Auth::user()->customer;
+        if (!$customer) {
+            $names = explode(' ', Auth::user()->name, 2);
+            $customer = \App\Models\Customer::create([
+                'user_id' => Auth::user()->id,
+                'first_name' => $names[0] ?? 'User',
+                'last_name' => $names[1] ?? 'Customer',
+                'email' => Auth::user()->email,
+                'status' => 'active'
+            ]);
+        }
+
+        \App\Models\ProductQuestion::create([
+            'product_id' => $id,
+            'customer_id' => $customer->id,
+            'question_text' => $request->question_text,
+            'is_approved' => false, // Awaiting admin approval
+        ]);
+
+        return back()->with('success', 'Your question has been submitted successfully! It will be displayed once approved.');
     }
 
     public function customLehenga()
