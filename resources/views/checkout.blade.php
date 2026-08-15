@@ -92,14 +92,46 @@
           <div class="checkout-card-box p-4">
             <div class="d-flex justify-content-between align-items-center mb-4 border-bottom pb-2">
               <h5 class="font-display text-gold mb-0"><i class="fa-solid fa-location-dot me-2"></i>2. DELIVERY ADDRESS</h5>
-              <button type="button" onclick="detectLocation()" class="btn btn-sm btn-outline-gold px-3 py-1" style="font-size:0.7rem;">
-                <i class="fa-solid fa-location-crosshairs me-1 text-gold"></i> AUTO-DETECT
-              </button>
             </div>
             
             <div id="locationStatus" class="alert alert-warning py-2 px-3 small d-none" style="background: rgba(201,162,75,0.05); border: 1px solid rgba(201,162,75,0.25);"></div>
 
             <form id="addressForm" class="row g-3" onsubmit="event.preventDefault(); goToStep(3);">
+              @php
+                $googleMapsApiKey = \App\Models\Setting::getVal('google_maps_api_key', env('GOOGLE_MAPS_API_KEY'));
+              @endphp
+
+              @if($googleMapsApiKey)
+                <div class="col-12 mb-3">
+                  <label class="small text-gold-light fw-semibold mb-1"><i class="fa-solid fa-magnifying-glass me-1 text-gold"></i> Search &amp; Auto-Fill Address (via Google Maps)</label>
+                  <div class="input-group">
+                    <span class="input-group-text bg-secondary text-white border-0"><i class="fa-solid fa-search text-gold"></i></span>
+                    <input type="text" id="ship_search_autocomplete" class="form-control form-control-luxury" placeholder="Start typing your home address, building, colony, or area...">
+                  </div>
+                  <small class="text-muted" style="font-size:0.75rem;">Type your address and select from the dropdown to automatically fill in all fields.</small>
+                </div>
+                
+                <div class="col-12 text-center my-2 position-relative d-flex align-items-center justify-content-center">
+                  <hr class="w-100 border-secondary opacity-15">
+                  <span class="position-absolute px-3 bg-dark text-muted fw-bold" style="font-size: 0.68rem; letter-spacing: 0.15em; background-color: #0c0a08 !important;">OR</span>
+                </div>
+              @endif
+
+              <!-- Premium GPS Auto-Detect Location Card -->
+              <div class="col-12 mb-3">
+                <div onclick="detectLocation()" class="detect-location-card d-flex align-items-center justify-content-between p-3" style="cursor: pointer; background: rgba(197, 168, 128, 0.04); border: 1px dashed rgba(197, 168, 128, 0.25); border-radius: 8px; transition: all 0.3s ease;">
+                  <div class="d-flex align-items-center gap-3">
+                    <div class="detect-icon-box d-flex align-items-center justify-content-center" style="width: 40px; height: 40px; background: rgba(197, 168, 128, 0.1); border-radius: 50%; color: #c5a880; font-size: 1.1rem; transition: all 0.3s ease;">
+                      <i class="fa-solid fa-location-crosshairs"></i>
+                    </div>
+                    <div>
+                      <h6 class="mb-0 text-gold-light fw-bold" style="font-size: 0.88rem; letter-spacing: 0.05em; transition: color 0.3s ease;">USE CURRENT LOCATION</h6>
+                      <p class="mb-0 text-muted" style="font-size: 0.72rem;">Autodetects city, state, &amp; pincode via browser GPS</p>
+                    </div>
+                  </div>
+                  <i class="fa-solid fa-chevron-right text-gold opacity-50" style="transition: transform 0.3s ease;"></i>
+                </div>
+              </div>
               <div class="col-md-6">
                 <label class="small text-gold-light fw-semibold mb-1">Full Name <span class="text-danger">*</span></label>
                 <input type="text" id="ship_name" class="form-control form-control-luxury" required placeholder="Enter full name" value="{{ $customer ? ($customer->first_name . ' ' . $customer->last_name) : '' }}">
@@ -492,7 +524,40 @@
   .btn-checkout-action:hover {
       background: linear-gradient(90deg, #dcc29b 0%, #c5a880 100%) !important;
       transform: translateY(-1px);
-      box-shadow: 0 8px 20px rgba(197, 168, 128, 0.3) !important;
+  }
+  
+  /* Premium Detect Location Card Styles */
+  .detect-location-card {
+      transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1) !important;
+  }
+  .detect-location-card:hover {
+      background: rgba(197, 168, 128, 0.08) !important;
+      border: 1px solid rgba(197, 168, 128, 0.5) !important;
+      box-shadow: 0 4px 15px rgba(197, 168, 128, 0.1) !important;
+  }
+  .detect-location-card:hover .detect-icon-box {
+      background: rgba(197, 168, 128, 0.2) !important;
+      color: #ffffff !important;
+      transform: scale(1.05);
+  }
+  .detect-location-card:hover .text-gold-light {
+      color: #ffffff !important;
+  }
+  .detect-location-card:hover .fa-chevron-right {
+      transform: translateX(4px);
+      opacity: 1 !important;
+  }
+
+  @media (max-width: 575.98px) {
+      /* Make checkout step navigation buttons more compact on mobile */
+      .bp-page-wrap .btn-checkout-action,
+      .bp-page-wrap .btn-outline-secondary.label-title,
+      .bp-page-wrap #placeOrderBtn {
+          padding-top: 0.65rem !important;
+          padding-bottom: 0.65rem !important;
+          font-size: 0.78rem !important;
+          letter-spacing: 0.05em !important;
+      }
   }
 </style>
 @endpush
@@ -817,6 +882,8 @@ function submitSecureOrder() {
 // ── Detect Location via Browser GPS + OSM Nominatim ──────────────
 function detectLocation() {
     const statusEl = document.getElementById('locationStatus');
+    const detectIcon = document.querySelector('.detect-icon-box i');
+    const detectCard = document.querySelector('.detect-location-card');
 
     if (!navigator.geolocation) {
         statusEl.className = 'alert alert-danger py-2 px-3 small';
@@ -829,8 +896,24 @@ function detectLocation() {
     statusEl.innerHTML = '<i class="fa-solid fa-spinner fa-spin me-2"></i>Accessing your location...';
     statusEl.classList.remove('d-none');
 
+    // Add loading animations to the card
+    if (detectIcon) {
+        detectIcon.className = 'fa-solid fa-location-crosshairs fa-spin text-gold';
+    }
+    if (detectCard) {
+        detectCard.style.pointerEvents = 'none';
+        detectCard.style.opacity = '0.7';
+    }
+
     navigator.geolocation.getCurrentPosition(
         function(position) {
+            // Restore icon and card status
+            if (detectIcon) detectIcon.className = 'fa-solid fa-location-crosshairs';
+            if (detectCard) {
+                detectCard.style.pointerEvents = 'auto';
+                detectCard.style.opacity = '1';
+            }
+
             const lat = position.coords.latitude;
             const lon = position.coords.longitude;
 
@@ -874,6 +957,12 @@ function detectLocation() {
             });
         },
         function(err) {
+            // Restore icon and card status
+            if (detectIcon) detectIcon.className = 'fa-solid fa-location-crosshairs';
+            if (detectCard) {
+                detectCard.style.pointerEvents = 'auto';
+                detectCard.style.opacity = '1';
+            }
             statusEl.className = 'alert alert-danger py-2 px-3 small';
             statusEl.textContent = 'Location access denied or timed out. Please enter address manually.';
         }
@@ -1023,4 +1112,91 @@ function removeCoupon() {
     });
 }
 </script>
+
+@if($googleMapsApiKey)
+<script src="https://maps.googleapis.com/maps/api/js?key={{ $googleMapsApiKey }}&libraries=places&callback=initAutocomplete" async defer></script>
+<script>
+function initAutocomplete() {
+    const autocompleteInput = document.getElementById('ship_search_autocomplete');
+    if (!autocompleteInput) return;
+
+    const autocomplete = new google.maps.places.Autocomplete(autocompleteInput, {
+        types: ['address'],
+        componentRestrictions: { country: 'in' }
+    });
+
+    google.maps.event.addDomListener(autocompleteInput, 'keydown', function(e) {
+        if (e.key === 'Enter') {
+            e.preventDefault();
+        }
+    });
+
+    autocomplete.addListener('place_changed', function() {
+        const place = autocomplete.getPlace();
+        if (!place.address_components) return;
+
+        let streetNumber = '';
+        let route = '';
+        let sublocality = '';
+        let locality = '';
+        let city = '';
+        let district = '';
+        let state = '';
+        let pincode = '';
+
+        for (const component of place.address_components) {
+            const componentType = component.types[0];
+
+            switch (componentType) {
+                case 'street_number':
+                    streetNumber = component.long_name;
+                    break;
+                case 'route':
+                    route = component.long_name;
+                    break;
+                case 'sublocality_level_1':
+                case 'sublocality_level_2':
+                case 'sublocality':
+                    if (sublocality) sublocality += ', ';
+                    sublocality += component.long_name;
+                    break;
+                case 'locality':
+                    locality = component.long_name;
+                    break;
+                case 'administrative_area_level_2':
+                    district = component.long_name;
+                    break;
+                case 'administrative_area_level_1':
+                    state = component.long_name;
+                    break;
+                case 'postal_code':
+                    pincode = component.long_name;
+                    break;
+            }
+        }
+
+        city = locality || sublocality || '';
+        if (!district) district = city;
+
+        const streetAddress = [route, sublocality].filter(Boolean).join(', ');
+
+        if (streetNumber) {
+            document.getElementById('ship_house').value = streetNumber;
+        }
+        document.getElementById('ship_street').value = streetAddress;
+        document.getElementById('ship_city').value = city;
+        document.getElementById('ship_district').value = district;
+        document.getElementById('ship_state').value = state;
+        document.getElementById('ship_pincode').value = pincode;
+
+        const fields = ['ship_house', 'ship_street', 'ship_city', 'ship_district', 'ship_state', 'ship_pincode'];
+        fields.forEach(f => {
+            localStorage.setItem('rs_checkout_' + f, document.getElementById(f).value);
+        });
+
+        checkPincodeServiceability();
+    });
+}
+</script>
+@endif
 @endpush

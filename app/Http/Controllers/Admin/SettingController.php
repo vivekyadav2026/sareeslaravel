@@ -26,6 +26,7 @@ class SettingController extends Controller
             'google_client_id'    => 'nullable|string',
             'google_client_secret'=> 'nullable|string',
             'google_redirect_uri' => 'nullable|url',
+            'google_maps_api_key' => 'nullable|string',
         ];
 
         $request->validate($rules);
@@ -39,6 +40,7 @@ class SettingController extends Controller
         Setting::setVal('google_client_id', $request->google_client_id);
         Setting::setVal('google_client_secret', $request->google_client_secret);
         Setting::setVal('google_redirect_uri', $request->google_redirect_uri);
+        Setting::setVal('google_maps_api_key', $request->google_maps_api_key);
 
         // Log admin activity
         AdminActivityLog::create([
@@ -50,6 +52,7 @@ class SettingController extends Controller
                 'gst_rate_default' => $request->gst_rate_default,
                 'shiprocket_email' => $request->shiprocket_email,
                 'google_client_id' => $request->google_client_id ? 'Configured' : null,
+                'google_maps_api_key' => $request->google_maps_api_key ? 'Configured' : null,
             ]),
             'ip_address' => $request->ip()
         ]);

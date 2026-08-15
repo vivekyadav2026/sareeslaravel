@@ -169,6 +169,29 @@
                     </div>
                 </div>
 
+                <!-- Google Maps Autocomplete Integration Card -->
+                <div class="card shadow-sm mb-4">
+                    <div class="card-header border-bottom border-secondary d-flex align-items-center">
+                        <h5 class="card-title text-gold mb-0"><i class="fas fa-map-location-dot me-2 text-gold"></i>Google Maps Integration</h5>
+                    </div>
+                    <div class="card-body">
+                        
+                        <!-- Google Maps API Key -->
+                        <div class="mb-4">
+                            <label for="google_maps_api_key" class="form-label text-gold-light fw-bold">Google Maps API Key</label>
+                            <div class="input-group">
+                                <span class="input-group-text bg-secondary text-white border-0"><i class="fas fa-key"></i></span>
+                                <input type="password" name="google_maps_api_key" id="google_maps_api_key" 
+                                    class="form-control bg-dark text-white border-secondary" 
+                                    value="{{ old('google_maps_api_key', \App\Models\Setting::getVal('google_maps_api_key')) }}" 
+                                    placeholder="••••••••">
+                            </div>
+                            <small class="text-muted">Enter your Google Maps API Key. Make sure to enable the <strong>Places API</strong> and <strong>Maps JavaScript API</strong> in your Google Cloud Console.</small>
+                        </div>
+
+                    </div>
+                </div>
+
                 <!-- Unified Form Footer Actions -->
                 <div class="card bg-transparent border-0 d-flex flex-row justify-content-end gap-2 mb-4 p-0">
                     <button type="reset" class="btn btn-outline-secondary text-white rounded-pill px-4">Reset Fields</button>
