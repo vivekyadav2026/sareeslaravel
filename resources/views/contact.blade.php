@@ -31,6 +31,12 @@
     <!-- Left: Info + Boutiques -->
     <div class="contact-dark-left">
 
+@php
+  $storePhone = \App\Models\Setting::getVal('store_phone', '+91 98765 43210');
+  $storeEmail = \App\Models\Setting::getVal('store_email', 'support@ranisahab.com');
+  $storeWhatsapp = \App\Models\Setting::getVal('store_whatsapp', '919876543210');
+  $businessHours = \App\Models\Setting::getVal('business_hours', 'Mon - Sat: 10:00 AM - 8:00 PM IST');
+@endphp
       <!-- Quick Contact -->
       <div class="contact-dark-card">
         <h3 class="contact-dark-card-title"><i class="fa-solid fa-crown me-2 text-gold"></i>LUXURY CONCIERGE</h3>
@@ -38,29 +44,29 @@
           <div class="contact-info-icon"><i class="fa-brands fa-whatsapp"></i></div>
           <div>
             <p class="contact-info-label">WhatsApp Support</p>
-            <p class="contact-info-value">+91 12345 67890</p>
-            <p class="contact-info-sub">10 AM – 8 PM, All Days</p>
+            <p class="contact-info-value">+{{ preg_replace('/[^0-9]/', '', $storeWhatsapp) }}</p>
+            <p class="contact-info-sub">{{ $businessHours }}</p>
           </div>
         </div>
         <div class="contact-info-item">
           <div class="contact-info-icon"><i class="fa-solid fa-phone"></i></div>
           <div>
             <p class="contact-info-label">Phone</p>
-            <p class="contact-info-value">+91 12345 67890</p>
+            <p class="contact-info-value">{{ $storePhone }}</p>
           </div>
         </div>
         <div class="contact-info-item">
           <div class="contact-info-icon"><i class="fa-solid fa-envelope"></i></div>
           <div>
             <p class="contact-info-label">Email</p>
-            <p class="contact-info-value">support@ranisahab.com</p>
+            <p class="contact-info-value">{{ $storeEmail }}</p>
           </div>
         </div>
         <div class="contact-info-item">
           <div class="contact-info-icon"><i class="fa-solid fa-truck-fast"></i></div>
           <div>
             <p class="contact-info-label">Shipping</p>
-            <p class="contact-info-value">Free Pan-India</p>
+            <p class="contact-info-value">Free Express Above ₹5,000</p>
             <p class="contact-info-sub">25,000+ Pincodes Covered</p>
           </div>
         </div>

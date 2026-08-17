@@ -93,15 +93,25 @@ class BoutiqueProductsSeeder extends Seeder
                 ]
             );
 
-            // Seed Image
-            ProductImage::updateOrCreate(
-                ['product_id' => $product->id, 'file_path' => $item['image']],
-                [
-                    'type' => 'image',
-                    'is_primary' => true,
-                    'sort_order' => 0
-                ]
-            );
+            // Seed Gallery Images (Front, Back, Close-up, Full Look, Detail photos)
+            $galleryImages = [
+                ['path' => $item['image'], 'sort' => 0, 'primary' => true, 'label' => 'Front Look'],
+                ['path' => 'images/hero_bride.png', 'sort' => 1, 'primary' => false, 'label' => 'Back Look'],
+                ['path' => 'images/fabric_detail.png', 'sort' => 2, 'primary' => false, 'label' => 'Close-up Detail'],
+                ['path' => 'images/promise_bride.png', 'sort' => 3, 'primary' => false, 'label' => 'Full Look'],
+                ['path' => 'images/product_main.png', 'sort' => 4, 'primary' => false, 'label' => 'Detail Zoom'],
+            ];
+
+            foreach($galleryImages as $gImg) {
+                ProductImage::updateOrCreate(
+                    ['product_id' => $product->id, 'file_path' => $gImg['path']],
+                    [
+                        'type' => 'image',
+                        'is_primary' => $gImg['primary'],
+                        'sort_order' => $gImg['sort']
+                    ]
+                );
+            }
 
             // Seed Variant
             ProductVariant::updateOrCreate(

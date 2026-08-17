@@ -72,9 +72,12 @@
       <a href="{{ route('home') }}" class="btn btn-outline-gold flex-fill text-center py-3 font-label fw-bold" style="font-size:0.82rem; letter-spacing:0.08em;">CONTINUE SHOPPING</a>
     </div>
 
-    <!-- Luxury Assist Help Desk -->
+    <!-- WhatsApp Order Notification CTA -->
+    @php $storeWhatsapp = \App\Models\Setting::getVal('store_whatsapp', '919876543210'); @endphp
     <div class="text-center">
-      <a href="https://wa.me/911234567890" target="_blank" class="btn btn-whatsapp w-100 py-3 small"><i class="fa-brands fa-whatsapp fs-5 me-2"></i> NEED HELP? CHAT ON WHATSAPP</a>
+      <a href="https://wa.me/{{ preg_replace('/[^0-9]/', '', $storeWhatsapp) }}?text={{ urlencode('Hi RANISAHAB, please send me WhatsApp order updates for Order #' . $order->order_number) }}" target="_blank" class="btn btn-whatsapp w-100 py-3 small font-label fw-bold" style="letter-spacing:0.05em;">
+        <i class="fa-brands fa-whatsapp fs-5 me-2"></i> GET INSTANT WHATSAPP ORDER UPDATES
+      </a>
     </div>
 
   </div>

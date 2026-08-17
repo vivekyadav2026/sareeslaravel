@@ -22,11 +22,13 @@
       </button>
     </div>
     <div class="plp-card-body d-flex flex-column">
+      <small class="text-white-50 d-block font-label mb-1" style="font-size: 0.62rem; letter-spacing: 0.05em; font-weight: 600; color: #d0c0a8 !important;">CODE: {{ $product->sku ?: ('RS-PRD-' . $product->id) }}</small>
       <p class="plp-card-name mb-1"><a href="{{ route('product.show', $product->slug) }}" class="text-white text-decoration-none">{{ $product->name }}</a></p>
       <p class="plp-card-price mb-2">₹{{ number_format($product->price, 0) }}</p>
       <div class="plp-card-footer mt-auto d-flex justify-content-between align-items-center">
-        <span class="plp-rating"><i class="fa-solid fa-star text-gold"></i> {{ $product->average_rating ?? 4.9 }} <span class="plp-rating-count">({{ $product->reviews_count ?? 12 }})</span></span>
-        <button class="plp-cart-btn" onclick="addToBag({{ $product->id }})"><i class="fa-solid fa-bag-shopping"></i></button>
+        {{-- Ratings & Reviews hidden --}}
+        <span class="badge bg-dark border border-warning border-opacity-25 text-gold-light" style="font-size:0.58rem; font-weight:normal;">NEW COLLECTION</span>
+        <button class="plp-cart-btn" onclick="addToBag({{ $product->id }})" title="Add to Shopping Bag"><i class="fa-solid fa-bag-shopping"></i></button>
       </div>
     </div>
   </div>

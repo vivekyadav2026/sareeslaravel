@@ -31,8 +31,40 @@ class CatalogController extends Controller
             $query->where(function($q) use ($request) {
                 foreach ($request->occasions as $occ) {
                     $q->orWhere('description', 'like', '%' . $occ . '%')
-                      ->orWhere('name', 'like', '%' . $occ . '%');
+                      ->orWhere('name', 'like', '%' . $occ . '%')
+                      ->orWhere('occasion', 'like', '%' . $occ . '%');
                 }
+            });
+        }
+
+        if ($request->filled('colors') && is_array($request->colors)) {
+            $query->where(function($q) use ($request) {
+                $q->whereHas('variants', function($qv) use ($request) {
+                    $qv->whereIn('color', $request->colors);
+                });
+                foreach ($request->colors as $col) {
+                    $q->orWhere('name', 'like', '%' . $col . '%')
+                      ->orWhere('description', 'like', '%' . $col . '%');
+                }
+            });
+        }
+
+        if ($request->filled('fabrics') && is_array($request->fabrics)) {
+            $query->where(function($q) use ($request) {
+                $q->whereIn('material', $request->fabrics)
+                  ->orWhereHas('variants', function($qv) use ($request) {
+                      $qv->whereIn('fabric', $request->fabrics);
+                  });
+                foreach ($request->fabrics as $fab) {
+                    $q->orWhere('name', 'like', '%' . $fab . '%')
+                      ->orWhere('description', 'like', '%' . $fab . '%');
+                }
+            });
+        }
+
+        if ($request->filled('sizes') && is_array($request->sizes)) {
+            $query->whereHas('variants', function($q) use ($request) {
+                $q->whereIn('size', $request->sizes);
             });
         }
 
@@ -42,12 +74,14 @@ class CatalogController extends Controller
                 $query->where('price', '<', 5000);
             } elseif ($priceRange === '5000_10000') {
                 $query->whereBetween('price', [5000, 10000]);
+            } elseif ($priceRange === '5000_15000') {
+                $query->whereBetween('price', [5000, 15000]);
             } elseif ($priceRange === '10000_30000') {
                 $query->whereBetween('price', [10000, 30000]);
-            } elseif ($priceRange === 'under_15000') {
-                $query->where('price', '<', 15000);
             } elseif ($priceRange === '15000_30000') {
                 $query->whereBetween('price', [15000, 30000]);
+            } elseif ($priceRange === 'under_15000') {
+                $query->where('price', '<', 15000);
             } elseif ($priceRange === 'under_20000') {
                 $query->where('price', '<', 20000);
             } elseif ($priceRange === '20000_40000') {
@@ -122,7 +156,10 @@ class CatalogController extends Controller
                   ->orWhere('description', 'like', '%' . $searchQuery . '%')
                   ->orWhere('sku', 'like', '%' . $searchQuery . '%')
                   ->orWhere('material', 'like', '%' . $searchQuery . '%')
-                  ->orWhere('occasion', 'like', '%' . $searchQuery . '%');
+                  ->orWhere('occasion', 'like', '%' . $searchQuery . '%')
+                  ->orWhereHas('variants', function($qv) use ($searchQuery) {
+                      $qv->where('sku', 'like', '%' . $searchQuery . '%');
+                  });
             })
             ->with('images');
             

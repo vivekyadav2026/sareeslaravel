@@ -183,17 +183,18 @@
     <div class="row align-items-center g-5">
       <!-- Media Left -->
       <div class="col-lg-5">
-        <div class="promise-media-frame">
+        <div class="promise-media-frame position-relative">
           <img src="{{ asset('images/promise_bride.png') }}" alt="One Design One Bride">
+          <span class="badge bg-gold text-dark font-label position-absolute bottom-0 start-0 m-3 px-3 py-2 text-uppercase" style="letter-spacing: 0.1em; box-shadow: 0 4px 15px rgba(0,0,0,0.5);">COUTURE BRIDAL EXCLUSIVITY</span>
         </div>
       </div>
       <!-- Center Info -->
-      <div class="col-lg-4">
-        <p class="promise-header-eyebrow" style="text-align: center;">OUR EXCLUSIVE PROMISE</p>
-        <h2 class="promise-main-title" style="text-align: center;">ONE DESIGN, ONE BRIDE</h2>
-        <p class="promise-body-text" style="text-align: center;">A custom bridal lehenga designed just for you. Once it's yours, it will never be created again for anyone else. Because you are one of a kind.</p>
+      <div class="col-lg-4 text-center">
+        <p class="promise-header-eyebrow">OUR EXCLUSIVE PROMISE</p>
+        <h2 class="promise-main-title">ONE DESIGN, ONE BRIDE</h2>
+        <p class="promise-body-text">A custom bridal lehenga designed exclusively for you. Once crafted for your wedding day, the master sketch is locked and never recreated for anyone else in the world.</p>
         
-        <div class="promise-icon-grid">
+        <div class="promise-icon-grid mb-4">
           <div>
             <div class="promise-icon-box"><i class="fa-solid fa-star"></i></div>
             <p class="promise-icon-label">100% EXCLUSIVE DESIGN</p>
@@ -206,23 +207,102 @@
             <div class="promise-icon-box"><i class="fa-solid fa-certificate"></i></div>
             <p class="promise-icon-label">DESIGN CERTIFICATE PROVIDED</p>
           </div>
+          {{-- Commented out - only applicable for custom bespoke orders
           <div>
             <div class="promise-icon-box"><i class="fa-solid fa-ban"></i></div>
             <p class="promise-icon-label">NEVER REPEATED EVER AGAIN</p>
           </div>
+          --}}
         </div>
+
+        <button class="btn btn-gold btn-sm px-4 font-label py-2" data-bs-toggle="modal" data-bs-target="#oneBrideProcessModal">
+          <i class="fa-solid fa-wand-magic-sparkles me-2"></i>HOW IT WORKS (PROCESS)
+        </button>
       </div>
       <!-- Right Certificate Card Frame -->
       <div class="col-lg-3">
-        <div class="certificate-card-frame">
-          <img src="{{ asset('images/logo.png') }}" alt="RANISAHAB Logo" class="brand-logo-img logo-sm mb-2">
-          <h4>EXCLUSIVE DESIGN CERTIFICATE</h4>
-          <p class="mb-0">This design is specially created for you and will never be recreated for anyone else.</p>
+        <div class="certificate-card-frame text-center p-4">
+          <img src="{{ asset('images/logo.png') }}" alt="RANISAHAB Logo" class="brand-logo-img logo-sm mb-2" style="max-height: 40px;">
+          <h4 style="font-size: 0.85rem; letter-spacing: 0.15em;">EXCLUSIVE DESIGN CERTIFICATE</h4>
+          <p class="small text-white-50 mb-3" style="font-size:0.75rem;">Every bespoke bridal creation includes an official physical certificate signed by master weavers.</p>
+          <button class="btn btn-outline-gold btn-sm w-100 font-label" style="font-size:0.65rem;" data-bs-toggle="modal" data-bs-target="#certificateSampleModal">
+            <i class="fa-solid fa-certificate me-1"></i>VIEW CERTIFICATE SAMPLE
+          </button>
         </div>
       </div>
     </div>
   </div>
 </section>
+
+<!-- One Design One Bride Process Modal -->
+<div class="modal fade" id="oneBrideProcessModal" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered modal-lg">
+    <div class="modal-content bg-dark text-white border-gold">
+      <div class="modal-header border-secondary">
+        <h5 class="modal-title font-display text-gold"><i class="fa-solid fa-crown me-2"></i>One Design, One Bride — Bespoke Process</h5>
+        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body p-4">
+        <div class="row g-4 text-center">
+          <div class="col-md-3">
+            <div class="p-3 border border-secondary rounded h-100 bg-black-soft">
+              <div class="fs-2 text-gold mb-2"><i class="fa-solid fa-comments"></i></div>
+              <h6 class="font-label text-gold-light">1. Consultation</h6>
+              <p class="small text-white-50 mb-0">1-on-1 designer session to select color palette, silk fabric, &amp; embroidery story.</p>
+            </div>
+          </div>
+          <div class="col-md-3">
+            <div class="p-3 border border-secondary rounded h-100 bg-black-soft">
+              <div class="fs-2 text-gold mb-2"><i class="fa-solid fa-pen-nib"></i></div>
+              <h6 class="font-label text-gold-light">2. Custom Sketch</h6>
+              <p class="small text-white-50 mb-0">A unique non-repeat sketch is drawn and approved exclusively by you.</p>
+            </div>
+          </div>
+          <div class="col-md-3">
+            <div class="p-3 border border-secondary rounded h-100 bg-black-soft">
+              <div class="fs-2 text-gold mb-2"><i class="fa-solid fa-hand-sparkles"></i></div>
+              <h6 class="font-label text-gold-light">3. Artisan Weaving</h6>
+              <p class="small text-white-50 mb-0">300+ artisan hours of zardozi, dabka, and real zari hand-weaving.</p>
+            </div>
+          </div>
+          <div class="col-md-3">
+            <div class="p-3 border border-secondary rounded h-100 bg-black-soft">
+              <div class="fs-2 text-gold mb-2"><i class="fa-solid fa-certificate"></i></div>
+              <h6 class="font-label text-gold-light">4. Lock &amp; Certify</h6>
+              <p class="small text-white-50 mb-0">Original sketch is permanently archived. Design certificate issued.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer border-secondary">
+        <a href="{{ route('custom-lehenga') }}" class="btn btn-gold font-label px-4">START YOUR CUSTOM BRIDAL LEHENGA</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Certificate Sample Modal -->
+<div class="modal fade" id="certificateSampleModal" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content bg-dark text-white border-gold text-center p-4">
+      <div class="certificate-card-frame p-4">
+        <i class="fa-solid fa-crown text-gold fs-1 mb-2"></i>
+        <h4 class="font-display text-gold mb-2">CERTIFICATE OF AUTHENTICITY</h4>
+        <p class="text-white-50 small mb-3">This document certifies that the couture bridal outfit is an authentic, one-of-a-kind creation crafted by RANISAHAB Master Weavers.</p>
+        <div class="border-top border-bottom border-gold py-2 my-3 text-start small">
+          <div class="d-flex justify-content-between mb-1"><span class="text-muted">Cert. ID:</span><span class="text-gold fw-bold">RS-CERT-2026-8809</span></div>
+          <div class="d-flex justify-content-between mb-1"><span class="text-muted">Artisan Weaving Hours:</span><span class="text-white">340 Hours</span></div>
+          <div class="d-flex justify-content-between mb-1"><span class="text-muted">Material Composition:</span><span class="text-white">100% Pure Kanjivaram / Zari Silk</span></div>
+          <div class="d-flex justify-content-between"><span class="text-muted">Exclusivity Status:</span><span class="text-success fw-bold">NON-REPEATABLE / LOCKED</span></div>
+        </div>
+        <p class="small text-gold-light fst-italic mb-0">Signed &amp; Sealed by RANISAHAB Couture Guild</p>
+      </div>
+      <div class="mt-3">
+        <button type="button" class="btn btn-outline-secondary text-white btn-sm px-4" data-bs-dismiss="modal">Close Preview</button>
+      </div>
+    </div>
+  </div>
+</div>
 
 <!-- Infinite Scroll Royal Products Collection Section -->
 <section id="home-infinite-products" class="pt-5 pb-2" style="background-color: #080706;">
@@ -306,11 +386,7 @@
                   </ul>
                   
                   <div class="mt-auto">
-                    <form action="{{ route('cart.add-package') }}" method="POST">
-                      @csrf
-                      <input type="hidden" name="package_id" value="{{ $package->id }}">
-                      <button type="submit" class="btn btn-gold w-100">BOOK NOW</button>
-                    </form>
+                    <a href="{{ route('bridal-packages') }}" class="btn btn-gold w-100">BOOK NOW</a>
                   </div>
                 </div>
               </div>

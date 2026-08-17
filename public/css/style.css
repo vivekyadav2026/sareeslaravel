@@ -3228,6 +3228,11 @@ select option:checked {
     overflow-x: auto !important;
     -webkit-overflow-scrolling: touch !important;
   }
+
+  /* Stack form fields vertically on mobile */
+  .dark-form-grid {
+    grid-template-columns: 1fr !important;
+  }
 }
 
 /* =========================================================

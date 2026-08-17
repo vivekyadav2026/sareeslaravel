@@ -91,7 +91,7 @@
 <!-- Top Announcement Bar -->
 <div class="top-strip">
   <div class="container">
-    <i class="fa-solid fa-crown me-2"></i> FREE EXPRESS SHIPPING ALL OVER INDIA &nbsp;✦&nbsp; 100% ROYAL HANDLOOM GUARANTEE
+    <i class="fa-solid fa-crown me-2"></i> FREE EXPRESS SHIPPING ABOVE ₹5,000 &nbsp;✦&nbsp; PREMIUM QUALITY COLLECTION
   </div>
 </div>
 
@@ -284,6 +284,15 @@
 </div>
 
 <!-- Footer -->
+@php
+  $storePhone = \App\Models\Setting::getVal('store_phone', '+91 98765 43210');
+  $storeEmail = \App\Models\Setting::getVal('store_email', 'support@ranisahab.com');
+  $storeWhatsapp = \App\Models\Setting::getVal('store_whatsapp', '919876543210');
+  $instagramUrl = \App\Models\Setting::getVal('instagram_url', 'https://instagram.com/ranisahabofficial');
+  $facebookUrl = \App\Models\Setting::getVal('facebook_url', 'https://facebook.com/ranisahabofficial');
+  $youtubeUrl = \App\Models\Setting::getVal('youtube_url', 'https://youtube.com/@ranisahab');
+  $pinterestUrl = \App\Models\Setting::getVal('pinterest_url', 'https://pinterest.com/ranisahab');
+@endphp
 <footer class="footer-ranisahab">
   <div class="container">
     <div class="row g-4">
@@ -293,12 +302,12 @@
             <img src="{{ asset('images/logo.png') }}" alt="RANISAHAB Logo" class="brand-logo-img logo-lg mb-2">
           </a>
         </div>
-        <p class="small text-muted mb-3" style="line-height:1.6;">RANISAHAB is more than a brand, it's an emotion. We bring you the finest Sarees, Suits, Lehengas and Bridal collections with unmatched quality at the most affordable prices.</p>
+        <p class="small text-muted mb-3" style="line-height:1.6;">RANISAHAB is India’s premium luxury bridal house offering certified pure silk sarees, designer lehengas, and custom bridal wear directly from master weavers.</p>
         <div class="d-flex gap-2 mb-3">
-          <a href="#" class="social-icon-btn"><i class="fa-brands fa-instagram"></i></a>
-          <a href="#" class="social-icon-btn"><i class="fa-brands fa-facebook-f"></i></a>
-          <a href="#" class="social-icon-btn"><i class="fa-brands fa-youtube"></i></a>
-          <a href="#" class="social-icon-btn"><i class="fa-brands fa-pinterest-p"></i></a>
+          <a href="{{ $instagramUrl }}" target="_blank" rel="noopener" class="social-icon-btn"><i class="fa-brands fa-instagram"></i></a>
+          <a href="{{ $facebookUrl }}" target="_blank" rel="noopener" class="social-icon-btn"><i class="fa-brands fa-facebook-f"></i></a>
+          <a href="{{ $youtubeUrl }}" target="_blank" rel="noopener" class="social-icon-btn"><i class="fa-brands fa-youtube"></i></a>
+          <a href="{{ $pinterestUrl }}" target="_blank" rel="noopener" class="social-icon-btn"><i class="fa-brands fa-pinterest-p"></i></a>
         </div>
       </div>
 
@@ -321,22 +330,22 @@
         <h6>CUSTOMER SERVICE</h6>
         <ul class="list-unstyled d-grid gap-2 mb-0">
           <li><a href="{{ route('tracking') }}">Track Your Order</a></li>
-          <li><a href="#">Shipping &amp; Delivery</a></li>
-          <li><a href="#">Returns &amp; Refunds</a></li>
-          <li><a href="#">Terms &amp; Conditions</a></li>
-          <li><a href="#">Privacy Policy</a></li>
-          <li><a href="#">FAQ's</a></li>
+          <li><a href="{{ Route::has('policies') ? route('policies') . '#shipping' : '#' }}">Shipping &amp; Delivery</a></li>
+          <li><a href="{{ Route::has('policies') ? route('policies') . '#returns' : '#' }}">Returns &amp; Refunds</a></li>
+          <li><a href="{{ Route::has('policies') ? route('policies') . '#terms' : '#' }}">Terms &amp; Conditions</a></li>
+          <li><a href="{{ Route::has('policies') ? route('policies') . '#privacy' : '#' }}">Privacy Policy</a></li>
+          <li><a href="{{ Route::has('policies') ? route('policies') . '#faq' : '#' }}">FAQ's</a></li>
         </ul>
       </div>
 
       <div class="col-lg-3">
         <h6>CONTACT US</h6>
         <ul class="list-unstyled d-grid gap-2 small text-muted mb-3">
-          <li><i class="fa-solid fa-phone text-gold me-2"></i>+91 12345 67890</li>
-          <li><i class="fa-solid fa-envelope text-gold me-2"></i>support@ranisahab.com</li>
-          <li><i class="fa-solid fa-location-dot text-gold me-2"></i>All Over India Delivery</li>
+          <li><i class="fa-solid fa-phone text-gold me-2"></i>{{ $storePhone }}</li>
+          <li><i class="fa-solid fa-envelope text-gold me-2"></i>{{ $storeEmail }}</li>
+          <li><i class="fa-solid fa-location-dot text-gold me-2"></i>Pan-India Express Delivery</li>
         </ul>
-        <a href="#" class="btn btn-whatsapp"><i class="fa-brands fa-whatsapp me-1 fs-6"></i>Chat on WhatsApp</a>
+        <a href="https://wa.me/{{ preg_replace('/[^0-9]/', '', $storeWhatsapp) }}?text=Hello%20RANISAHAB%20Team%2C%20I%20have%20an%20inquiry." target="_blank" rel="noopener" class="btn btn-whatsapp"><i class="fa-brands fa-whatsapp me-1 fs-6"></i>Chat on WhatsApp</a>
       </div>
     </div>
 

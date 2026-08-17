@@ -473,4 +473,15 @@ class DashboardController extends Controller
 
         return back()->with('success', 'Product removed from wishlist.');
     }
+
+    public function viewCertificate($id)
+    {
+        $customer = $this->getCustomer();
+        $order = Order::with(['items', 'customer'])
+            ->where('customer_id', $customer->id)
+            ->where('id', $id)
+            ->firstOrFail();
+
+        return view('customer.certificate', compact('customer', 'order'));
+    }
 }

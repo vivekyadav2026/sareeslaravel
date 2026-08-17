@@ -78,11 +78,9 @@
                 </ul>
 
                 <div class="mt-auto">
-                  <form action="{{ route('cart.add-package') }}" method="POST">
-                    @csrf
-                    <input type="hidden" name="package_id" value="{{ $package->id }}">
-                    <button type="submit" class="btn-book-custom" style="{{ $isFeatured ? 'background: linear-gradient(90deg, #dcc29b 0%, #c5a880 100%) !important;' : '' }}">BOOK NOW</button>
-                  </form>
+                  <button type="button" class="btn-book-custom" data-bs-toggle="modal" data-bs-target="#packageConsultationModal" onclick="setConsultationPackage('{{ $package->name }}')" style="{{ $isFeatured ? 'background: linear-gradient(90deg, #dcc29b 0%, #c5a880 100%) !important;' : '' }}">
+                    <i class="fa-solid fa-calendar-check me-2"></i> BOOK PACKAGE NOW
+                  </button>
                 </div>
               </div>
             </div>
@@ -136,16 +134,44 @@
   </div>
 </div>
 
-<!-- Ornate Bride Silhouette Quote Box -->
-<div class="container pb-5">
-  <div class="bp-quote-box-custom">
-    <div class="bp-quote-icon-custom">
-      <i class="fa-solid fa-person-dress-burst"></i>
-    </div>
-    <div>
-      <p class="bp-quote-text-custom">
-        "Every bride deserves to feel like royalty on her special day. Let us make your moments timeless."
-      </p>
+<!-- Bridal Package Consultation Modal -->
+<div class="modal fade" id="packageConsultationModal" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content bg-dark text-white border-gold p-3">
+      <div class="modal-header border-secondary">
+        <h5 class="modal-title font-display text-gold"><i class="fa-solid fa-crown me-2"></i>Bridal Package Consultation</h5>
+        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <form action="{{ route('contact.submit') }}" method="POST">
+        @csrf
+        <div class="modal-body">
+          <p class="small text-white-50 mb-3">Schedule a 1-on-1 consultation with RANISAHAB Couture Stylists for your upcoming wedding.</p>
+          <div class="mb-3">
+            <label class="form-label small text-gold fw-bold">Selected Package</label>
+            <input type="text" name="subject" id="modalSelectedPackage" class="form-control bg-black text-white border-secondary" readonly>
+          </div>
+          <div class="mb-3">
+            <label class="form-label small text-gold fw-bold">Your Full Name</label>
+            <input type="text" name="name" class="form-control bg-black text-white border-secondary" placeholder="e.g. Ananya Sharma" required>
+          </div>
+          <div class="mb-3">
+            <label class="form-label small text-gold fw-bold">Phone / WhatsApp Number</label>
+            <input type="text" name="phone" class="form-control bg-black text-white border-secondary" placeholder="+91 98765 43210" required>
+          </div>
+          <div class="mb-3">
+            <label class="form-label small text-gold fw-bold">Email Address</label>
+            <input type="email" name="email" class="form-control bg-black text-white border-secondary" placeholder="bride@example.com" required>
+          </div>
+          <div class="mb-3">
+            <label class="form-label small text-gold fw-bold">Tentative Wedding Date &amp; Preferred City</label>
+            <textarea name="message" class="form-control bg-black text-white border-secondary" rows="2" placeholder="Wedding Date: Dec 2026, Location: New Delhi..." required></textarea>
+          </div>
+        </div>
+        <div class="modal-footer border-secondary">
+          <button type="button" class="btn btn-outline-secondary btn-sm px-3 text-white" data-bs-dismiss="modal">Close</button>
+          <button type="submit" class="btn btn-gold font-label text-dark px-4 fw-bold">SUBMIT INQUIRY</button>
+        </div>
+      </form>
     </div>
   </div>
 </div>
@@ -452,6 +478,11 @@
 
 @push('scripts')
 <script>
+function setConsultationPackage(name) {
+    const input = document.getElementById('modalSelectedPackage');
+    if (input) input.value = "Bridal Package Consultation Inquiry: " + name;
+}
+
 document.addEventListener('DOMContentLoaded', function() {
     const track = document.getElementById('pkgSliderTrack');
     const cards = document.querySelectorAll('.bp-card-custom');

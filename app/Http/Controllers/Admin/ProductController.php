@@ -122,8 +122,24 @@ class ProductController extends Controller
         }
 
         DB::transaction(function() use ($request, $slug) {
+            $descData = [
+                'general_desc' => $request->input('general_desc'),
+                'fabric' => $request->input('fabric'),
+                'work' => $request->input('work'),
+                'size' => $request->input('size'),
+                'weight' => $request->input('weight'),
+                'blouse' => $request->input('blouse'),
+                'lehenga' => $request->input('lehenga'),
+                'dupatta' => $request->input('dupatta'),
+                'whats_included' => $request->input('whats_included'),
+                'dispatch_time' => $request->input('dispatch_time'),
+                'delivery_time' => $request->input('delivery_time'),
+            ];
+            $descriptionJson = json_encode($descData);
+
             $product = Product::create(array_merge($request->all(), [
                 'slug' => $slug,
+                'description' => $descriptionJson,
                 'is_active' => $request->has('is_active'),
                 'is_approved' => $request->has('is_approved'),
                 'is_featured' => $request->has('is_featured'),
@@ -247,7 +263,23 @@ class ProductController extends Controller
         ]);
 
         DB::transaction(function() use ($request, $product) {
+            $descData = [
+                'general_desc' => $request->input('general_desc'),
+                'fabric' => $request->input('fabric'),
+                'work' => $request->input('work'),
+                'size' => $request->input('size'),
+                'weight' => $request->input('weight'),
+                'blouse' => $request->input('blouse'),
+                'lehenga' => $request->input('lehenga'),
+                'dupatta' => $request->input('dupatta'),
+                'whats_included' => $request->input('whats_included'),
+                'dispatch_time' => $request->input('dispatch_time'),
+                'delivery_time' => $request->input('delivery_time'),
+            ];
+            $descriptionJson = json_encode($descData);
+
             $product->update(array_merge($request->all(), [
+                'description' => $descriptionJson,
                 'is_active' => $request->has('is_active'),
                 'is_approved' => $request->has('is_approved'),
                 'is_featured' => $request->has('is_featured'),

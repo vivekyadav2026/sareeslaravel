@@ -176,9 +176,10 @@
         @endif
       </div>
 
+      @php $storeWhatsapp = \App\Models\Setting::getVal('store_whatsapp', '919876543210'); @endphp
       <div class="d-flex gap-3 flex-wrap">
         <a href="{{ route('tracking') }}" class="btn btn-outline-gold flex-fill text-center py-3">TRACK ANOTHER SHIPMENT</a>
-        <a href="https://wa.me/911234567890" target="_blank" class="btn btn-whatsapp flex-fill justify-content-center py-3"><i class="fa-brands fa-whatsapp fs-5 me-1"></i> NEED HELP? CHAT WITH US</a>
+        <a href="https://wa.me/{{ preg_replace('/[^0-9]/', '', $storeWhatsapp) }}" target="_blank" class="btn btn-whatsapp flex-fill justify-content-center py-3"><i class="fa-brands fa-whatsapp fs-5 me-1"></i> NEED HELP? CHAT WITH US</a>
       </div>
     @endif
 

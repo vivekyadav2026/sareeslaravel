@@ -36,6 +36,7 @@ Route::post('/custom-lehenga', [CatalogController::class, 'submitCustomLehenga']
 Route::get('/gallery', [CatalogController::class, 'gallery'])->name('gallery');
 Route::get('/about', function () { return view('about'); })->name('about');
 Route::get('/contact', function () { return view('contact'); })->name('contact');
+Route::get('/policies', function () { return view('policies'); })->name('policies');
 Route::post('/contact', [CatalogController::class, 'submitContact'])->name('contact.submit');
 
 // Session-based Shopping Bag (Cart) Routes
@@ -109,6 +110,7 @@ Route::prefix('customer')->name('customer.')->group(function () {
         
         Route::get('orders', [\App\Http\Controllers\Customer\DashboardController::class, 'orders'])->name('orders');
         Route::get('orders/{order}', [\App\Http\Controllers\Customer\DashboardController::class, 'showOrder'])->name('orders.show');
+        Route::get('orders/{order}/certificate', [\App\Http\Controllers\Customer\DashboardController::class, 'viewCertificate'])->name('orders.certificate');
         
         Route::get('appointments', [\App\Http\Controllers\Customer\DashboardController::class, 'appointments'])->name('appointments');
         Route::post('appointments', [\App\Http\Controllers\Customer\DashboardController::class, 'storeAppointment'])->name('appointments.store');

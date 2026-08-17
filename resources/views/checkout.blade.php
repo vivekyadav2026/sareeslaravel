@@ -70,6 +70,42 @@
               @endforeach
             </div>
 
+            <!-- Mini Cart Billing Summary (Highly visible on all devices, especially mobile) -->
+            <div class="mt-3 p-3 rounded bg-black bg-opacity-40 border border-secondary border-opacity-15">
+              <h6 class="font-label text-gold text-uppercase mb-3 pb-1 border-bottom border-secondary border-opacity-25" style="font-size:0.75rem; letter-spacing:0.05em;"><i class="fa-solid fa-calculator me-1"></i> CART BILLING DETAILS</h6>
+              <div class="d-flex justify-content-between py-1.5 small text-white-50">
+                <span>Items Subtotal:</span>
+                <span>₹{{ number_format($subtotal, 0) }}</span>
+              </div>
+              @if ($giftWrapCharge > 0)
+              <div class="d-flex justify-content-between py-1.5 small text-white-50">
+                <span>Gift Packaging:</span>
+                <span>₹{{ number_format($giftWrapCharge, 0) }}</span>
+              </div>
+              @endif
+              <div class="d-flex justify-content-between py-1.5 small text-white-50">
+                <span>Shipping Charges:</span>
+                <span>
+                  @if ($shipping > 0)
+                    ₹{{ number_format($shipping, 0) }}
+                  @else
+                    <span class="text-success fw-bold">FREE</span>
+                  @endif
+                </span>
+              </div>
+              @if ($discount > 0)
+              <div class="d-flex justify-content-between py-1.5 small text-success">
+                <span>Coupon Discount:</span>
+                <span>−₹{{ number_format($discount, 0) }}</span>
+              </div>
+              @endif
+              <hr class="border-secondary border-opacity-25 my-2">
+              <div class="d-flex justify-content-between align-items-center">
+                <span class="fw-bold text-gold small">FINAL GRAND TOTAL:</span>
+                <span class="fw-bold text-gold fs-5">₹{{ number_format($total, 0) }}</span>
+              </div>
+            </div>
+
             <!-- Gift Wrap Selection -->
             <div class="form-check mt-3 pt-3 border-top border-secondary border-opacity-15">
               <input class="form-check-input" type="checkbox" id="giftWrap" {{ $giftWrapCharge > 0 ? 'checked' : '' }} onchange="toggleGiftWrap(this.checked)">
@@ -147,27 +183,17 @@
                 <input type="email" id="ship_email" class="form-control form-control-luxury" required placeholder="email@example.com" value="{{ $customer->email ?? '' }}">
               </div>
 
-              <div class="col-md-6">
-                <label class="small text-gold-light fw-semibold mb-1">House / Building Name <span class="text-danger">*</span></label>
-                <input type="text" id="ship_house" class="form-control form-control-luxury" required placeholder="Flat/House No., Building Name" value="{{ explode(', ', $defaultAddress->address_line_1 ?? '')[0] ?? '' }}">
+              <div class="col-12">
+                <label class="small text-gold-light fw-semibold mb-1">Detailed Address <span class="text-danger">*</span></label>
+                <textarea id="ship_address" class="form-control form-control-luxury" required placeholder="Flat/House No., Building Name, Street Name, Area/Colony" rows="2">{{ $defaultAddress->address_line_1 ?? '' }}</textarea>
               </div>
 
               <div class="col-md-6">
-                <label class="small text-gold-light fw-semibold mb-1">Street / Area / Colony <span class="text-danger">*</span></label>
-                <input type="text" id="ship_street" class="form-control form-control-luxury" required placeholder="Colony, Street Name" value="{{ explode(', ', $defaultAddress->address_line_1 ?? '')[1] ?? '' }}">
-              </div>
-
-              <div class="col-md-4">
                 <label class="small text-gold-light fw-semibold mb-1">Village / City <span class="text-danger">*</span></label>
                 <input type="text" id="ship_city" class="form-control form-control-luxury" required placeholder="City/Town" value="{{ $defaultAddress->city ?? '' }}">
               </div>
 
-              <div class="col-md-4">
-                <label class="small text-gold-light fw-semibold mb-1">District <span class="text-danger">*</span></label>
-                <input type="text" id="ship_district" class="form-control form-control-luxury" required placeholder="District" value="{{ $defaultAddress->city ?? '' }}">
-              </div>
-
-              <div class="col-md-4">
+              <div class="col-md-6">
                 <label class="small text-gold-light fw-semibold mb-1">State <span class="text-danger">*</span></label>
                 <input type="text" id="ship_state" class="form-control form-control-luxury" required placeholder="State" value="{{ $defaultAddress->state ?? '' }}">
               </div>
@@ -220,13 +246,23 @@
 
               <!-- COD Radio -->
               <div class="payment-method-row cursor-pointer" id="payRowCOD" onclick="selectPayMethod('cod')">
-                <div class="d-flex align-items-center gap-3">
-                  <input class="form-check-input mt-0" type="radio" name="paymentTypeOption" id="payRadioCOD">
+                <div class="d-flex align-items-start gap-3">
+                  <input class="form-check-input mt-1.5" type="radio" name="paymentTypeOption" id="payRadioCOD">
                   <div>
                     <label class="form-check-label fw-bold text-gold-light mb-0" for="payRadioCOD">
                       <i class="fa-solid fa-hand-holding-dollar me-2 text-gold"></i>Cash on Delivery (COD)
                     </label>
-                    <p class="small text-muted mb-0" style="font-size:0.75rem;" id="codLabelText">Pay in cash upon physical delivery.</p>
+                    <p class="small text-muted mb-1" style="font-size:0.75rem;" id="codLabelText">Pay in cash upon physical delivery.</p>
+                    
+                    <!-- COD Cancellation Policy Alert Notice -->
+                    <div class="mt-2 p-2.5 rounded bg-black bg-opacity-40 border border-warning border-opacity-25" style="max-width: 480px; font-size: 0.68rem; line-height: 1.45;">
+                      <span class="text-warning fw-bold d-block mb-1"><i class="fa-solid fa-triangle-exclamation me-1"></i> COD CANCELLATION POLICY:</span>
+                      <ul class="mb-0 text-white-50 ps-3">
+                        <li>Free cancellation is allowed within <strong>12 hours</strong> of order placement.</li>
+                        <li>Refusing delivery after dispatch will result in suspension of COD privileges for your account.</li>
+                        <li>Orders above ₹10,000 require telephonic verification before shipment.</li>
+                      </ul>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -260,13 +296,16 @@
             <span class="text-ivory">₹{{ number_format($giftWrapCharge, 0) }}</span>
           </div>
 
-          <div class="d-flex justify-content-between py-2 border-bottom border-secondary border-opacity-15 small text-muted">
-            <span>Shipping Charges</span>
-            @if ($shipping > 0)
-              <span class="text-ivory">₹{{ number_format($shipping, 0) }}</span>
-            @else
-              <span class="text-success fw-bold">FREE</span>
-            @endif
+          <div class="d-flex flex-column py-2 border-bottom border-secondary border-opacity-15 small text-muted">
+            <div class="d-flex justify-content-between w-100">
+              <span>Shipping Charges</span>
+              @if ($shipping > 0)
+                <span class="text-ivory">₹{{ number_format($shipping, 0) }}</span>
+              @else
+                <span class="text-success fw-bold">FREE</span>
+              @endif
+            </div>
+            <small class="text-white-50 font-label text-uppercase mt-1" style="font-size: 0.6rem; letter-spacing: 0.02em;">* Free shipping above ₹5,000. Flat ₹150 for orders below.</small>
           </div>
 
           <div class="d-flex justify-content-between py-2 border-bottom border-secondary border-opacity-15 small text-muted">
@@ -602,7 +641,7 @@ const grandTotalVal = {{ $total }};
 
 document.addEventListener('DOMContentLoaded', function() {
     // 1. Auto-fill Address Fields from LocalStorage to prevent accidental loss
-    const fieldsToStore = ['ship_name', 'ship_phone', 'ship_email', 'ship_house', 'ship_street', 'ship_city', 'ship_district', 'ship_state', 'ship_pincode'];
+    const fieldsToStore = ['ship_name', 'ship_phone', 'ship_email', 'ship_address', 'ship_city', 'ship_state', 'ship_pincode'];
     fieldsToStore.forEach(fieldId => {
         const saved = localStorage.getItem('rs_checkout_' + fieldId);
         if (saved) {
@@ -642,19 +681,18 @@ function goToStep(stepNum) {
         const name = document.getElementById('ship_name').value;
         const phone = document.getElementById('ship_phone').value;
         const email = document.getElementById('ship_email').value;
-        const house = document.getElementById('ship_house').value;
-        const street = document.getElementById('ship_street').value;
+        const address = document.getElementById('ship_address').value;
         const city = document.getElementById('ship_city').value;
         const state = document.getElementById('ship_state').value;
         const pincode = document.getElementById('ship_pincode').value;
 
-        if (!name || !phone || !email || !house || !street || !city || !state || !pincode) {
+        if (!name || !phone || !email || !address || !city || !state || !pincode) {
             showToast("Please fill in all required shipping address fields.");
             return;
         }
         
         // Populate Payment Summary address block
-        const fullAddress = `${house}, ${street}, ${city}, ${state} - ${pincode}`;
+        const fullAddress = `${address}, ${city}, ${state} - ${pincode}`;
         document.getElementById('paymentAddressSummary').innerHTML = `<i class="fa-solid fa-address-card text-gold me-2"></i>${name} | ${phone}<br><span class="opacity-75">${fullAddress}</span>`;
     }
 
@@ -780,14 +818,12 @@ function submitSecureOrder() {
     const name = document.getElementById('ship_name').value;
     const phone = document.getElementById('ship_phone').value;
     const email = document.getElementById('ship_email').value;
-    const house = document.getElementById('ship_house').value;
-    const street = document.getElementById('ship_street').value;
+    const address = document.getElementById('ship_address').value;
     const city = document.getElementById('ship_city').value;
-    const district = document.getElementById('ship_district').value;
     const state = document.getElementById('ship_state').value;
     const pincode = document.getElementById('ship_pincode').value;
 
-    const fullAddress = `${house}, ${street}, ${district}`;
+    const fullAddress = address;
 
     btn.disabled = true;
     btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin fs-5"></i> PROCESSING ORDER...';
@@ -821,7 +857,7 @@ function submitSecureOrder() {
         }
 
         // Clear local storage address on successful placement
-        const fieldsToStore = ['ship_name', 'ship_phone', 'ship_email', 'ship_house', 'ship_street', 'ship_city', 'ship_district', 'ship_state', 'ship_pincode'];
+        const fieldsToStore = ['ship_name', 'ship_phone', 'ship_email', 'ship_address', 'ship_city', 'ship_state', 'ship_pincode'];
         fieldsToStore.forEach(f => localStorage.removeItem('rs_checkout_' + f));
 
         if (!data.payment_required) {
@@ -963,15 +999,13 @@ function detectLocation() {
                 const pincode = addr.postcode || '';
 
                 // Fill inputs
-                document.getElementById('ship_house').value = house;
-                document.getElementById('ship_street').value = [road, suburb].filter(Boolean).join(', ');
+                document.getElementById('ship_address').value = [house, road, suburb].filter(Boolean).join(', ');
                 document.getElementById('ship_city').value = city;
-                document.getElementById('ship_district').value = county || city;
                 document.getElementById('ship_state').value = state;
                 document.getElementById('ship_pincode').value = pincode;
 
                 // Sync with localStorage
-                const fields = ['ship_house', 'ship_street', 'ship_city', 'ship_district', 'ship_state', 'ship_pincode'];
+                const fields = ['ship_address', 'ship_city', 'ship_state', 'ship_pincode'];
                 fields.forEach(f => {
                     localStorage.setItem('rs_checkout_' + f, document.getElementById(f).value);
                 });
@@ -1216,16 +1250,12 @@ function initAutocomplete() {
 
         const streetAddress = [route, sublocality].filter(Boolean).join(', ');
 
-        if (streetNumber) {
-            document.getElementById('ship_house').value = streetNumber;
-        }
-        document.getElementById('ship_street').value = streetAddress;
+        document.getElementById('ship_address').value = [streetNumber, streetAddress].filter(Boolean).join(', ');
         document.getElementById('ship_city').value = city;
-        document.getElementById('ship_district').value = district;
         document.getElementById('ship_state').value = state;
         document.getElementById('ship_pincode').value = pincode;
 
-        const fields = ['ship_house', 'ship_street', 'ship_city', 'ship_district', 'ship_state', 'ship_pincode'];
+        const fields = ['ship_address', 'ship_city', 'ship_state', 'ship_pincode'];
         fields.forEach(f => {
             localStorage.setItem('rs_checkout_' + f, document.getElementById(f).value);
         });

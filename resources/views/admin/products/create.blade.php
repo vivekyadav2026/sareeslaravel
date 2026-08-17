@@ -168,8 +168,61 @@
                                     </div>
 
                                     <div class="mb-3">
-                                        <label for="description" class="form-label fw-semibold">Detailed Product Description</label>
-                                        <textarea class="form-control" id="description" name="description" rows="5" placeholder="Elaborated description with craftsmanship details..."></textarea>
+                                        <label for="general_desc" class="form-label fw-semibold">General Description</label>
+                                        <textarea class="form-control" id="general_desc" name="general_desc" rows="3" placeholder="Elaborated description with craftsmanship details..."></textarea>
+                                    </div>
+
+                                    <div class="row mb-3">
+                                        <div class="col-md-6">
+                                            <label for="fabric" class="form-label fw-semibold">Fabric</label>
+                                            <input type="text" class="form-control" id="fabric" name="fabric" placeholder="e.g. Pure Georgette Silk">
+                                        </div>
+                                        <div class="col-md-6">
+                                            <label for="work" class="form-label fw-semibold">Work</label>
+                                            <input type="text" class="form-control" id="work" name="work" placeholder="e.g. Handcrafted Zari Embroidery">
+                                        </div>
+                                    </div>
+
+                                    <div class="row mb-3">
+                                        <div class="col-md-6">
+                                            <label for="size" class="form-label fw-semibold">Size</label>
+                                            <input type="text" class="form-control" id="size" name="size" placeholder="e.g. Semi-Stitched fits up to 42">
+                                        </div>
+                                        <div class="col-md-6">
+                                            <label for="weight" class="form-label fw-semibold">Weight</label>
+                                            <input type="text" class="form-control" id="weight" name="weight" placeholder="e.g. Approx 1.2 kg">
+                                        </div>
+                                    </div>
+
+                                    <div class="row mb-3">
+                                        <div class="col-md-4">
+                                            <label for="blouse" class="form-label fw-semibold">Blouse Details</label>
+                                            <input type="text" class="form-control" id="blouse" name="blouse" placeholder="e.g. Unstitched 80cm matching blouse">
+                                        </div>
+                                        <div class="col-md-4">
+                                            <label for="lehenga" class="form-label fw-semibold">Lehenga Details</label>
+                                            <input type="text" class="form-control" id="lehenga" name="lehenga" placeholder="e.g. 3.5m flair panels">
+                                        </div>
+                                        <div class="col-md-4">
+                                            <label for="dupatta" class="form-label fw-semibold">Dupatta Details</label>
+                                            <input type="text" class="form-control" id="dupatta" name="dupatta" placeholder="e.g. 2.5m net/organza with borders">
+                                        </div>
+                                    </div>
+
+                                    <div class="mb-3">
+                                        <label for="whats_included" class="form-label fw-semibold">What's Included</label>
+                                        <input type="text" class="form-control" id="whats_included" name="whats_included" placeholder="e.g. 1 Lehenga, 1 Blouse Piece, 1 Dupatta, Luxury Box">
+                                    </div>
+
+                                    <div class="row mb-3">
+                                        <div class="col-md-6">
+                                            <label for="dispatch_time" class="form-label fw-semibold">Dispatch Time</label>
+                                            <input type="text" class="form-control" id="dispatch_time" name="dispatch_time" placeholder="e.g. Dispatched in 24-48 Hours">
+                                        </div>
+                                        <div class="col-md-6">
+                                            <label for="delivery_time" class="form-label fw-semibold">Estimated Delivery Time</label>
+                                            <input type="text" class="form-control" id="delivery_time" name="delivery_time" placeholder="e.g. 4 to 7 Business Days">
+                                        </div>
                                     </div>
                                 </div>
                                 
@@ -225,7 +278,7 @@
                                     <div class="mb-3">
                                         <label for="images" class="form-label fw-semibold">Upload Gallery Images & Video Files</label>
                                         <input class="form-control" type="file" id="images" name="images[]" multiple accept="image/*">
-                                        <div class="form-text">Choose premium photos. First uploaded image will set as the primary view.</div>
+                                        <div class="form-text text-warning"><i class="fas fa-info-circle me-1"></i> Please upload high-resolution images showing different angles: Front View, Back View, Close-up Detail, Full Look, and Detail/Fabric shots (First uploaded image will set as the primary view).</div>
                                     </div>
                                     
                                     <div class="row g-3 mt-3" id="image-previews">

@@ -68,7 +68,10 @@
                                             </td>
                                             <td style="font-weight:600;">₹{{ number_format($order->total, 2) }}</td>
                                             <td>
-                                                <a href="{{ route('customer.orders.show', $order->id) }}" class="btn-outline-gold py-1 px-3" style="font-size:0.6rem; padding: 0.3rem 0.8rem;">VIEW DETAILS</a>
+                                                <div class="d-flex gap-2">
+                                                    <a href="{{ route('customer.orders.show', $order->id) }}" class="btn-outline-gold py-1 px-3" style="font-size:0.6rem; padding: 0.3rem 0.8rem;">VIEW DETAILS</a>
+                                                    <a href="{{ route('customer.orders.certificate', $order->id) }}" target="_blank" class="btn-outline-gold py-1 px-3" style="font-size:0.6rem; padding: 0.3rem 0.8rem; background: rgba(201, 162, 75, 0.1);"><i class="fa-solid fa-certificate text-gold me-1"></i>CERTIFICATE</a>
+                                                </div>
                                             </td>
                                         </tr>
                                     @endforeach

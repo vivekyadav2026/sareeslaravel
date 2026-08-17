@@ -62,7 +62,7 @@
                                                         <td style="padding: 12px 10px; color: #111111; font-weight: bold; font-size: 13px;">
                                                             {{ $item->product_name }}
                                                             @if($item->product_sku)
-                                                                <br><span style="font-size: 11px; color: #888888; font-weight: normal;">SKU: {{ $item->product_sku }}</span>
+                                                                <br><span style="font-size: 11px; color: #888888; font-weight: normal;">PRODUCT CODE: {{ $item->product_sku }}</span>
                                                             @endif
                                                         </td>
                                                         <td align="center" style="padding: 12px 10px; color: #555555; font-size: 13px;">{{ $item->quantity }}</td>
@@ -134,10 +134,11 @@
                     </tr>
                     
                     <!-- Footer -->
+                    @php $storeEmail = \App\Models\Setting::getVal('store_email', 'support@ranisahab.com'); @endphp
                     <tr>
                         <td align="center" style="background-color: #0b0907; padding: 30px 20px; border-top: 2px solid #c5a880; color: #a0a0a0; font-size: 12px; line-height: 1.5;">
-                            <p style="margin: 0 0 10px 0;">If you have any questions, please contact our Royal Concierge at <a href="mailto:support@ranisahab.com" style="color: #c5a880; text-decoration: none; font-weight: bold;">support@ranisahab.com</a>.</p>
-                            <p style="margin: 0;">&copy; 2026 RANISAHAB. All Rights Reserved.</p>
+                            <p style="margin: 0 0 10px 0;">If you have any questions, please contact our Royal Concierge at <a href="mailto:{{ $storeEmail }}" style="color: #c5a880; text-decoration: none; font-weight: bold;">{{ $storeEmail }}</a>.</p>
+                            <p style="margin: 0;">&copy; {{ date('Y') }} RANISAHAB. All Rights Reserved.</p>
                         </td>
                     </tr>
                 </table>

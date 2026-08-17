@@ -6,6 +6,19 @@
 @section('meta_og_image', $product->images && $product->images->isNotEmpty() ? asset($product->images->first()->file_path) : asset('images/logo.png'))
 
 @section('content')
+<style>
+  .product-main-image-wrap {
+      overflow: hidden;
+      position: relative;
+  }
+  .product-main-image-wrap img {
+      transition: transform 0.1s ease-out;
+      transform-origin: center center;
+  }
+  .product-main-image-wrap:hover img {
+      transform: scale(2.2);
+  }
+</style>
 <div class="plp-page">
   <div class="container py-5 text-ivory">
   
@@ -23,7 +36,7 @@
     <!-- Left Column: Product Image Gallery -->
     <div class="col-lg-6">
       <div class="position-sticky" style="top: 100px;">
-        <div class="product-main-image-wrap rounded overflow-hidden mb-3" style="border:1px solid rgba(201, 162, 75, 0.35); background:#0c0a09; height: 600px; display: flex; align-items: center; justify-content: center;">
+        <div class="product-main-image-wrap rounded overflow-hidden mb-3 position-relative" style="border:1px solid rgba(201, 162, 75, 0.35); background:#0c0a09; height: 580px; display: flex; align-items: center; justify-content: center; cursor: zoom-in;" onclick="openImageZoom()">
           @if ($product->images && $product->images->isNotEmpty())
             <img id="mainProductImg" src="{{ asset($product->images->first()->file_path) }}" alt="{{ $product->name }}" class="img-fluid w-100 h-100" style="object-fit: cover;">
           @else
@@ -39,14 +52,23 @@
             @endphp
             <img id="mainProductImg" src="{{ asset($mainFallbackImage) }}" alt="{{ $product->name }}" class="img-fluid w-100 h-100" style="object-fit: cover;">
           @endif
+
+          <button class="btn btn-dark btn-sm position-absolute bottom-0 end-0 m-3 border-gold text-gold font-label opacity-90" style="font-size: 0.7rem;" type="button" onclick="openImageZoom(event)">
+            <i class="fa-solid fa-magnifying-glass-plus me-1"></i> CLICK TO ZOOM
+          </button>
         </div>
 
-        <!-- Thumbnail selector (simulated if single, or loops images) -->
-        <div class="d-flex gap-2 justify-content-center">
+        <!-- Multi-Angle Gallery Thumbnails -->
+        <div class="d-flex gap-2 justify-content-center overflow-x-auto py-1">
           @if ($product->images && $product->images->isNotEmpty())
             @foreach($product->images as $img)
-              <div class="thumb-box rounded overflow-hidden cursor-pointer" onclick="swapMainImage('{{ asset($img->file_path) }}', this)" style="width: 72px; height: 90px; border: 2px solid {{ $loop->first ? 'var(--gold)' : 'rgba(255,255,255,0.1)' }};">
-                <img src="{{ asset($img->file_path) }}" alt="thumb" class="w-100 h-100" style="object-fit: cover;">
+              @php
+                $labels = ['Front', 'Back', 'Close-up', 'Full Look', 'Detail'];
+                $label = $labels[$loop->index % count($labels)];
+              @endphp
+              <div class="thumb-box rounded overflow-hidden cursor-pointer position-relative" onclick="swapMainImage('{{ asset($img->file_path) }}', this)" style="width: 76px; height: 92px; border: 2px solid {{ $loop->first ? 'var(--gold)' : 'rgba(255,255,255,0.1)' }}; flex-shrink: 0;">
+                <img src="{{ asset($img->file_path) }}" alt="{{ $label }}" class="w-100 h-100" style="object-fit: cover;">
+                <span class="badge bg-dark text-gold font-label position-absolute bottom-0 start-0 w-100 rounded-0" style="font-size: 0.52rem; opacity:0.85;">{{ $label }}</span>
               </div>
             @endforeach
           @endif
@@ -57,65 +79,115 @@
     <!-- Right Column: Product Couture Details -->
     <div class="col-lg-6">
       
-      <!-- Brand & Badges -->
-      <div class="mb-2 d-flex align-items-center gap-2">
-        <span class="text-gold font-display fw-bold text-uppercase" style="letter-spacing: 0.14em; font-size: 0.85rem; color: #c9a24b !important;">{{ $product->brand->name ?? 'RANISAHAB SIGNATURE' }}</span>
-        @if ($product->is_best_seller)
-          <span class="badge fw-bold px-2.5 py-1 text-uppercase" style="background: linear-gradient(90deg, #c5a880 0%, #b2946c 100%); color: #000000 !important; font-size: 0.68rem; letter-spacing: 0.08em; border-radius: 4px; box-shadow: 0 2px 8px rgba(197, 168, 128, 0.3);">BEST SELLER</span>
-        @elseif ($product->is_new_arrival)
-          <span class="badge bg-danger text-white fw-bold px-2.5 py-1 text-uppercase" style="font-size: 0.68rem; letter-spacing: 0.08em; border-radius: 4px;">NEW ARRIVAL</span>
-        @endif
+      <!-- Brand & SKU -->
+      <div class="mb-2 d-flex align-items-center justify-content-between">
+        <div class="d-flex align-items-center gap-2">
+          <span class="text-gold font-display fw-bold text-uppercase" style="letter-spacing: 0.14em; font-size: 0.85rem; color: #c9a24b !important;">{{ $product->brand->name ?? 'RANISAHAB SIGNATURE' }}</span>
+          @if ($product->is_best_seller)
+            <span class="badge fw-bold px-2.5 py-1 text-uppercase" style="background: linear-gradient(90deg, #c5a880 0%, #b2946c 100%); color: #000000 !important; font-size: 0.68rem; letter-spacing: 0.08em; border-radius: 4px;">BEST SELLER</span>
+          @elseif ($product->is_new_arrival)
+            <span class="badge bg-danger text-white fw-bold px-2.5 py-1 text-uppercase" style="font-size: 0.68rem; letter-spacing: 0.08em; border-radius: 4px;">NEW ARRIVAL</span>
+          @endif
+        </div>
+        <span class="badge bg-dark border border-warning border-opacity-25 text-gold-light font-label" style="font-size: 0.7rem; letter-spacing: 0.05em;">PRODUCT CODE: {{ $product->sku ?: ('RS-PRD-' . $product->id) }}</span>
       </div>
 
       <!-- Title -->
       <h1 class="font-display display-5 text-gold-light mb-3" style="font-weight: 700; letter-spacing: 0.05em;">{{ $product->name }}</h1>
 
-      <!-- Ratings & Reviews -->
-      <div class="d-flex align-items-center gap-3 mb-4">
-        <span class="text-gold fw-bold"><i class="fa-solid fa-star"></i> {{ $product->average_rating }}</span>
-        <span class="text-white-50">|</span>
-        <span class="small text-white opacity-90 fw-semibold">{{ $product->reviews_count }} Royal Reviews</span>
+      <!-- Stock & Certification -->
+      @php
+        $isHandloom = false;
+        $searchText = strtolower($product->name . ' ' . ($product->material ?? '') . ' ' . ($product->description ?? ''));
+        if (\Illuminate\Support\Str::contains($searchText, ['handloom', 'pure silk', 'zari', 'banarasi', 'kanjivaram', 'chanderi', 'weaver'])) {
+            $isHandloom = true;
+        }
+
+        $descData = [];
+        if ($product->description && str_starts_with($product->description, '{')) {
+            $descData = json_decode($product->description, true) ?: [];
+        } else {
+            $descData['general_desc'] = $product->description ?: 'Exquisite royal ' . $product->name . ' handcrafted by heritage weavers.';
+        }
+      @endphp
+      <div class="d-flex flex-wrap align-items-center gap-2 gap-md-3 mb-4">
+        <span class="text-gold-light small fw-semibold"><i class="fa-solid fa-shield-halved text-gold me-1"></i>Quality Checked &amp; Certified</span>
+        @if($isHandloom)
+          <span class="text-white-50">|</span>
+          <span class="text-gold-light small fw-semibold"><i class="fa-solid fa-certificate text-gold me-1"></i>100% Handloom Guarantee</span>
+        @endif
         <span class="text-white-50">|</span>
         <span class="text-success small fw-bold"><i class="fa-solid fa-circle-check me-1"></i>In Stock</span>
+        <span class="text-white-50">|</span>
+        <span class="text-success small fw-bold" style="color: #63d19e !important;"><i class="fa-solid fa-hand-holding-dollar text-gold me-1"></i>COD Available</span>
       </div>
 
       <!-- Pricing Block -->
       <div class="mb-4 p-3 p-md-4 rounded-3" style="background: linear-gradient(135deg, rgba(60, 8, 15, 0.6) 0%, rgba(18, 14, 11, 0.85) 100%); border: 1px solid rgba(201, 162, 75, 0.45); box-shadow: 0 10px 25px rgba(0,0,0,0.5);">
         <div class="d-flex align-items-baseline gap-3 mb-2">
           <span class="fs-2 fw-bold font-display" style="color: #f3dfb2 !important; letter-spacing: 0.04em;">₹{{ number_format($product->price, 0) }}</span>
-          @if ($product->sale_price)
+          @if ($product->sale_price && $product->sale_price > $product->price)
             <span class="text-white-50 text-decoration-line-through fs-5">₹{{ number_format($product->sale_price, 0) }}</span>
             <span class="badge bg-warning text-dark font-label fw-bold px-2 py-1">SPECIAL OFFER</span>
           @endif
         </div>
         <p class="small mb-0" style="color: #ded6c8 !important; font-size: 0.84rem; line-height: 1.5; letter-spacing: 0.02em;">
-          <i class="fa-solid fa-truck-fast text-gold me-1"></i> Inclusive of all GST taxes &bull; Free express delivery across India.
+          <i class="fa-solid fa-truck-fast text-gold me-1"></i> Inclusive of all GST taxes &bull; <strong>Free Express Shipping</strong> on orders above ₹5,000 (Flat ₹150 for orders below ₹5,000).
         </p>
       </div>
 
-      <!-- Description -->
-      <div class="mb-4">
-        <h6 class="text-gold font-display text-uppercase border-bottom border-warning border-opacity-25 pb-2 mb-2" style="color: #c9a24b !important; letter-spacing: 0.14em; font-size: 0.95rem;">COUTURE DESCRIPTION &amp; CRAFTSMANSHIP</h6>
-        <p style="line-height: 1.75; color: #ece3d3 !important; font-size: 0.92rem; letter-spacing: 0.015em; font-weight: 400;">
-          {{ $product->description ?: ($product->summary ?: 'Exquisite royal creation handcrafted with pure silk fabrics, intricate hand-embroidery, and traditional zari artistry by master handloom weavers.') }}
-        </p>
+      <!-- Delivery & Pincode Checker Box -->
+      <div class="p-3 mb-4 rounded bg-dark border border-secondary">
+        <div class="d-flex align-items-center justify-content-between mb-2">
+          <span class="small text-gold fw-bold font-label text-uppercase" style="letter-spacing: 0.08em;"><i class="fa-solid fa-location-dot me-1"></i>CHECK PINCODE &amp; COD AVAILABILITY</span>
+          <span class="small text-white-50" style="font-size: 0.7rem;"><i class="fa-solid fa-clock me-1 text-gold"></i>{{ $descData['dispatch_time'] ?? 'Dispatched in 24-48 Hrs' }}</span>
+        </div>
+        <div class="input-group mb-2">
+          <input type="text" id="pincodeCheckInput" class="form-control bg-black text-white border-secondary text-uppercase" placeholder="Enter 6-digit PIN Code" maxlength="6" style="font-size:0.8rem;">
+          <button class="btn btn-gold font-label px-3" type="button" onclick="checkPincodeServiceability()">CHECK</button>
+        </div>
+        <div id="pincodeCheckResult" class="small">
+          <span class="text-white-50" style="font-size: 0.72rem;"><i class="fa-solid fa-truck text-gold me-1"></i>Estimated Pan-India Delivery: <strong>{{ $descData['delivery_time'] ?? '4 to 7 Business Days' }}</strong>.</span>
+        </div>
       </div>
+
+      <!-- Color Options -->
+      @php
+        $colors = $product->variants && $product->variants->isNotEmpty() ? $product->variants->pluck('color')->filter(fn($c) => !empty($c) && strtolower($c) !== 'default')->unique() : collect();
+        $sizes = $product->variants && $product->variants->isNotEmpty() ? $product->variants->pluck('size')->filter(fn($s) => !empty($s) && strtolower($s) !== 'default' && strtolower($s) !== 'free size' && strtolower($s) !== 'free size (unstitched)')->unique() : collect();
+      @endphp
+
+      @if($colors->isNotEmpty())
+      <div class="mb-4">
+        <label class="text-gold fw-bold font-label text-uppercase mb-2" style="color: #f3dfb2 !important; letter-spacing: 0.12em; font-size: 0.82rem;">SELECT COUTURE SHADE / COLOR</label>
+        <div class="d-flex flex-wrap gap-2" id="coutureColorButtons">
+          @foreach($colors as $color)
+            <button type="button" class="btn btn-outline-gold cout-color-btn {{ $loop->first ? 'active' : '' }} px-3.5 py-1.5 font-display text-uppercase" style="font-size: 0.78rem; letter-spacing: 0.08em; @if($loop->first) background: linear-gradient(90deg, #c5a880 0%, #b2946c 100%); color: #000; @endif" onclick="selectCoutureColor(this, '{{ $color }}')">
+              <span class="color-dot me-2" style="display:inline-block; width:10px; height:10px; border-radius:50%; background-color: {{ strtolower($color) == 'rose gold' ? '#b76e79' : (strtolower($color) == 'maroon' ? '#800000' : (strtolower($color) == 'crimson' ? '#dc143c' : (strtolower($color) == 'emerald' ? '#50c878' : (strtolower($color) == 'ivory' ? '#fffff0' : (strtolower($color) == 'gold' ? '#ffd700' : (strtolower($color) == 'silver' ? '#c0c0c0' : (strtolower($color) == 'white' ? '#ffffff' : (strtolower($color) == 'red' ? '#ff0000' : strtolower($color))))))))) }}"></span>
+              {{ $color }}
+            </button>
+          @endforeach
+        </div>
+      </div>
+      @endif
 
       <!-- Sizing Options -->
       <div class="mb-4">
         <div class="d-flex justify-content-between align-items-center mb-2">
-          <label class="text-gold fw-bold font-label text-uppercase" style="color: #f3dfb2 !important; letter-spacing: 0.1em; font-size: 0.85rem;">SELECT COUTURE SIZE</label>
-          <a href="{{ route('customer.measurements') }}" class="small text-gold text-decoration-underline font-label" style="color: #c9a24b !important; letter-spacing: 0.05em;"><i class="fa-solid fa-ruler me-1"></i>Sizing Spec Sheet</a>
+          <label class="text-gold fw-bold font-label text-uppercase" style="color: #f3dfb2 !important; letter-spacing: 0.1em; font-size: 0.85rem;">SELECT COUTURE SIZE / VARIANT</label>
         </div>
         <div class="d-flex flex-wrap gap-2" id="coutureSizeButtons">
-          @if ($product->variants && $product->variants->where('size', '!=', null)->isNotEmpty())
-            @foreach($product->variants->pluck('size')->unique() as $sz)
-              <button type="button" class="btn btn-outline-gold cout-size-btn {{ $loop->first ? 'active' : '' }} px-3.5 py-2 font-display text-uppercase" style="font-size: 0.8rem; letter-spacing: 0.08em;" onclick="selectCoutureSize(this, '{{ $sz }}')">
+          @if ($sizes->isNotEmpty())
+            @foreach($sizes as $sz)
+              <button type="button" class="btn btn-outline-gold cout-size-btn {{ $loop->first ? 'active' : '' }} px-3.5 py-2 font-display text-uppercase" style="font-size: 0.8rem; letter-spacing: 0.08em; @if($loop->first) background: linear-gradient(90deg, #c5a880 0%, #b2946c 100%); color: #000; @endif" onclick="selectCoutureSize(this, '{{ $sz }}')">
                 {{ $sz }}
               </button>
             @endforeach
+            <button type="button" class="btn btn-outline-gold cout-size-btn px-3.5 py-2 font-display text-uppercase" style="font-size: 0.8rem; letter-spacing: 0.08em;" onclick="selectCoutureSize(this, 'Custom Stitched')">
+              <i class="fa-solid fa-scissors me-1 text-gold"></i> Custom Stitched
+            </button>
           @else
-            <button type="button" class="btn btn-outline-gold cout-size-btn active px-3.5 py-2 font-display text-uppercase" style="font-size: 0.8rem; letter-spacing: 0.08em;" onclick="selectCoutureSize(this, 'Free Size (Unstitched)')">
+            <button type="button" class="btn btn-outline-gold cout-size-btn active px-3.5 py-2 font-display text-uppercase" style="font-size: 0.8rem; letter-spacing: 0.08em; background: linear-gradient(90deg, #c5a880 0%, #b2946c 100%); color: #000;" onclick="selectCoutureSize(this, 'Free Size (Unstitched)')">
               Free Size (Unstitched)
             </button>
             <button type="button" class="btn btn-outline-gold cout-size-btn px-3.5 py-2 font-display text-uppercase" style="font-size: 0.8rem; letter-spacing: 0.08em;" onclick="selectCoutureSize(this, 'Custom Stitched')">
@@ -123,31 +195,19 @@
             </button>
           @endif
         </div>
-        <div class="p-3 rounded-3 mt-3 d-flex align-items-center gap-2.5" style="background: rgba(201, 162, 75, 0.08); border: 1px solid rgba(201, 162, 75, 0.35) !important;">
-          <i class="fa-solid fa-scissors text-gold fs-6 flex-shrink-0" style="color: #c9a24b !important;"></i>
-          <span style="color: #ece3d3 !important; font-size: 0.82rem; line-height: 1.5; letter-spacing: 0.01em; margin: 0;">All sarees &amp; lehengas include standard internal fabric margins for personal alterations.</span>
-        </div>
       </div>
 
-      <!-- Action Buttons: Buy Now / Add to Bag / Wishlist -->
-      <div class="d-flex flex-column gap-3 mb-5">
-        <!-- BUY NOW — primary CTA -->
-        <button type="button"
-          class="btn w-100 py-3 d-flex align-items-center justify-content-center gap-2 font-display fw-bold"
-          style="background: var(--maroon); color: var(--gold-light); border: 1px solid var(--maroon-bright); letter-spacing: 0.12em; font-size: 1rem; border-radius: var(--radius); transition: all 0.2s ease;"
-          onmouseover="this.style.background='var(--maroon-bright)'"
-          onmouseout="this.style.background='var(--maroon)'"
-          onclick="buyNow({{ $product->id }})">
-          <i class="fa-solid fa-bolt fs-5"></i> BUY NOW
-        </button>
-
-        <!-- ADD TO BAG + WISHLIST side by side -->
-        <div class="d-flex gap-3">
+      <!-- Action Buttons: Buy Now / Add to Cart / Wishlist / Enquire -->
+      <div class="d-flex flex-column gap-2 mb-4">
+        <!-- BUY NOW + WISHLIST row -->
+        <div class="d-flex gap-2">
           <button type="button"
-            class="btn btn-gold flex-grow-1 py-3 d-flex align-items-center justify-content-center gap-2 font-display fw-bold text-dark"
-            style="letter-spacing: 0.1em; background: linear-gradient(90deg, #c5a880 0%, #b2946c 100%); border: none;"
-            onclick="addToBag({{ $product->id }})">
-            <i class="fa-solid fa-bag-shopping fs-5"></i> ADD TO BAG
+            class="btn flex-grow-1 py-3 d-flex align-items-center justify-content-center gap-2 font-display fw-bold"
+            style="background: var(--maroon); color: var(--gold-light); border: 1px solid var(--maroon-bright); letter-spacing: 0.12em; font-size: 1rem; border-radius: var(--radius); transition: all 0.2s ease;"
+            onmouseover="this.style.background='var(--maroon-bright)'"
+            onmouseout="this.style.background='var(--maroon)'"
+            onclick="buyNow({{ $product->id }})">
+            <i class="fa-solid fa-bolt fs-5"></i> BUY NOW
           </button>
           <button type="button"
             class="btn btn-outline-gold py-3 px-4 d-flex align-items-center justify-content-center gap-2"
@@ -155,6 +215,53 @@
             title="Add to Wishlist">
             <i class="@if(Auth::check() ? \App\Models\Wishlist::where('customer_id', auth()->user()->customer->id ?? 0)->where('product_id', $product->id)->exists() : in_array($product->id, session('wishlist', []))) fa-solid text-gold @else fa-regular @endif fa-heart fs-5"></i>
           </button>
+        </div>
+
+        <!-- ADD TO CART + ENQUIRE & CUSTOMIZE row -->
+        <div class="d-flex gap-2">
+          <button type="button"
+            class="btn btn-gold flex-grow-1 py-2.5 d-flex align-items-center justify-content-center gap-2 font-display fw-bold text-dark"
+            style="letter-spacing: 0.1em; background: linear-gradient(90deg, #c5a880 0%, #b2946c 100%); border: none; font-size: 0.82rem;"
+            onclick="addToBag({{ $product->id }})">
+            <i class="fa-solid fa-cart-plus fs-5"></i> ADD TO CART
+          </button>
+          <button type="button"
+            class="btn btn-outline-gold flex-grow-1 py-2.5 d-flex align-items-center justify-content-center gap-2 font-display fw-bold"
+            style="letter-spacing: 0.1em; font-size: 0.82rem; border-radius: var(--radius);"
+            data-bs-toggle="modal"
+            data-bs-target="#productEnquiryModal">
+            <i class="fa-solid fa-envelope-open-text fs-5"></i> ENQUIRE &amp; CUSTOMIZE
+          </button>
+        </div>
+      </div>
+
+      <!-- Structured Specifications & What's Included Box -->
+      <div class="p-3 mb-4 rounded bg-dark border border-warning border-opacity-25">
+        <h6 class="text-gold font-display text-uppercase mb-3 pb-2 border-bottom border-secondary" style="font-size: 0.85rem;"><i class="fa-solid fa-list-check me-2"></i>PRODUCT SPECIFICATIONS &amp; WHAT'S INCLUDED</h6>
+        <div class="row g-2 small text-white-50" style="line-height: 1.6;">
+          <div class="col-6"><strong>Fabric:</strong> {{ $descData['fabric'] ?? ($product->material ?: 'Pure Silk / Handloom Zari') }}</div>
+          <div class="col-6"><strong>Work:</strong> {{ $descData['work'] ?? 'Handcrafted Zari / Weaving' }}</div>
+          <div class="col-6"><strong>Size:</strong> {{ $descData['size'] ?? 'Free Size (Unstitched)' }}</div>
+          <div class="col-6"><strong>Weight:</strong> {{ $descData['weight'] ?? 'Approx 850g - 1.2kg' }}</div>
+          <div class="col-6"><strong>Dispatch:</strong> {{ $descData['dispatch_time'] ?? 'Dispatched in 24-48 Hours' }}</div>
+          <div class="col-6"><strong>Delivery:</strong> {{ $descData['delivery_time'] ?? '4 to 7 Business Days' }}</div>
+          <div class="col-6"><strong>Shipping:</strong> Free above ₹5,000 (Else ₹150)</div>
+          @if(!empty($descData['blouse']))
+            <div class="col-6"><strong>Blouse:</strong> {{ $descData['blouse'] }}</div>
+          @endif
+          @if(!empty($descData['lehenga']))
+            <div class="col-6"><strong>Lehenga:</strong> {{ $descData['lehenga'] }}</div>
+          @endif
+          @if(!empty($descData['dupatta']))
+            <div class="col-6"><strong>Dupatta:</strong> {{ $descData['dupatta'] }}</div>
+          @endif
+        </div>
+        <hr class="border-secondary my-2">
+        <div class="mt-2">
+          <strong class="text-gold-light small d-block mb-1"><i class="fa-solid fa-box-open me-1 text-gold"></i>What's Included:</strong>
+          <span class="small text-white-50" style="font-size:0.75rem;">
+            {{ $descData['whats_included'] ?? ($product->category && $product->category->slug === 'sarees' ? '1 Unstitched Saree (5.5 Meters), 1 Matching Unstitched Blouse Piece (80 cm), 1 Luxury Satin Storage Bag, Authenticity Card.' : ($product->category && $product->category->slug === 'suits' ? '1 Kurta Fabric/Outfit, 1 Bottom Wear Material, 1 Embellished Dupatta, 1 Storage Bag & Fitting Card.' : '1 Semi-Stitched Lehenga (Heavy Flared Gher), 1 Unstitched/Stitched Blouse Piece, 1 Heavy Embellished Dupatta, Storage Bag & Design Certificate.')) }}
+          </span>
         </div>
       </div>
 
@@ -168,15 +275,18 @@
           </h2>
           <div id="collapseOne" class="accordion-collapse collapse" data-bs-parent="#detailsAccordion">
             <div class="accordion-body text-white opacity-90 small" style="color: #e5cf9b !important; line-height: 1.7;">
-              @if ($product->category && $product->category->slug === 'sarees')
-                This saree couture creation features 100% pure silk yards hand-loomed with metallic gold thread weavers (Zari). It includes matching blouse fabric materials (80cm) with running borders. Recommend dry-clean only to preserve color fastness.
-              @elseif ($product->category && $product->category->slug === 'suits')
-                This designer suit features premium lightweight fabric, tailored for a flattering silhouette. It includes matching dupatta, bottom wear material, and intricate neckline embroidery details. Recommend dry-clean only to preserve color fastness.
-              @elseif ($product->category && $product->category->slug === 'lehengas')
-                This exclusive lehenga features a heavy flared gher, premium fabric lining, and detailed handcrafting (Zari, Resham, or Gota Patti work). Includes matching choli and heavy dupatta. Recommend dry-clean only to preserve color fastness.
-              @else
-                This exclusive couture creation features our signature luxury crafting. Handcrafted with heavy traditional Zardozi and Kundan details on finest fabrics. Custom tailoring and designer fittings included. Recommend dry-clean only.
+              @if(!empty($descData['general_desc']))
+                <p class="mb-3">{{ $descData['general_desc'] }}</p>
               @endif
+              <div class="spec-details-list">
+                @if(!empty($descData['fabric'])) <div>❖ <strong>Fabric / Material:</strong> {{ $descData['fabric'] }}</div> @endif
+                @if(!empty($descData['work'])) <div>❖ <strong>Craftsmanship / Work:</strong> {{ $descData['work'] }}</div> @endif
+                @if(!empty($descData['size'])) <div>❖ <strong>Size / Fit:</strong> {{ $descData['size'] }}</div> @endif
+                @if(!empty($descData['weight'])) <div>❖ <strong>Weight:</strong> {{ $descData['weight'] }}</div> @endif
+                @if(!empty($descData['blouse'])) <div>❖ <strong>Blouse details:</strong> {{ $descData['blouse'] }}</div> @endif
+                @if(!empty($descData['lehenga'])) <div>❖ <strong>Lehenga details:</strong> {{ $descData['lehenga'] }}</div> @endif
+                @if(!empty($descData['dupatta'])) <div>❖ <strong>Dupatta details:</strong> {{ $descData['dupatta'] }}</div> @endif
+              </div>
             </div>
           </div>
         </div>
@@ -348,11 +458,111 @@
   </div>
 </div>
 
+<!-- Product Couture Enquiry Modal -->
+<div class="modal fade" id="productEnquiryModal" tabindex="-1" aria-labelledby="productEnquiryModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content text-white" style="background: linear-gradient(145deg, #181410 0%, #0c0a08 100%); border: 1px solid rgba(201, 162, 75, 0.4); border-radius: 12px; box-shadow: 0 15px 40px rgba(0,0,0,0.8);">
+      <div class="modal-header border-bottom border-warning border-opacity-25 pb-3">
+        <h5 class="modal-title font-display text-gold d-flex align-items-center gap-2" id="productEnquiryModalLabel">
+          <i class="fa-solid fa-crown text-gold"></i> COUTURE CUSTOMISATION ENQUIRY
+        </h5>
+        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <form action="{{ route('contact.submit') }}" method="POST">
+        @csrf
+        <div class="modal-body py-4 px-4 text-start">
+          <p class="small text-white-50 mb-3 text-start">Enquire about custom tailoring, specific shade dyes, fabric modifications, or book a session with our designer for this outfit.</p>
+          
+          <div class="mb-3 text-start">
+            <label class="form-label small text-gold fw-bold">Outfit Details</label>
+            <input type="text" name="subject" class="form-control bg-dark border-secondary text-white" value="Couture Enquiry: {{ $product->name }} (Code: {{ $product->sku ?: ('RS-PRD-' . $product->id) }})" readonly>
+          </div>
+          
+          <div class="mb-3 text-start">
+            <label class="form-label small text-gold fw-bold">Your Full Name</label>
+            <input type="text" name="name" class="form-control bg-dark border-secondary text-white" placeholder="e.g. Neha Sharma" required value="{{ auth()->check() ? auth()->user()->name : '' }}">
+          </div>
+          
+          <div class="mb-3 text-start">
+            <label class="form-label small text-gold fw-bold">Phone / WhatsApp Number</label>
+            <input type="tel" name="phone" class="form-control bg-dark border-secondary text-white" placeholder="+91 98765 43210" value="{{ auth()->check() && auth()->user()->customer ? auth()->user()->customer->phone : '' }}">
+          </div>
+          
+          <div class="mb-3 text-start">
+            <label class="form-label small text-gold fw-bold">Email Address</label>
+            <input type="email" name="email" class="form-control bg-dark border-secondary text-white" placeholder="name@example.com" required value="{{ auth()->check() ? auth()->user()->email : '' }}">
+          </div>
+          
+          <div class="mb-3 text-start">
+            <label class="form-label small text-gold fw-bold">Customisation Requirements / Message</label>
+            <textarea name="message" class="form-control bg-dark border-secondary text-white" rows="3" placeholder="Specify neckline changes, sleeve preferences, borders details, or sizing request..." required>I would like to enquire about customizing/purchasing the {{ $product->name }}. Please contact me to discuss the details.</textarea>
+          </div>
+        </div>
+        <div class="modal-footer border-top border-warning border-opacity-15">
+          <button type="button" class="btn btn-outline-secondary px-4 text-white" data-bs-dismiss="modal">Close</button>
+          <button type="submit" class="btn btn-gold px-4 fw-bold font-label text-dark" style="background: linear-gradient(90deg, #c5a880 0%, #b2946c 100%); border: none;">
+            <i class="fa-solid fa-paper-plane me-1"></i> SEND ENQUIRY NOW
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<!-- Image Lightbox Modal -->
+<div class="modal fade" id="imageZoomModal" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered modal-xl">
+    <div class="modal-content bg-black text-center border-gold p-2">
+      <div class="d-flex justify-content-between align-items-center px-3 py-2 border-bottom border-secondary">
+        <span class="text-gold font-display small"><i class="fa-solid fa-crown me-2"></i>{{ $product->name }} — Couture Zoom</span>
+        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body p-0 overflow-auto text-center" style="max-height: 85vh;">
+        <img id="modalZoomImg" src="" alt="{{ $product->name }}" class="img-fluid" style="max-height: 82vh; object-fit: contain;">
+      </div>
+    </div>
+  </div>
+</div>
+
 @endsection
 
 @push('scripts')
 <script>
   let selectedCoutureSize = "{{ $product->variants && $product->variants->where('size', '!=', null)->isNotEmpty() ? $product->variants->pluck('size')->filter()->first() : 'Free Size (Unstitched)' }}";
+  let selectedColor = "{{ $product->variants && $product->variants->where('color', '!=', null)->where('color', '!=', 'Default')->isNotEmpty() ? $product->variants->where('color', '!=', null)->where('color', '!=', 'Default')->pluck('color')->first() : 'Default' }}";
+
+  function openImageZoom(event) {
+      if (event) event.stopPropagation();
+      const currentSrc = document.getElementById('mainProductImg').src;
+      document.getElementById('modalZoomImg').src = currentSrc;
+      const modal = new bootstrap.Modal(document.getElementById('imageZoomModal'));
+      modal.show();
+  }
+
+  function checkPincodeServiceability() {
+      const pin = document.getElementById('pincodeCheckInput').value.trim();
+      const resultDiv = document.getElementById('pincodeCheckResult');
+      
+      if (!pin || pin.length !== 6 || !/^\d+$/.test(pin)) {
+          resultDiv.innerHTML = '<span class="text-danger"><i class="fa-solid fa-circle-exclamation me-1"></i>Please enter a valid 6-digit Indian PIN Code.</span>';
+          return;
+      }
+
+      resultDiv.innerHTML = '<span class="text-gold"><i class="fa-solid fa-spinner fa-spin me-1"></i>Checking delivery serviceability for ' + pin + '...</span>';
+
+      fetch("{{ route('checkout.check-pincode') }}?pincode=" + pin)
+      .then(res => res.json())
+      .then(data => {
+          if (data.serviceable) {
+              resultDiv.innerHTML = `<span class="text-success fw-bold"><i class="fa-solid fa-circle-check me-1"></i>COD & Express Delivery Available for PIN ${pin}! (${data.etd || '4-7 Days'})</span>`;
+          } else {
+              resultDiv.innerHTML = `<span class="text-warning"><i class="fa-solid fa-truck-ramp-box me-1"></i>Prepaid Express Delivery Available for PIN ${pin}. (COD subject to regional logistics).</span>`;
+          }
+      })
+      .catch(err => {
+          resultDiv.innerHTML = `<span class="text-success"><i class="fa-solid fa-circle-check me-1"></i>Express Shipping &amp; Cash On Delivery available across 25,000+ PIN Codes!</span>`;
+      });
+  }
 
   function selectCoutureSize(btn, sizeName) {
       document.querySelectorAll('.cout-size-btn').forEach(b => {
@@ -371,6 +581,19 @@
       } else {
           showToast("Selected size: " + sizeName);
       }
+  }
+
+  function selectCoutureColor(btn, colorName) {
+      document.querySelectorAll('.cout-color-btn').forEach(b => {
+          b.classList.remove('active');
+          b.style.background = 'transparent';
+          b.style.color = 'var(--gold)';
+      });
+      btn.classList.add('active');
+      btn.style.background = 'linear-gradient(90deg, #c5a880 0%, #b2946c 100%)';
+      btn.style.color = '#000000';
+      selectedColor = colorName;
+      showToast("Selected color: " + colorName);
   }
 
   function confirmCustomFitting() {
@@ -399,12 +622,12 @@
               "Content-Type": "application/json",
               "X-CSRF-TOKEN": csrfToken
           },
-          body: JSON.stringify({ product_id: productId, quantity: 1, size: selectedCoutureSize })
+          body: JSON.stringify({ product_id: productId, quantity: 1, size: selectedCoutureSize, color: selectedColor })
       })
       .then(res => res.json())
       .then(data => {
           if(data.success) {
-              showToast(data.message + " (" + selectedCoutureSize + ")");
+              showToast(data.message + " (" + selectedCoutureSize + " / " + selectedColor + ")");
               const counter = document.getElementById('headerCartCount');
               if(counter) counter.innerText = data.cart_count;
           } else {
@@ -457,7 +680,7 @@
               "Content-Type": "application/json",
               "X-CSRF-TOKEN": csrfToken
           },
-          body: JSON.stringify({ product_id: productId, quantity: 1, size: selectedCoutureSize })
+          body: JSON.stringify({ product_id: productId, quantity: 1, size: selectedCoutureSize, color: selectedColor })
       })
       .then(res => res.json())
       .then(data => {
@@ -475,5 +698,23 @@
           showToast('Error processing request. Please try again.');
       });
   }
+
+  document.addEventListener('DOMContentLoaded', function() {
+      const wrap = document.querySelector('.product-main-image-wrap');
+      const img = document.getElementById('mainProductImg');
+      if (wrap && img) {
+          wrap.addEventListener('mousemove', function(e) {
+              const rect = wrap.getBoundingClientRect();
+              const x = e.clientX - rect.left;
+              const y = e.clientY - rect.top;
+              const xPercent = (x / rect.width) * 100;
+              const yPercent = (y / rect.height) * 100;
+              img.style.transformOrigin = `${xPercent}% ${yPercent}%`;
+          });
+          wrap.addEventListener('mouseleave', function() {
+              img.style.transformOrigin = 'center center';
+          });
+      }
+  });
 </script>
 @endpush

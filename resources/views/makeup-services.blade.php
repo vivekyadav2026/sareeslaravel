@@ -5,6 +5,32 @@
 @section('meta_keywords', 'bridal makeup, waterproof makeup, airbrush makeup, HD makeup artist, wedding draping, hairstyle booking')
 
 @section('content')
+<style>
+  /* Ensure a dark luxury background for maximum text readability and visual contrast */
+  body {
+      background-color: #0c0a09 !important;
+      color: #fdfbf7 !important;
+  }
+  .plp-page {
+      background-color: #0c0a09 !important;
+  }
+  /* Ensure details and description texts have high contrast */
+  .dark-split-text {
+      color: #d1c7bd !important;
+  }
+  .dark-form-subtitle {
+      color: #bfae9b !important;
+  }
+  .bp-card-tagline {
+      color: #c4b5a2 !important;
+  }
+  .bp-feature-list li {
+      color: #e3dad0 !important;
+  }
+  .dark-form-subtitle {
+      color: #c4b6a5 !important;
+  }
+</style>
 <div class="plp-page">
 
   <!-- Breadcrumb -->
@@ -21,6 +47,9 @@
         <span class="dark-split-label">EXPERT BRIDAL ARTISTRY</span>
         <h1 class="dark-split-title">WATERPROOF<br>BRIDAL MAKEUP</h1>
         <p class="dark-split-text">Look picture-perfect from ceremony to reception. Our senior celebrity makeup artists use 100% HD &amp; Airbrush waterproof techniques tailored for your skin tone and wedding theme.</p>
+        <div class="mb-3">
+          <span class="badge bg-gold text-dark font-label px-3 py-2 text-uppercase" style="letter-spacing:0.08em; font-size:0.7rem;"><i class="fa-solid fa-location-dot me-1"></i> IN-STUDIO &amp; ON-LOCATION SERVICES IN: {{ \App\Models\Setting::getVal('makeup_serviceable_locations', 'Delhi-NCR, Mumbai, Jaipur, Udaipur') }}</span>
+        </div>
         <div class="dark-split-actions">
           <a href="#bookingForm" class="bp-book-btn bp-book-featured" style="width:auto;padding:0.85rem 2rem;display:inline-flex;">BOOK ARTIST NOW</a>
           <a href="{{ route('contact') }}" class="dark-wa-btn"><i class="fa-brands fa-whatsapp"></i> WHATSAPP</a>
@@ -29,6 +58,32 @@
       <div class="dark-split-img-wrap">
         <div class="dark-split-img">
           <img src="{{ asset('images/makeup_artist.png') }}" alt="Bridal Makeup Artist">
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Service Location & Availability Info Strip -->
+  <div class="container my-5">
+    <div class="p-4 rounded border border-warning border-opacity-25" style="background: linear-gradient(135deg, #130f0c 0%, #0c0a09 100%);">
+      <div class="row g-4 align-items-center">
+        <div class="col-md-6 border-end border-secondary border-opacity-25">
+          <div class="d-flex align-items-start gap-3">
+            <div class="text-gold fs-3 mt-1"><i class="fa-solid fa-hotel"></i></div>
+            <div>
+              <h5 class="text-gold font-display text-uppercase mb-1" style="font-size: 0.95rem; letter-spacing: 0.08em;">FLAGSHIP COUTURE STUDIO</h5>
+              <p class="small text-white-50 mb-0" style="line-height: 1.5;">Visit us for premium trial sessions, customized fittings, and pre-bridal packages at our flagship studio: <strong>{{ \App\Models\Setting::getVal('makeup_studio_address', '1st Floor, GK-1, New Delhi, India') }}</strong>.</p>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="d-flex align-items-start gap-3">
+            <div class="text-gold fs-3 mt-1"><i class="fa-solid fa-plane-departure"></i></div>
+            <div>
+              <h5 class="text-gold font-display text-uppercase mb-1" style="font-size: 0.95rem; letter-spacing: 0.08em;">SERVICEABLE LOCATIONS</h5>
+              <p class="small text-white-50 mb-0" style="line-height: 1.5;">Our senior celebrity makeup artists are available to book on-location in: <strong>{{ \App\Models\Setting::getVal('makeup_serviceable_locations', 'Delhi-NCR, Mumbai, Jaipur, Udaipur') }}</strong>. (For other destination wedding locations, please contact our support team).</p>
+            </div>
+          </div>
         </div>
       </div>
     </div>

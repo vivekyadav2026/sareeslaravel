@@ -79,4 +79,24 @@ class Product extends Model
     {
         return $this->belongsToMany(Collection::class);
     }
+
+    public function reviews()
+    {
+        return $this->hasMany(Review::class)->where('is_approved', true);
+    }
+
+    public function getAverageRatingAttribute()
+    {
+        if ($this->rating > 0) {
+            return (float) $this->rating;
+        }
+        $avg = $this->reviews()->avg('rating');
+        return $avg ? round((float) $avg, 1) : 0;
+    }
+
+    public function getGenuineReviewsCountAttribute()
+    {
+        $cnt = $this->reviews()->count();
+        return $cnt > 0 ? $cnt : ($this->reviews_count ?: 0);
+    }
 }

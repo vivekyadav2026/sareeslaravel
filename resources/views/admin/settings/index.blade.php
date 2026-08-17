@@ -182,6 +182,71 @@
                     </div>
                 </div>
 
+                <!-- Store Contact & Social Information Card -->
+                <div class="card shadow-sm mb-4">
+                    <div class="card-header border-bottom border-secondary d-flex align-items-center">
+                        <h5 class="card-title text-gold mb-0"><i class="fas fa-headset me-2 text-gold"></i>Store Contact &amp; Social Links</h5>
+                    </div>
+                    <div class="card-body">
+                        
+                        <!-- Store Phone -->
+                        <div class="mb-3">
+                            <label for="store_phone" class="form-label text-gold-light fw-bold">Support Phone Number</label>
+                            <input type="text" name="store_phone" id="store_phone" class="form-control bg-dark text-white border-secondary" value="{{ old('store_phone', \App\Models\Setting::getVal('store_phone', '+91 98765 43210')) }}">
+                        </div>
+
+                        <!-- Store WhatsApp -->
+                        <div class="mb-3">
+                            <label for="store_whatsapp" class="form-label text-gold-light fw-bold">Official WhatsApp Number (Country Code included)</label>
+                            <input type="text" name="store_whatsapp" id="store_whatsapp" class="form-control bg-dark text-white border-secondary" value="{{ old('store_whatsapp', \App\Models\Setting::getVal('store_whatsapp', '919876543210')) }}">
+                        </div>
+
+                        <!-- Store Support Email -->
+                        <div class="mb-3">
+                            <label for="store_email" class="form-label text-gold-light fw-bold">Official Support Email</label>
+                            <input type="email" name="store_email" id="store_email" class="form-control bg-dark text-white border-secondary" value="{{ old('store_email', \App\Models\Setting::getVal('store_email', 'support@ranisahab.com')) }}">
+                        </div>
+
+                        <!-- Business Hours -->
+                        <div class="mb-3">
+                            <label for="business_hours" class="form-label text-gold-light fw-bold">Business Hours</label>
+                            <input type="text" name="business_hours" id="business_hours" class="form-control bg-dark text-white border-secondary" value="{{ old('business_hours', \App\Models\Setting::getVal('business_hours', 'Mon - Sat: 10:00 AM - 8:00 PM IST')) }}">
+                        </div>
+
+                        <!-- Flagship Makeup Studio Address -->
+                        <div class="mb-3">
+                            <label for="makeup_studio_address" class="form-label text-gold-light fw-bold">Flagship Makeup Studio Address</label>
+                            <input type="text" name="makeup_studio_address" id="makeup_studio_address" class="form-control bg-dark text-white border-secondary" value="{{ old('makeup_studio_address', \App\Models\Setting::getVal('makeup_studio_address', '1st Floor, GK-1, New Delhi, India')) }}">
+                        </div>
+
+                        <!-- Makeup Travel Availability -->
+                        <div class="mb-3">
+                            <label for="makeup_travel_availability" class="form-label text-gold-light fw-bold">Makeup Travel Availability Description</label>
+                            <textarea name="makeup_travel_availability" id="makeup_travel_availability" class="form-control bg-dark text-white border-secondary" rows="2">{{ old('makeup_travel_availability', \App\Models\Setting::getVal('makeup_travel_availability', 'Our senior celebrity makeup artists are fully available to travel directly to your wedding venue, resort, or home location anywhere in India or internationally.')) }}</textarea>
+                        </div>
+
+                        <!-- Makeup Serviceable Locations -->
+                        <div class="mb-3">
+                            <label for="makeup_serviceable_locations" class="form-label text-gold-light fw-bold">Makeup Serviceable Locations / Cities (Comma-separated)</label>
+                            <input type="text" name="makeup_serviceable_locations" id="makeup_serviceable_locations" class="form-control bg-dark text-white border-secondary" value="{{ old('makeup_serviceable_locations', \App\Models\Setting::getVal('makeup_serviceable_locations', 'Delhi-NCR, Mumbai, Jaipur, Udaipur')) }}" placeholder="e.g. Delhi-NCR, Mumbai, Jaipur, Udaipur">
+                            <small class="text-muted">Enter the list of cities where makeup services are available on-location.</small>
+                        </div>
+
+                        <!-- Instagram URL -->
+                        <div class="mb-3">
+                            <label for="instagram_url" class="form-label text-gold-light fw-bold">Instagram URL</label>
+                            <input type="url" name="instagram_url" id="instagram_url" class="form-control bg-dark text-white border-secondary" value="{{ old('instagram_url', \App\Models\Setting::getVal('instagram_url', 'https://instagram.com/ranisahabofficial')) }}">
+                        </div>
+
+                        <!-- Facebook URL -->
+                        <div class="mb-3">
+                            <label for="facebook_url" class="form-label text-gold-light fw-bold">Facebook URL</label>
+                            <input type="url" name="facebook_url" id="facebook_url" class="form-control bg-dark text-white border-secondary" value="{{ old('facebook_url', \App\Models\Setting::getVal('facebook_url', 'https://facebook.com/ranisahabofficial')) }}">
+                        </div>
+
+                    </div>
+                </div>
+
                 <!-- Google Maps Autocomplete Integration Card -->
                 <div class="card shadow-sm mb-4">
                     <div class="card-header border-bottom border-secondary d-flex align-items-center">
