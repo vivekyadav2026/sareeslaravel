@@ -73,7 +73,7 @@
     </div>
 
     <!-- WhatsApp Order Notification CTA -->
-    @php $storeWhatsapp = \App\Models\Setting::getVal('store_whatsapp', '919876543210'); @endphp
+    @php $storeWhatsapp = \App\Models\Setting::getVal('store_whatsapp', '919039046452'); @endphp
     <div class="text-center">
       <a href="https://wa.me/{{ preg_replace('/[^0-9]/', '', $storeWhatsapp) }}?text={{ urlencode('Hi RANISAHAB, please send me WhatsApp order updates for Order #' . $order->order_number) }}" target="_blank" class="btn btn-whatsapp w-100 py-3 small font-label fw-bold" style="letter-spacing:0.05em;">
         <i class="fa-brands fa-whatsapp fs-5 me-2"></i> GET INSTANT WHATSAPP ORDER UPDATES

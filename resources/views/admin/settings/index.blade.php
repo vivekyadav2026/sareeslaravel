@@ -192,13 +192,13 @@
                         <!-- Store Phone -->
                         <div class="mb-3">
                             <label for="store_phone" class="form-label text-gold-light fw-bold">Support Phone Number</label>
-                            <input type="text" name="store_phone" id="store_phone" class="form-control bg-dark text-white border-secondary" value="{{ old('store_phone', \App\Models\Setting::getVal('store_phone', '+91 98765 43210')) }}">
+                            <input type="text" name="store_phone" id="store_phone" class="form-control bg-dark text-white border-secondary" value="{{ old('store_phone', \App\Models\Setting::getVal('store_phone', '+91 90390 46452')) }}">
                         </div>
 
                         <!-- Store WhatsApp -->
                         <div class="mb-3">
                             <label for="store_whatsapp" class="form-label text-gold-light fw-bold">Official WhatsApp Number (Country Code included)</label>
-                            <input type="text" name="store_whatsapp" id="store_whatsapp" class="form-control bg-dark text-white border-secondary" value="{{ old('store_whatsapp', \App\Models\Setting::getVal('store_whatsapp', '919876543210')) }}">
+                            <input type="text" name="store_whatsapp" id="store_whatsapp" class="form-control bg-dark text-white border-secondary" value="{{ old('store_whatsapp', \App\Models\Setting::getVal('store_whatsapp', '919039046452')) }}">
                         </div>
 
                         <!-- Store Support Email -->

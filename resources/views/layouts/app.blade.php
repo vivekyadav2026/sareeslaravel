@@ -88,6 +88,16 @@
 </head>
 <body>
 
+@php
+  $storePhone = \App\Models\Setting::getVal('store_phone', '+91 90390 46452');
+  $storeEmail = \App\Models\Setting::getVal('store_email', 'Ranisahab01@gmail.com');
+  $storeWhatsapp = \App\Models\Setting::getVal('store_whatsapp', '919039046452');
+  $instagramUrl = \App\Models\Setting::getVal('instagram_url', 'https://instagram.com/ranisahabofficial');
+  $facebookUrl = \App\Models\Setting::getVal('facebook_url', 'https://facebook.com/ranisahabofficial');
+  $youtubeUrl = \App\Models\Setting::getVal('youtube_url', 'https://youtube.com/@ranisahab');
+  $pinterestUrl = \App\Models\Setting::getVal('pinterest_url', 'https://pinterest.com/ranisahab');
+@endphp
+
 <!-- Top Announcement Bar -->
 <div class="top-strip">
   <div class="container">
@@ -225,8 +235,8 @@
         <!-- Mobile Quick Contact Strip inside collapsed menu -->
         <div class="mobile-menu-footer d-lg-none mt-3 pt-3 border-top border-warning border-opacity-25 text-center">
           <div class="d-flex justify-content-center gap-3 mb-2">
-            <a href="tel:+911234567890" class="btn btn-outline-gold btn-sm"><i class="fa-solid fa-phone me-1"></i>CALL US</a>
-            <a href="#" class="btn btn-whatsapp btn-sm"><i class="fa-brands fa-whatsapp me-1"></i>WHATSAPP</a>
+            <a href="tel:{{ str_replace(' ', '', $storePhone) }}" class="btn btn-outline-gold btn-sm"><i class="fa-solid fa-phone me-1"></i>CALL US</a>
+            <a href="https://wa.me/{{ $storeWhatsapp }}" target="_blank" class="btn btn-whatsapp btn-sm"><i class="fa-brands fa-whatsapp me-1"></i>WHATSAPP</a>
           </div>
           <p class="small text-muted mb-0" style="font-size:0.68rem;">PAN-INDIA EXPRESS DELIVERY &amp; 100% HANDLOOM GUARANTEE</p>
         </div>
@@ -284,15 +294,6 @@
 </div>
 
 <!-- Footer -->
-@php
-  $storePhone = \App\Models\Setting::getVal('store_phone', '+91 98765 43210');
-  $storeEmail = \App\Models\Setting::getVal('store_email', 'Ranisahab01@gmail.com');
-  $storeWhatsapp = \App\Models\Setting::getVal('store_whatsapp', '919876543210');
-  $instagramUrl = \App\Models\Setting::getVal('instagram_url', 'https://instagram.com/ranisahabofficial');
-  $facebookUrl = \App\Models\Setting::getVal('facebook_url', 'https://facebook.com/ranisahabofficial');
-  $youtubeUrl = \App\Models\Setting::getVal('youtube_url', 'https://youtube.com/@ranisahab');
-  $pinterestUrl = \App\Models\Setting::getVal('pinterest_url', 'https://pinterest.com/ranisahab');
-@endphp
 <footer class="footer-ranisahab">
   <div class="container">
     <div class="row g-4">
