@@ -462,6 +462,13 @@
   window.csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
   var csrfToken = window.csrfToken;
 </script>
+
+<!-- Floating WhatsApp CTA -->
+<a href="https://wa.me/{{ $storeWhatsapp }}?text={{ rawurlencode('Hi RANISAHAB, I have an enquiry regarding your couture collection.') }}" target="_blank" class="whatsapp-float-btn" aria-label="Chat on WhatsApp">
+  <i class="fa-brands fa-whatsapp"></i>
+  <span class="whatsapp-tooltip">CHAT WITH US</span>
+</a>
+
 @stack('scripts')
 </body>
 </html>
