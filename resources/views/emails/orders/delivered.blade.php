@@ -98,7 +98,7 @@
                     </tr>
                     
                     <!-- Footer -->
-                    @php $storeEmail = \App\Models\Setting::getVal('store_email', 'support@ranisahab.com'); @endphp
+                    @php $storeEmail = \App\Models\Setting::getVal('store_email', 'Ranisahab01@gmail.com'); @endphp
                     <tr>
                         <td align="center" style="background-color: #0b0907; padding: 30px 20px; border-top: 2px solid #c5a880; color: #a0a0a0; font-size: 12px; line-height: 1.5;">
                             <p style="margin: 0 0 10px 0;">If you have any questions, please contact our Royal Concierge at <a href="mailto:{{ $storeEmail }}" style="color: #c5a880; text-decoration: none; font-weight: bold;">{{ $storeEmail }}</a>.</p>

@@ -204,7 +204,7 @@
                         <!-- Store Support Email -->
                         <div class="mb-3">
                             <label for="store_email" class="form-label text-gold-light fw-bold">Official Support Email</label>
-                            <input type="email" name="store_email" id="store_email" class="form-control bg-dark text-white border-secondary" value="{{ old('store_email', \App\Models\Setting::getVal('store_email', 'support@ranisahab.com')) }}">
+                            <input type="email" name="store_email" id="store_email" class="form-control bg-dark text-white border-secondary" value="{{ old('store_email', \App\Models\Setting::getVal('store_email', 'Ranisahab01@gmail.com')) }}">
                         </div>
 
                         <!-- Business Hours -->

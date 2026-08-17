@@ -33,7 +33,7 @@
 
 @php
   $storePhone = \App\Models\Setting::getVal('store_phone', '+91 98765 43210');
-  $storeEmail = \App\Models\Setting::getVal('store_email', 'support@ranisahab.com');
+  $storeEmail = \App\Models\Setting::getVal('store_email', 'Ranisahab01@gmail.com');
   $storeWhatsapp = \App\Models\Setting::getVal('store_whatsapp', '919876543210');
   $businessHours = \App\Models\Setting::getVal('business_hours', 'Mon - Sat: 10:00 AM - 8:00 PM IST');
 @endphp

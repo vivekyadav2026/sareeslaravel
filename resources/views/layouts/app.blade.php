@@ -286,7 +286,7 @@
 <!-- Footer -->
 @php
   $storePhone = \App\Models\Setting::getVal('store_phone', '+91 98765 43210');
-  $storeEmail = \App\Models\Setting::getVal('store_email', 'support@ranisahab.com');
+  $storeEmail = \App\Models\Setting::getVal('store_email', 'Ranisahab01@gmail.com');
   $storeWhatsapp = \App\Models\Setting::getVal('store_whatsapp', '919876543210');
   $instagramUrl = \App\Models\Setting::getVal('instagram_url', 'https://instagram.com/ranisahabofficial');
   $facebookUrl = \App\Models\Setting::getVal('facebook_url', 'https://facebook.com/ranisahabofficial');

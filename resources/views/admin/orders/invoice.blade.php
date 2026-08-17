@@ -239,7 +239,7 @@
     </div>
 
     <div class="footer">
-        Thank you for choosing RaniSahab Bridal Couture. For order inquiries or modifications, please contact support@ranisahab.com.
+        Thank you for choosing RaniSahab Bridal Couture. For order inquiries or modifications, please contact Ranisahab01@gmail.com.
         <button class="btn-print" onclick="window.print()">Print Invoice</button>
     </div>
 </div>
