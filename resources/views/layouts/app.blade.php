@@ -229,6 +229,7 @@
           <li class="nav-item"><a class="nav-link {{ request()->routeIs('custom-lehenga') ? 'active' : '' }}" href="{{ route('custom-lehenga') }}"><i class="fa-solid fa-scissors me-2 d-lg-none"></i>CUSTOM LEHENGA</a></li>
           <li class="nav-item"><a class="nav-link {{ request()->routeIs('gallery') ? 'active' : '' }}" href="{{ route('gallery') }}"><i class="fa-solid fa-images me-2 d-lg-none"></i>GALLERY</a></li>
           <li class="nav-item"><a class="nav-link {{ request()->routeIs('about') ? 'active' : '' }}" href="{{ route('about') }}"><i class="fa-solid fa-circle-info me-2 d-lg-none"></i>ABOUT US</a></li>
+          <li class="nav-item"><a class="nav-link {{ request()->routeIs('brand-story') ? 'active' : '' }}" href="{{ route('brand-story') }}"><i class="fa-solid fa-book-open me-2 d-lg-none"></i>BRAND STORY</a></li>
           <li class="nav-item"><a class="nav-link {{ request()->routeIs('contact') ? 'active' : '' }}" href="{{ route('contact') }}"><i class="fa-solid fa-envelope me-2 d-lg-none"></i>CONTACT</a></li>
         </ul>
         
@@ -317,6 +318,7 @@
         <ul class="list-unstyled d-grid gap-2 mb-0">
           <li><a href="{{ route('home') }}">Home</a></li>
           <li><a href="{{ route('about') }}">About Us</a></li>
+          <li><a href="{{ route('brand-story') }}">Brand Story</a></li>
           <li><a href="{{ route('sarees') }}">Sarees</a></li>
           <li><a href="{{ route('suits') }}">Suits</a></li>
           <li><a href="{{ route('lehengas') }}">Lehengas</a></li>
@@ -331,11 +333,11 @@
         <h6>CUSTOMER SERVICE</h6>
         <ul class="list-unstyled d-grid gap-2 mb-0">
           <li><a href="{{ route('tracking') }}">Track Your Order</a></li>
-          <li><a href="{{ Route::has('policies') ? route('policies') . '#shipping' : '#' }}">Shipping &amp; Delivery</a></li>
-          <li><a href="{{ Route::has('policies') ? route('policies') . '#returns' : '#' }}">Returns &amp; Refunds</a></li>
-          <li><a href="{{ Route::has('policies') ? route('policies') . '#terms' : '#' }}">Terms &amp; Conditions</a></li>
-          <li><a href="{{ Route::has('policies') ? route('policies') . '#privacy' : '#' }}">Privacy Policy</a></li>
-          <li><a href="{{ Route::has('policies') ? route('policies') . '#faq' : '#' }}">FAQ's</a></li>
+          <li><a href="{{ route('policies') . '#shipping' }}">Shipping &amp; Delivery</a></li>
+          <li><a href="{{ route('policies') . '#returns' }}">Returns &amp; Refunds</a></li>
+          <li><a href="{{ route('policies') . '#terms' }}">Terms &amp; Conditions</a></li>
+          <li><a href="{{ route('policies') . '#privacy' }}">Privacy Policy</a></li>
+          <li><a href="{{ route('policies') . '#faq' }}">FAQ's</a></li>
         </ul>
       </div>
 

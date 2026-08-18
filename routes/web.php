@@ -35,6 +35,7 @@ Route::post('/custom-lehenga', [CatalogController::class, 'submitCustomLehenga']
 
 Route::get('/gallery', [CatalogController::class, 'gallery'])->name('gallery');
 Route::get('/about', function () { return view('about'); })->name('about');
+Route::get('/brand-story', function () { return view('brand-story'); })->name('brand-story');
 Route::get('/contact', function () { return view('contact'); })->name('contact');
 Route::get('/policies', function () { return view('policies'); })->name('policies');
 Route::post('/contact', [CatalogController::class, 'submitContact'])->name('contact.submit');
