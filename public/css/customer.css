@@ -688,9 +688,9 @@
 
 .customer-dashboard-wrapper .form-control:disabled,
 .customer-dashboard-wrapper .form-control[readonly] {
-  background-color: rgba(0, 0, 0, 0.25) !important;
-  border-color: rgba(201, 162, 75, 0.15) !important;
-  color: rgba(251, 248, 241, 0.35) !important;
+  background-color: #120f0c !important;
+  border-color: rgba(201, 162, 75, 0.18) !important;
+  color: var(--gold-light) !important;
 }
 
 .customer-dashboard-wrapper label {

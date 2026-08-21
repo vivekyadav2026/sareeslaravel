@@ -4,29 +4,6 @@
 
 @section('content')
 <!-- Quick Action Banner -->
-<div class="row mb-4">
-    <div class="col-12">
-        <div class="card bg-dark border-warning border-opacity-50 text-white position-relative overflow-hidden shadow">
-            <div class="card-body p-4 d-flex align-items-center justify-content-between position-relative z-1">
-                <div>
-                    <h4 class="fw-bold mb-1" style="color: var(--primary-gold);">Bridal E-commerce Executive Suite</h4>
-                    <p class="mb-0 text-white-50">Manage luxury bookings, catalog items, and view live boutique performance metrics.</p>
-                </div>
-                <div class="d-flex gap-2">
-                    <button class="btn btn-primary rounded-pill px-4 shadow-sm" onclick="Swal.fire('Quick Action', 'Redirecting to custom bridal booking...', 'info')">
-                        <i class="fas fa-calendar-check me-2"></i> Book Bridal Consultation
-                    </button>
-                    <a href="{{ route('admin.users.index') }}" class="btn btn-outline-light rounded-pill px-4">
-                        <i class="fas fa-cog me-2"></i> System Settings
-                    </a>
-                </div>
-            </div>
-            <!-- Aesthetic Gold Ring in background -->
-            <div class="position-absolute" style="right: -50px; bottom: -50px; width: 200px; height: 200px; border: 20px solid rgba(197, 168, 128, 0.1); border-radius: 50%;"></div>
-        </div>
-    </div>
-</div>
-
 <!-- Key Performance Metrics (Top Row) -->
 <div class="row mb-4">
     <!-- Today's Revenue -->

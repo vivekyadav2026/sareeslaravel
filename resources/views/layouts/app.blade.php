@@ -144,12 +144,25 @@
           <a href="{{ route('customer.login') }}" class="action-icon ms-2 ms-lg-3"><i class="fa-regular fa-user"></i><span class="d-none d-lg-inline-flex ms-1">ACCOUNT</span></a>
         @endif
         
-        <a href="{{ route('customer.wishlist') }}" class="action-icon ms-2 ms-lg-3"><i class="fa-regular fa-heart"></i><span class="d-none d-lg-inline-flex ms-1">WISHLIST</span></a>
+        @php
+          $wishlistCount = auth()->check() && auth()->user()->customer 
+            ? \App\Models\Wishlist::where('customer_id', auth()->user()->customer->id)->count() 
+            : count(session('wishlist', []));
+        @endphp
+        <a href="{{ route('customer.wishlist') }}" class="action-icon ms-2 ms-lg-3">
+          <span class="position-relative d-inline-block">
+            <i class="fa-regular fa-heart"></i>
+            <span class="badge-cart" id="headerWishlistCount">{{ $wishlistCount }}</span>
+          </span>
+          <span class="d-none d-lg-inline-flex ms-1">WISHLIST</span>
+        </a>
         
         <a href="{{ route('checkout') }}" class="action-icon ms-2 ms-lg-3">
-          <i class="fa-solid fa-bag-shopping"></i>
+          <span class="position-relative d-inline-block">
+            <i class="fa-solid fa-bag-shopping"></i>
+            <span class="badge-cart" id="headerCartCount">{{ collect(session('cart', []))->sum('quantity') }}</span>
+          </span>
           <span class="d-none d-lg-inline-flex ms-1">BAG</span>
-          <span class="badge-cart" id="headerCartCount">{{ collect(session('cart', []))->sum('quantity') }}</span>
         </a>
       </div>
     </div>
@@ -192,8 +205,9 @@
           
           {{-- Wishlist for mobile --}}
           <li class="nav-item d-lg-none">
-            <a class="nav-link {{ request()->routeIs('customer.wishlist') ? 'active' : '' }}" href="{{ route('customer.wishlist') }}">
-              <i class="fa-solid fa-heart me-2 d-lg-none"></i>MY WISHLIST
+            <a class="nav-link {{ request()->routeIs('customer.wishlist') ? 'active' : '' }} d-flex align-items-center justify-content-between" href="{{ route('customer.wishlist') }}">
+              <span><i class="fa-solid fa-heart me-2 d-lg-none"></i>MY WISHLIST</span>
+              <span class="badge-cart mobile-wishlist-badge">{{ $wishlistCount }}</span>
             </a>
           </li>
           
@@ -438,6 +452,15 @@
     .then(data => {
       if (data.success) {
         showToast(data.message);
+        
+        // Update wishlist count badges
+        const wishlistBadges = document.querySelectorAll('#headerWishlistCount, .mobile-wishlist-badge');
+        wishlistBadges.forEach(badge => {
+          if (typeof data.wishlist_count !== 'undefined') {
+            badge.textContent = data.wishlist_count;
+          }
+        });
+
         if (btnElement) {
           const icon = btnElement.querySelector('i');
           if (icon) {

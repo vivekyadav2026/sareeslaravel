@@ -436,24 +436,46 @@ class DashboardController extends Controller
 
             if ($exists) {
                 $exists->delete();
-                return response()->json(['success' => true, 'action' => 'removed', 'message' => 'Product removed from wishlist.']);
+                $wishlistCount = Wishlist::where('customer_id', $customer->id)->count();
+                return response()->json([
+                    'success' => true, 
+                    'action' => 'removed', 
+                    'message' => 'Product removed from wishlist.',
+                    'wishlist_count' => $wishlistCount
+                ]);
             } else {
                 Wishlist::create([
                     'customer_id' => $customer->id,
                     'product_id' => $productId,
                 ]);
-                return response()->json(['success' => true, 'action' => 'added', 'message' => 'Product added to wishlist!']);
+                $wishlistCount = Wishlist::where('customer_id', $customer->id)->count();
+                return response()->json([
+                    'success' => true, 
+                    'action' => 'added', 
+                    'message' => 'Product added to wishlist!',
+                    'wishlist_count' => $wishlistCount
+                ]);
             }
         } else {
             $wishlist = session()->get('wishlist', []);
             if (in_array($productId, $wishlist)) {
                 $wishlist = array_values(array_diff($wishlist, [$productId]));
                 session()->put('wishlist', $wishlist);
-                return response()->json(['success' => true, 'action' => 'removed', 'message' => 'Product removed from wishlist.']);
+                return response()->json([
+                    'success' => true, 
+                    'action' => 'removed', 
+                    'message' => 'Product removed from wishlist.',
+                    'wishlist_count' => count($wishlist)
+                ]);
             } else {
                 $wishlist[] = $productId;
                 session()->put('wishlist', $wishlist);
-                return response()->json(['success' => true, 'action' => 'added', 'message' => 'Product added to wishlist!']);
+                return response()->json([
+                    'success' => true, 
+                    'action' => 'added', 
+                    'message' => 'Product added to wishlist!',
+                    'wishlist_count' => count($wishlist)
+                ]);
             }
         }
     }

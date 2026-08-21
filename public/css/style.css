@@ -315,6 +315,16 @@ a { text-decoration: none; color: inherit; transition: all 0.2s ease; }
   align-items: center;
   justify-content: center;
 }
+.nav-actions .badge-cart {
+  position: absolute;
+  top: -8px;
+  right: -9px;
+  width: 15px;
+  height: 15px;
+  font-size: 0.52rem;
+  border: 1px solid #120e0d;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.4);
+}
 
 /* Regal Luxury Navigation Bar */
 .nav-menu-bar-container {
@@ -3362,4 +3372,30 @@ select option:checked {
   .whatsapp-tooltip {
     display: none;
   }
+}
+
+/* --- Luxury Global Form Controls Styling --- */
+.form-control {
+  background-color: #1c1815 !important;
+  color: var(--ivory) !important;
+  border: 1px solid rgba(201, 162, 75, 0.25) !important;
+}
+
+.form-control::placeholder {
+  color: rgba(251, 248, 241, 0.4) !important;
+}
+
+.form-control:focus {
+  background-color: #241f1b !important;
+  color: var(--ivory) !important;
+  border-color: var(--gold) !important;
+  box-shadow: 0 0 12px rgba(201, 162, 75, 0.25) !important;
+}
+
+.form-control[readonly], 
+.form-control:disabled {
+  background-color: #14110f !important;
+  color: var(--gold) !important;
+  border-color: rgba(201, 162, 75, 0.15) !important;
+  opacity: 0.8;
 }

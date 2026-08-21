@@ -207,12 +207,10 @@
             <div class="promise-icon-box"><i class="fa-solid fa-certificate"></i></div>
             <p class="promise-icon-label">DESIGN CERTIFICATE PROVIDED</p>
           </div>
-          {{-- Commented out - only applicable for custom bespoke orders
           <div>
             <div class="promise-icon-box"><i class="fa-solid fa-ban"></i></div>
             <p class="promise-icon-label">NEVER REPEATED EVER AGAIN</p>
           </div>
-          --}}
         </div>
 
         <button class="btn btn-gold btn-sm px-4 font-label py-2" data-bs-toggle="modal" data-bs-target="#oneBrideProcessModal">

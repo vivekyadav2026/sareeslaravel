@@ -339,7 +339,7 @@
                 </li>
                 <li class="nav-item">
                     <a class="nav-link {{ request()->routeIs('admin.makeup-bookings.*') ? 'active' : '' }}" href="{{ route('admin.makeup-bookings.index') }}" title="Makeup Bookings">
-                        <i class="fas fa-sparkles"></i> <span class="nav-link-text">Makeup Bookings</span>
+                        <i class="fas fa-spa"></i> <span class="nav-link-text">Makeup Bookings</span>
                     </a>
                 </li>
                 <li class="nav-item">

@@ -136,20 +136,6 @@
         </p>
       </div>
 
-      <!-- Delivery & Pincode Checker Box -->
-      <div class="p-3 mb-4 rounded bg-dark border border-secondary">
-        <div class="d-flex align-items-center justify-content-between mb-2">
-          <span class="small text-gold fw-bold font-label text-uppercase" style="letter-spacing: 0.08em;"><i class="fa-solid fa-location-dot me-1"></i>CHECK PINCODE &amp; COD AVAILABILITY</span>
-          <span class="small text-white-50" style="font-size: 0.7rem;"><i class="fa-solid fa-clock me-1 text-gold"></i>{{ $descData['dispatch_time'] ?? 'Dispatched in 24-48 Hrs' }}</span>
-        </div>
-        <div class="input-group mb-2">
-          <input type="text" id="pincodeCheckInput" class="form-control bg-black text-white border-secondary text-uppercase" placeholder="Enter 6-digit PIN Code" maxlength="6" style="font-size:0.8rem;">
-          <button class="btn btn-gold font-label px-3" type="button" onclick="checkPincodeServiceability()">CHECK</button>
-        </div>
-        <div id="pincodeCheckResult" class="small">
-          <span class="text-white-50" style="font-size: 0.72rem;"><i class="fa-solid fa-truck text-gold me-1"></i>Estimated Pan-India Delivery: <strong>{{ $descData['delivery_time'] ?? '4 to 7 Business Days' }}</strong>.</span>
-        </div>
-      </div>
 
       <!-- Color Options -->
       @php
@@ -176,21 +162,21 @@
         <div class="d-flex justify-content-between align-items-center mb-2">
           <label class="text-gold fw-bold font-label text-uppercase" style="color: #f3dfb2 !important; letter-spacing: 0.1em; font-size: 0.85rem;">SELECT COUTURE SIZE / VARIANT</label>
         </div>
-        <div class="d-flex flex-wrap gap-2" id="coutureSizeButtons">
+        <div class="d-flex flex-nowrap gap-2" id="coutureSizeButtons">
           @if ($sizes->isNotEmpty())
             @foreach($sizes as $sz)
-              <button type="button" class="btn btn-outline-gold cout-size-btn {{ $loop->first ? 'active' : '' }} px-3.5 py-2 font-display text-uppercase" style="font-size: 0.8rem; letter-spacing: 0.08em; @if($loop->first) background: linear-gradient(90deg, #c5a880 0%, #b2946c 100%); color: #000; @endif" onclick="selectCoutureSize(this, '{{ $sz }}')">
+              <button type="button" class="btn btn-outline-gold cout-size-btn flex-fill {{ $loop->first ? 'active' : '' }} p-2 font-display text-uppercase" style="font-size: 0.75rem; letter-spacing: 0.05em; white-space: normal; line-height: 1.2; @if($loop->first) background: linear-gradient(90deg, #c5a880 0%, #b2946c 100%); color: #000; @endif" onclick="selectCoutureSize(this, '{{ $sz }}')">
                 {{ $sz }}
               </button>
             @endforeach
-            <button type="button" class="btn btn-outline-gold cout-size-btn px-3.5 py-2 font-display text-uppercase" style="font-size: 0.8rem; letter-spacing: 0.08em;" onclick="selectCoutureSize(this, 'Custom Stitched')">
+            <button type="button" class="btn btn-outline-gold cout-size-btn flex-fill p-2 font-display text-uppercase" style="font-size: 0.75rem; letter-spacing: 0.05em; white-space: normal; line-height: 1.2;" onclick="selectCoutureSize(this, 'Custom Stitched')">
               <i class="fa-solid fa-scissors me-1 text-gold"></i> Custom Stitched
             </button>
           @else
-            <button type="button" class="btn btn-outline-gold cout-size-btn active px-3.5 py-2 font-display text-uppercase" style="font-size: 0.8rem; letter-spacing: 0.08em; background: linear-gradient(90deg, #c5a880 0%, #b2946c 100%); color: #000;" onclick="selectCoutureSize(this, 'Free Size (Unstitched)')">
+            <button type="button" class="btn btn-outline-gold cout-size-btn active flex-fill p-2 font-display text-uppercase" style="font-size: 0.75rem; letter-spacing: 0.05em; white-space: normal; line-height: 1.2; background: linear-gradient(90deg, #c5a880 0%, #b2946c 100%); color: #000;" onclick="selectCoutureSize(this, 'Free Size (Unstitched)')">
               Free Size (Unstitched)
             </button>
-            <button type="button" class="btn btn-outline-gold cout-size-btn px-3.5 py-2 font-display text-uppercase" style="font-size: 0.8rem; letter-spacing: 0.08em;" onclick="selectCoutureSize(this, 'Custom Stitched')">
+            <button type="button" class="btn btn-outline-gold cout-size-btn flex-fill p-2 font-display text-uppercase" style="font-size: 0.75rem; letter-spacing: 0.05em; white-space: normal; line-height: 1.2;" onclick="selectCoutureSize(this, 'Custom Stitched')">
               <i class="fa-solid fa-scissors me-1 text-gold"></i> Custom Stitched
             </button>
           @endif
@@ -340,7 +326,7 @@
                               <span class="text-gold fw-bold" style="font-size: 0.8rem;"><i class="fa-solid fa-circle-question me-1 text-gold"></i> Q: {{ $q->question_text }}</span>
                               <span class="text-white-50" style="font-size: 0.65rem;">{{ $q->created_at ? $q->created_at->format('M d, Y') : 'N/A' }}</span>
                           </div>
-                          <div class="text-muted ps-3" style="font-size: 0.78rem;">
+                          <div class="text-white-50 ps-3" style="font-size: 0.78rem;">
                               Asked by <strong class="text-ivory">{{ $q->customer->first_name ?? 'Valued Customer' }}</strong>
                           </div>
                           @if($q->answer_text)
@@ -349,13 +335,13 @@
                                   <p class="mb-0 text-ivory opacity-85" style="line-height: 1.5;">{{ $q->answer_text }}</p>
                               </div>
                           @else
-                              <div class="mt-2 pt-2 border-top border-secondary border-opacity-15 ps-3 text-muted" style="font-size: 0.75rem; font-style: italic;">
+                              <div class="mt-2 pt-2 border-top border-secondary border-opacity-15 ps-3 text-white-50" style="font-size: 0.75rem; font-style: italic;">
                                   Answer is pending from design atelier.
                               </div>
                           @endif
                       </div>
                   @empty
-                      <p class="text-muted text-center py-2 mb-0" style="font-size: 0.78rem;">No questions have been asked about this product yet.</p>
+                      <p class="text-white-50 text-center py-2 mb-0" style="font-size: 0.78rem;">No questions have been asked about this product yet.</p>
                   @endforelse
               </div>
 
@@ -417,7 +403,7 @@
         <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div class="modal-body py-4 px-4">
-        <div class="alert alert-dark border-gold border-opacity-25 text-gold-light small mb-4">
+        <div class="alert border-gold border-opacity-25 text-gold-light small mb-4" style="background-color: rgba(201, 162, 75, 0.08) !important;">
           <i class="fa-solid fa-crown me-2 text-gold"></i> Our royal master tailors will stitch this {{ $product->name }} according to your exact measurements with padding, lining, and finishing.
         </div>
 
@@ -539,30 +525,6 @@
       modal.show();
   }
 
-  function checkPincodeServiceability() {
-      const pin = document.getElementById('pincodeCheckInput').value.trim();
-      const resultDiv = document.getElementById('pincodeCheckResult');
-      
-      if (!pin || pin.length !== 6 || !/^\d+$/.test(pin)) {
-          resultDiv.innerHTML = '<span class="text-danger"><i class="fa-solid fa-circle-exclamation me-1"></i>Please enter a valid 6-digit Indian PIN Code.</span>';
-          return;
-      }
-
-      resultDiv.innerHTML = '<span class="text-gold"><i class="fa-solid fa-spinner fa-spin me-1"></i>Checking delivery serviceability for ' + pin + '...</span>';
-
-      fetch("{{ route('checkout.check-pincode') }}?pincode=" + pin)
-      .then(res => res.json())
-      .then(data => {
-          if (data.serviceable) {
-              resultDiv.innerHTML = `<span class="text-success fw-bold"><i class="fa-solid fa-circle-check me-1"></i>COD & Express Delivery Available for PIN ${pin}! (${data.etd || '4-7 Days'})</span>`;
-          } else {
-              resultDiv.innerHTML = `<span class="text-warning"><i class="fa-solid fa-truck-ramp-box me-1"></i>Prepaid Express Delivery Available for PIN ${pin}. (COD subject to regional logistics).</span>`;
-          }
-      })
-      .catch(err => {
-          resultDiv.innerHTML = `<span class="text-success"><i class="fa-solid fa-circle-check me-1"></i>Express Shipping &amp; Cash On Delivery available across 25,000+ PIN Codes!</span>`;
-      });
-  }
 
   function selectCoutureSize(btn, sizeName) {
       document.querySelectorAll('.cout-size-btn').forEach(b => {
